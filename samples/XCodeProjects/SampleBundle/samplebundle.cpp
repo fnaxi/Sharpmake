@@ -1,4 +1,4 @@
 int Foobar()
 {
-    return 42;
+	return 42;
 }

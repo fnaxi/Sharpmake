@@ -4,5 +4,5 @@
 
 void fcnC(int value)
 {
-    fcnA(value + 3);
+	fcnA(value + 3);
 }

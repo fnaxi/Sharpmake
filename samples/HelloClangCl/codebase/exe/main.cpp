@@ -5,7 +5,9 @@
 
 int main(int, char**)
 {
-    std::cout << "Hello ClangCl World, from " CREATION_DATE "!" << std::endl;
+	std::cout << "Hello ClangCl World, from "
+	CREATION_DATE
+	"!" << std::endl;
 
 #if defined(_DEBUG) && _DEBUG
     std::cout << "- Exe is built in Debug"
@@ -23,15 +25,15 @@ int main(int, char**)
         "!" << std::endl;
 #endif
 
-    std::vector<int> someArray(5, 6);
+	std::vector<int> someArray(5, 6);
 
-    // from dll1
-    UtilDll1 utilityDll;
-    utilityDll.ComputeSum(someArray);
+	// from dll1
+	UtilDll1 utilityDll;
+	utilityDll.ComputeSum(someArray);
 
-    // from static_lib2
-    Util2 utilityStatic;
-    utilityStatic.DoSomethingUseful();
-    StaticLib2::UselessMethod();
-    return 0;
+	// from static_lib2
+	Util2 utilityStatic;
+	utilityStatic.DoSomethingUseful();
+	StaticLib2::UselessMethod();
+	return 0;
 }

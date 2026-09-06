@@ -5,24 +5,24 @@ using Sharpmake;
 
 namespace HelloLinux
 {
-    [Sharpmake.Generate]
-    public class HelloLinuxSolution : CommonSolution
-    {
-        public HelloLinuxSolution()
-        {
-            AddTargets(CommonTarget.GetDefaultTargets());
-            Name = "HelloLinux";
-        }
+	[Sharpmake.Generate]
+	public class HelloLinuxSolution : CommonSolution
+	{
+		public HelloLinuxSolution()
+		{
+			AddTargets(CommonTarget.GetDefaultTargets());
+			Name = "HelloLinux";
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
 
-            conf.AddProject<ExeProject>(target);
-            conf.AddProject<Dll1Project>(target);
-            conf.AddProject<StaticLib1Project>(target);
-            conf.AddProject<StaticLib2Project>(target);
-            conf.AddProject<LibGroupProject>(target);
-        }
-    }
+			conf.AddProject<ExeProject>(target);
+			conf.AddProject<Dll1Project>(target);
+			conf.AddProject<StaticLib1Project>(target);
+			conf.AddProject<StaticLib2Project>(target);
+			conf.AddProject<LibGroupProject>(target);
+		}
+	}
 }

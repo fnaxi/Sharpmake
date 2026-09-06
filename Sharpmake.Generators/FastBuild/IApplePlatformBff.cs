@@ -3,14 +3,16 @@
 
 namespace Sharpmake.Generators.FastBuild
 {
-    public interface IApplePlatformBff : IClangPlatformBff
-    {
-        bool IsSwiftSupported();
-        /// <summary>
-        /// Gets a configuration name for that platform in the .bff file for the code files that
-        /// are written in swift code.
-        /// </summary>
-        string SwiftConfigName(Configuration conf);
-        void SetupSwiftOptions(IFileGenerator generator);
-    }
+	public interface IApplePlatformBff : IClangPlatformBff
+	{
+		bool IsSwiftSupported();
+
+		/// <summary>
+		/// Gets a configuration name for that platform in the .bff file for the code files that
+		/// are written in swift code.
+		/// </summary>
+		string SwiftConfigName(Configuration conf);
+
+		void SetupSwiftOptions(IFileGenerator generator);
+	}
 }

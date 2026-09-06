@@ -1,6 +1,7 @@
 # Sharpmake.PublicApiTests
 
-This project is dedicated to ensuring that the public API of Sharpmake remains unchanged across versions. It uses the PublicApiGenerator and Verify libraries to capture the API surface and compare it against a verified snapshot. This helps detect unintended changes to the API, maintaining compatibility and stability for users.
+This project is dedicated to ensuring that the public API of Sharpmake remains unchanged across versions. It uses the PublicApiGenerator and Verify libraries to capture the API
+surface and compare it against a verified snapshot. This helps detect unintended changes to the API, maintaining compatibility and stability for users.
 
 ## Running the Tests
 
@@ -8,7 +9,8 @@ To run the tests, use your preferred test runner for .NET projects (e.g., Visual
 
 ## Snapshots management
 
-Tests generate output files (received) and compare them against reference files (verified snapshots). When a test fails due to an API change, the received and verified files must be diffed and reconciled. There are several ways to manage this workflow:
+Tests generate output files (received) and compare them against reference files (verified snapshots). When a test fails due to an API change, the received and verified files must
+be diffed and reconciled. There are several ways to manage this workflow:
 
 - **[Verify.Terminal](#verifyterminal)** — a dotnet CLI tool for reviewing, accepting, or rejecting snapshots directly in the terminal, without a GUI.
 - **[DiffEngine Preferences](#diffengine-preferences)** — configure your preferred GUI diff tool to open automatically when a snapshot mismatch occurs.
@@ -88,4 +90,5 @@ When a test requires a diff, DiffEngineTray will prompt you to review difference
 
 ---
 
-For more information, see the [PublicApiGenerator documentation](https://github.com/PublicApiGenerator/PublicApiGenerator) and [Verify documentation](https://github.com/VerifyTests/Verify).
+For more information, see the [PublicApiGenerator documentation](https://github.com/PublicApiGenerator/PublicApiGenerator)
+and [Verify documentation](https://github.com/VerifyTests/Verify).

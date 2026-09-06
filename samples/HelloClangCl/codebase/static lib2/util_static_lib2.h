@@ -3,13 +3,12 @@
 class Util2
 {
 public:
-    Util2();
-    ~Util2();
+	Util2();
+	~Util2();
 
 public:
-    void DoSomethingUseful() const;
+	void DoSomethingUseful() const;
 
 private:
-    void DoSomethingInternal(const char* anArgument) const;
+	void DoSomethingInternal(const char* anArgument) const;
 };
-

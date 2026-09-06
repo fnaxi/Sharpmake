@@ -2,7 +2,7 @@
 
 int main(int, char**)
 {
-    std::cout << "I was built in "
+	std::cout << "I was built in "
 
 #if _DEBUG
         "Debug"
@@ -15,10 +15,10 @@ int main(int, char**)
 #if _WIN64
         " x64"
 #else
-        " x86"
+		" x86"
 #endif
 
-        << std::endl;
+		<< std::endl;
 
-    return 0;
+	return 0;
 }

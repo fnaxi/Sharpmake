@@ -3,10 +3,10 @@
 
 namespace Sharpmake
 {
-    public abstract partial class BasePlatform
-    {
-        private const string _projectConfigurationsCompileTemplate =
-            @"    <ClCompile>
+	public abstract partial class BasePlatform
+	{
+		private const string _projectConfigurationsCompileTemplate =
+			@"    <ClCompile>
       <PrecompiledHeader>[options.UsePrecompiledHeader]</PrecompiledHeader>
       <CompileAsWinRT>[options.CompileAsWinRT]</CompileAsWinRT>
       <WarningLevel>[options.WarningLevel]</WarningLevel>
@@ -81,8 +81,8 @@ namespace Sharpmake
     </ClCompile>
 ";
 
-        private const string _projectConfigurationsLinkTemplate =
-            @"    <Link>
+		private const string _projectConfigurationsLinkTemplate =
+			@"    <Link>
       <SubSystem>[options.SubSystem]</SubSystem>
       <GenerateDebugInformation>[options.LinkerGenerateDebugInformation]</GenerateDebugInformation>
       <FullProgramDatabaseFile>[options.FullProgramDatabaseFile]</FullProgramDatabaseFile>
@@ -139,8 +139,8 @@ namespace Sharpmake
     </Link>
 ";
 
-        private const string _projectConfigurationsStaticLinkTemplate =
-            @"    <Link>
+		private const string _projectConfigurationsStaticLinkTemplate =
+			@"    <Link>
       <GenerateDebugInformation>[options.LinkerGenerateDebugInformation]</GenerateDebugInformation>
       <FullProgramDatabaseFile>[options.FullProgramDatabaseFile]</FullProgramDatabaseFile>
       <EnableCOMDATFolding>[options.EnableCOMDATFolding]</EnableCOMDATFolding>
@@ -159,8 +159,8 @@ namespace Sharpmake
     </Lib>
 ";
 
-        private const string _userFileConfigurationGeneralTemplate =
-            @"    <LocalDebuggerCommand>[conf.VcxprojUserFile.LocalDebuggerCommand]</LocalDebuggerCommand>
+		private const string _userFileConfigurationGeneralTemplate =
+			@"    <LocalDebuggerCommand>[conf.VcxprojUserFile.LocalDebuggerCommand]</LocalDebuggerCommand>
     <LocalDebuggerCommandArguments>[conf.VcxprojUserFile.LocalDebuggerCommandArguments]</LocalDebuggerCommandArguments>
     <LocalDebuggerEnvironment>[conf.VcxprojUserFile.LocalDebuggerEnvironment]</LocalDebuggerEnvironment>
     <LocalDebuggerWorkingDirectory>[conf.VcxprojUserFile.LocalDebuggerWorkingDirectory]</LocalDebuggerWorkingDirectory>
@@ -168,8 +168,8 @@ namespace Sharpmake
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
 ";
 
-        private const string _projectConfigurationsGeneral =
-            @"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"" Label=""Configuration"">
+		private const string _projectConfigurationsGeneral =
+			@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"" Label=""Configuration"">
     <ConfigurationType>[options.ConfigurationType]</ConfigurationType>
     <UseDebugLibraries>[options.UseDebugLibraries]</UseDebugLibraries>
     <PreferredToolArchitecture>[options.PreferredToolArchitecture]</PreferredToolArchitecture>
@@ -187,8 +187,8 @@ namespace Sharpmake
   </PropertyGroup>
 ";
 
-        private const string _projectConfigurationsGeneral2 =
-            @"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
+		private const string _projectConfigurationsGeneral2 =
+			@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
     <TargetName>[options.OutputFileName]</TargetName>
     <OutDir>[options.OutputDirectory]\</OutDir>
     <IntDir>[options.IntermediateDirectory]\</IntDir>
@@ -230,28 +230,29 @@ namespace Sharpmake
   </PropertyGroup>
 ";
 
-        private const string _windowsSDKOverridesBegin =
-            @"  <PropertyGroup Label=""Globals"">
+		private const string _windowsSDKOverridesBegin =
+			@"  <PropertyGroup Label=""Globals"">
     <UCRTContentRoot>[UCRTContentRoot]</UCRTContentRoot>
     <UniversalCRTSdkDir_10>[UniversalCRTSdkDir_10]</UniversalCRTSdkDir_10>
     <[windowsSdkDirKey]>[windowsSdkDirValue]</[windowsSdkDirKey]>
     <WindowsSdkDir>$([windowsSdkDirKey])</WindowsSdkDir>
     <WindowsTargetPlatformVersion>[targetPlatformVersion]</WindowsTargetPlatformVersion>
 ";
-        private const string _windowsSDKOverridesEnd =
-            @"  </PropertyGroup>
+
+		private const string _windowsSDKOverridesEnd =
+			@"  </PropertyGroup>
 ";
 
-        // Notes:
-        // Clean:
-        // Visual Studio automatically cleans most files from the intermediate directory as soon as the clean command is active. However, it doesn't
-        // clean them all, so we manually delete everything!
-        // Also, it doesn't erase the target file and its related file extensions. We now clean them manually. Feel free to add more extensions if some were forgotten.
-        // Removing unity blobs is useful if the number of blobs changes this will erase the ones that are no longer used.
-        // Implementation note:
-        // del *.* doesn't work and Visual studio seems to have a protection against this so we must delete explicit files or extensions...
-        private const string _projectConfigurationsFastBuildMakefile =
-            @"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
+		// Notes:
+		// Clean:
+		// Visual Studio automatically cleans most files from the intermediate directory as soon as the clean command is active. However, it doesn't
+		// clean them all, so we manually delete everything!
+		// Also, it doesn't erase the target file and its related file extensions. We now clean them manually. Feel free to add more extensions if some were forgotten.
+		// Removing unity blobs is useful if the number of blobs changes this will erase the ones that are no longer used.
+		// Implementation note:
+		// del *.* doesn't work and Visual studio seems to have a protection against this so we must delete explicit files or extensions...
+		private const string _projectConfigurationsFastBuildMakefile =
+			@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
     <OutDir>[options.OutputDirectory]\</OutDir>
     <IntDir>[options.IntermediateDirectory]\</IntDir>
     <NMakeBuildCommandLine>cd [fastBuildWorkingDirectory]
@@ -285,8 +286,8 @@ del ""[options.OutputDirectory]\[conf.TargetFileFullName].pdb"" &gt;NUL 2&gt;NUL
   </ItemDefinitionGroup>
 ";
 
-        private const string _projectConfigurationsCustomMakefile =
-            @"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
+		private const string _projectConfigurationsCustomMakefile =
+			@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
     <OutDir>[options.OutputDirectory]\</OutDir>
     <IntDir>[options.IntermediateDirectory]\</IntDir>
     <NMakeBuildCommandLine>[conf.CustomBuildSettings.BuildCommand]</NMakeBuildCommandLine>
@@ -305,13 +306,13 @@ del ""[options.OutputDirectory]\[conf.TargetFileFullName].pdb"" &gt;NUL 2&gt;NUL
   </ItemDefinitionGroup>
 ";
 
-        private const string _projectConfigurationsNasmTemplate =
-    @"    <NASM>
+		private const string _projectConfigurationsNasmTemplate =
+			@"    <NASM>
       <PreprocessorDefinitions>[EscapeXML:options.PreprocessorDefinitions];%(PreprocessorDefinitions);$(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IncludePaths>[options.AdditionalAssemblyIncludeDirectories]</IncludePaths>
       <Path>[ExePath]</Path>
       <PreIncludeFiles>[PreIncludedFiles]</PreIncludeFiles>
     </NASM>
 ";
-    }
+	}
 }

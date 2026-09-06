@@ -5,42 +5,42 @@ using Sharpmake;
 
 namespace HelloLinux
 {
-    [Sharpmake.Generate]
-    public class StaticLib1Project : CommonProject
-    {
-        public StaticLib1Project()
-        {
-            AddTargets(CommonTarget.GetDefaultTargets());
-            Name = "static_lib1";
-        }
+	[Sharpmake.Generate]
+	public class StaticLib1Project : CommonProject
+	{
+		public StaticLib1Project()
+		{
+			AddTargets(CommonTarget.GetDefaultTargets());
+			Name = "static_lib1";
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
 
-            conf.SolutionFolder = "StaticLibs";
+			conf.SolutionFolder = "StaticLibs";
 
-            // intentionally in a subfolder
-            conf.PrecompHeader = @"src\pch.h";
-            conf.PrecompSource = @"src\pch.cpp";
+			// intentionally in a subfolder
+			conf.PrecompHeader = @"src\pch.h";
+			conf.PrecompSource = @"src\pch.cpp";
 
-            // becase this lib will be used in a shared lib, we need it to be position independent
-            conf.AdditionalCompilerOptions.Add("-fPIC");
+			// becase this lib will be used in a shared lib, we need it to be position independent
+			conf.AdditionalCompilerOptions.Add("-fPIC");
 
-            conf.IncludePaths.Add(SourceRootPath);
+			conf.IncludePaths.Add(SourceRootPath);
 
-            switch (target.Optimization)
-            {
-                case Optimization.Debug:
-                    conf.SourceFilesBuildExclude.Add(@"src\ensure_release.cpp");
-                    break;
-                case Optimization.Release:
-                    // use a different method to exclude ensure_debug.cpp
-                    conf.SourceFilesBuildExcludeRegex.Add(Util.RegexPathCombine("src", @"ensure_d.*\.cpp$"));
-                    break;
-                default:
-                    throw new Error("Unexpected optimization " + target.Optimization);
-            }
-        }
-    }
+			switch (target.Optimization)
+			{
+				case Optimization.Debug:
+					conf.SourceFilesBuildExclude.Add(@"src\ensure_release.cpp");
+					break;
+				case Optimization.Release:
+					// use a different method to exclude ensure_debug.cpp
+					conf.SourceFilesBuildExcludeRegex.Add(Util.RegexPathCombine("src", @"ensure_d.*\.cpp$"));
+					break;
+				default:
+					throw new Error("Unexpected optimization " + target.Optimization);
+			}
+		}
+	}
 }

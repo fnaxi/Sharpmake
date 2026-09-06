@@ -3,11 +3,11 @@
 
 namespace Sharpmake
 {
-    public static partial class Linux
-    {
-        public sealed partial class LinuxPlatform
-        {
-            public static readonly string _linkerOptionsTemplate = @"
+	public static partial class Linux
+	{
+		public sealed partial class LinuxPlatform
+		{
+			public static readonly string _linkerOptionsTemplate = @"
     .LinkerOptions          = '-o ""%2""'
                             + ' [cmdLineOptions.WholeArchiveBegin]'
                             + ' ""%1""'
@@ -34,7 +34,7 @@ namespace Sharpmake
                             + ' [options.AdditionalLinkerOptions]'
 ";
 
-            public static readonly string _compilerExtraOptions = @"
+			public static readonly string _compilerExtraOptions = @"
     .CompilerExtraOptions   = ''
             // General options
             // -------------------------
@@ -65,14 +65,14 @@ namespace Sharpmake
             + ' [options.AdditionalCompilerOptions]'
 ";
 
-            public static readonly string _compilerOptimizationOptions =
-                @"
+			public static readonly string _compilerOptimizationOptions =
+				@"
     // Optimizations options
     // ---------------------
     .CompilerOptimizations = ''
             + ' [cmdLineOptions.OptimizationLevel]'
             + ' [options.AdditionalCompilerOptimizeOptions]'
 ";
-        }
-    }
+		}
+	}
 }

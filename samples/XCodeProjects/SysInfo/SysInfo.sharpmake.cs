@@ -5,28 +5,28 @@ using Sharpmake;
 
 namespace XCodeProjects
 {
-    [Sharpmake.Generate]
-    public class SysInfoProject : CommonProject
-    {
-        public SysInfoProject()
-        {
-            Name = @"SysInfo";
+	[Sharpmake.Generate]
+	public class SysInfoProject : CommonProject
+	{
+		public SysInfoProject()
+		{
+			Name = @"SysInfo";
 
-            AddTargets(CommonTarget.GetMacTargets());
-            AddTargets(CommonTarget.GetIosTargets());
-            AddTargets(CommonTarget.GetTvosTargets());
-            AddTargets(CommonTarget.GetCatalystTargets());
+			AddTargets(CommonTarget.GetMacTargets());
+			AddTargets(CommonTarget.GetIosTargets());
+			AddTargets(CommonTarget.GetTvosTargets());
+			AddTargets(CommonTarget.GetCatalystTargets());
 
-            SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
-        }
+			SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
-            conf.XcodeSystemFrameworks.Add("DeviceCheck");
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
+			conf.XcodeSystemFrameworks.Add("DeviceCheck");
 
-            conf.Output = Configuration.OutputType.Exe;
-            conf.AddPublicDependency<FmtProject>(target);
-        }
-    }
+			conf.Output = Configuration.OutputType.Exe;
+			conf.AddPublicDependency<FmtProject>(target);
+		}
+	}
 }

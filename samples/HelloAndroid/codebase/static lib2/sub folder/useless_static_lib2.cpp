@@ -4,9 +4,8 @@
 
 namespace StaticLib2
 {
-    void UselessMethod()
-    {
-        Util2::Log("- Useless in fact!");
-    }
+	void UselessMethod()
+	{
+		Util2::Log("- Useless in fact!");
+	}
 }
-

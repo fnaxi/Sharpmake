@@ -3,5 +3,5 @@
 
 namespace static_lib1_utils
 {
-    std::streampos GetRandomPosition();
+	std::streampos GetRandomPosition();
 }

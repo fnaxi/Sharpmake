@@ -3,12 +3,12 @@
 
 namespace Sharpmake.Generators.FastBuild
 {
-    /// <summary>
-    /// Augments the <see cref="IPlatformBff"/> interface to provide services for platforms that
-    /// are based on Clang.
-    /// </summary>
-    public interface IClangPlatformBff : IPlatformBff
-    {
-        void SetupClangOptions(IFileGenerator generator);
-    }
+	/// <summary>
+	/// Augments the <see cref="IPlatformBff"/> interface to provide services for platforms that
+	/// are based on Clang.
+	/// </summary>
+	public interface IClangPlatformBff : IPlatformBff
+	{
+		void SetupClangOptions(IFileGenerator generator);
+	}
 }

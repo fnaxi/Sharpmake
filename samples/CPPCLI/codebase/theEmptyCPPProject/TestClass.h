@@ -5,4 +5,3 @@ public:
 	TestClass(void);
 	~TestClass(void);
 };
-

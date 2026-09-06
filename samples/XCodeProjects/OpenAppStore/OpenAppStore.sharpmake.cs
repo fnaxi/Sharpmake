@@ -5,28 +5,28 @@ using Sharpmake;
 
 namespace XCodeProjects
 {
-    [Sharpmake.Generate]
-    public class OpenAppStoreProject : CommonProject
-    {
-        public OpenAppStoreProject()
-        {
-            Name = @"OpenAppStore";
+	[Sharpmake.Generate]
+	public class OpenAppStoreProject : CommonProject
+	{
+		public OpenAppStoreProject()
+		{
+			Name = @"OpenAppStore";
 
-            AddTargets(CommonTarget.GetMacTargets());
-            AddTargets(CommonTarget.GetIosTargets());
-            AddTargets(CommonTarget.GetTvosTargets());
-            AddTargets(CommonTarget.GetCatalystTargets());
+			AddTargets(CommonTarget.GetMacTargets());
+			AddTargets(CommonTarget.GetIosTargets());
+			AddTargets(CommonTarget.GetTvosTargets());
+			AddTargets(CommonTarget.GetCatalystTargets());
 
-            SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
-        }
+			SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
 
-            conf.Output = Configuration.OutputType.Exe;
-            conf.AddPublicDependency<FmtProject>(target);
-            conf.AddPublicDependency<StoreKitProject>(target);
-        }
-    }
+			conf.Output = Configuration.OutputType.Exe;
+			conf.AddPublicDependency<FmtProject>(target);
+			conf.AddPublicDependency<StoreKitProject>(target);
+		}
+	}
 }

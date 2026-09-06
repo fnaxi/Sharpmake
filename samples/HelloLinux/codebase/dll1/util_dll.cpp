@@ -7,9 +7,9 @@
 
 int UtilDll1::ComputeMagicNumber(const std::vector<int>& someInts)
 {
-    int acc = 0;
-    for (int item : someInts)
-        acc += item;
+	int acc = 0;
+	for (int item : someInts)
+		acc += item;
 
 #if _DEBUG
     std::cout << "- Dll1 is built in Debug"
@@ -27,10 +27,9 @@ int UtilDll1::ComputeMagicNumber(const std::vector<int>& someInts)
         "!" << std::endl;
 #endif
 
-    acc += static_lib1_utils::GetRandomPosition();
+	acc += static_lib1_utils::GetRandomPosition();
 
-    acc += cosf(M_PI);
+	acc += cosf(M_PI);
 
-    return acc;
+	return acc;
 }
-

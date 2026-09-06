@@ -1,6 +1,6 @@
 #include "HelloRust.h"
 
-int main(int, char* [])
+int main(int, char*[])
 {
-    hello_rust();
+	hello_rust();
 }

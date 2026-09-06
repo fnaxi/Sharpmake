@@ -6,11 +6,11 @@ class QPrivateWidgetChildren;
 
 class QPrivateWidget : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    QPrivateWidget(QWidget *parent = 0);
+	QPrivateWidget(QWidget* parent = 0);
 
 protected:
-    QPrivateWidgetChildren* children;
+	QPrivateWidgetChildren* children;
 };

@@ -2,5 +2,5 @@
 
 struct Util_NoPrecomp
 {
-    static void StaticUtilityMethod();
+	static void StaticUtilityMethod();
 };

@@ -6,25 +6,25 @@ using Sharpmake;
 
 namespace XCodeProjects
 {
-    [Sharpmake.Generate]
-    public class ReadExeDataProject : CommonProject
-    {
-        public ReadExeDataProject()
-        {
-            Name = @"ReadExeData";
+	[Sharpmake.Generate]
+	public class ReadExeDataProject : CommonProject
+	{
+		public ReadExeDataProject()
+		{
+			Name = @"ReadExeData";
 
-            AddTargets(CommonTarget.GetDefaultTargets());
+			AddTargets(CommonTarget.GetDefaultTargets());
 
-            SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
-        }
+			SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
-            conf.Output = Configuration.OutputType.Exe;
-            conf.PrecompHeader = "stdafx.h";
-            conf.PrecompSource = "stdafx.cpp";
-            conf.TargetCopyFiles.Add("foobar.dat");
-        }
-    }
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
+			conf.Output = Configuration.OutputType.Exe;
+			conf.PrecompHeader = "stdafx.h";
+			conf.PrecompSource = "stdafx.cpp";
+			conf.TargetCopyFiles.Add("foobar.dat");
+		}
+	}
 }

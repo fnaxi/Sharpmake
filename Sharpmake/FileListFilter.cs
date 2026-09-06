@@ -11,38 +11,38 @@ using System.Runtime.CompilerServices;
 
 namespace Sharpmake
 {
-    public class FileListFilter
-    {
-        public Strings FilterFiles = new Strings();
-        public Strings FilterFilesExtensions = new Strings();
-        public Strings ExcludeFiles = new Strings();
-        public Strings ExcludeFilesExtensions = new Strings();
+	public class FileListFilter
+	{
+		public Strings FilterFiles = new Strings();
+		public Strings FilterFilesExtensions = new Strings();
+		public Strings ExcludeFiles = new Strings();
+		public Strings ExcludeFilesExtensions = new Strings();
 
-        public bool IsValid(string file)
-        {
-            string extension = Path.GetExtension(file);
-            if (FilterFiles.Count != 0
-                || FilterFilesExtensions.Count != 0)
-            {
-                if (!FilterFiles.Contains(file) &&
-                    !FilterFilesExtensions.Contains(extension))
-                {
-                    return false;
-                }
-            }
+		public bool IsValid(string file)
+		{
+			string extension = Path.GetExtension(file);
+			if (FilterFiles.Count != 0
+				|| FilterFilesExtensions.Count != 0)
+			{
+				if (!FilterFiles.Contains(file) &&
+					!FilterFilesExtensions.Contains(extension))
+				{
+					return false;
+				}
+			}
 
-            if (ExcludeFiles.Contains(file))
-                return false;
+			if (ExcludeFiles.Contains(file))
+				return false;
 
-            if (ExcludeFilesExtensions.Contains(extension))
-                return false;
+			if (ExcludeFilesExtensions.Contains(extension))
+				return false;
 
-            return true;
-        }
-    }
+			return true;
+		}
+	}
 
-    public class ForcedIncludesFilter : FileListFilter
-    {
-        public Strings ForcedIncludes = new Strings();
-    }
+	public class ForcedIncludesFilter : FileListFilter
+	{
+		public Strings ForcedIncludes = new Strings();
+	}
 }

@@ -3,8 +3,8 @@
 
 namespace libstuff
 {
-    void say_hello()
-    {
-        std::cout << "Hello !" << std::endl;
-    }
+	void say_hello()
+	{
+		std::cout << "Hello !" << std::endl;
+	}
 }

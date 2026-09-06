@@ -2,5 +2,5 @@
 
 namespace libhello
 {
-    void say_hello();
+	void say_hello();
 }

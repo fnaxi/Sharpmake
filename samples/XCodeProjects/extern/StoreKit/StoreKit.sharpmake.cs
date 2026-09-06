@@ -6,27 +6,27 @@ using Sharpmake;
 
 namespace XCodeProjects
 {
-    [Sharpmake.Export]
-    public class StoreKitProject : CommonProject
-    {
-        public StoreKitProject()
-        {
-            Name = @"StoreKit";
+	[Sharpmake.Export]
+	public class StoreKitProject : CommonProject
+	{
+		public StoreKitProject()
+		{
+			Name = @"StoreKit";
 
-            AddTargets(CommonTarget.GetMacTargets());
-            AddTargets(CommonTarget.GetIosTargets());
-            AddTargets(CommonTarget.GetTvosTargets());
-            AddTargets(CommonTarget.GetCatalystTargets());
+			AddTargets(CommonTarget.GetMacTargets());
+			AddTargets(CommonTarget.GetIosTargets());
+			AddTargets(CommonTarget.GetTvosTargets());
+			AddTargets(CommonTarget.GetCatalystTargets());
 
-            SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
-        }
+			SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
-            conf.ExportDefines.Add("USE_STOREKIT=1");
-            conf.XcodeSystemFrameworks.Add("StoreKit");
-            conf.Output = Configuration.OutputType.None;
-        }
-    }
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
+			conf.ExportDefines.Add("USE_STOREKIT=1");
+			conf.XcodeSystemFrameworks.Add("StoreKit");
+			conf.Output = Configuration.OutputType.None;
+		}
+	}
 }

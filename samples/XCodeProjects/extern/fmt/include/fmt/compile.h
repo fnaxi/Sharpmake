@@ -11,111 +11,133 @@
 #include "format.h"
 
 FMT_BEGIN_NAMESPACE
-namespace detail {
+	namespace detail
+	{
+		template <typename Char, typename InputIt>
+		FMT_CONSTEXPR inline counting_iterator copy_str(InputIt begin, InputIt end,
+		                                                counting_iterator it)
+		{
+			return it + (end - begin);
+		}
 
-template <typename Char, typename InputIt>
-FMT_CONSTEXPR inline counting_iterator copy_str(InputIt begin, InputIt end,
-                                                counting_iterator it) {
-  return it + (end - begin);
-}
+		template <typename OutputIt>
+		class truncating_iterator_base
+		{
+		protected:
+			OutputIt out_;
+			size_t limit_;
+			size_t count_ = 0;
 
-template <typename OutputIt> class truncating_iterator_base {
- protected:
-  OutputIt out_;
-  size_t limit_;
-  size_t count_ = 0;
+			truncating_iterator_base() : out_(), limit_(0)
+			{
+			}
 
-  truncating_iterator_base() : out_(), limit_(0) {}
+			truncating_iterator_base(OutputIt out, size_t limit)
+				: out_(out), limit_(limit)
+			{
+			}
 
-  truncating_iterator_base(OutputIt out, size_t limit)
-      : out_(out), limit_(limit) {}
+		public:
+			using iterator_category = std::output_iterator_tag;
+			using value_type = typename std::iterator_traits<OutputIt>::value_type;
+			using difference_type = std::ptrdiff_t;
+			using pointer = void;
+			using reference = void;
+			FMT_UNCHECKED_ITERATOR(truncating_iterator_base);
 
- public:
-  using iterator_category = std::output_iterator_tag;
-  using value_type = typename std::iterator_traits<OutputIt>::value_type;
-  using difference_type = std::ptrdiff_t;
-  using pointer = void;
-  using reference = void;
-  FMT_UNCHECKED_ITERATOR(truncating_iterator_base);
+			OutputIt base() const { return out_; }
+			size_t count() const { return count_; }
+		};
 
-  OutputIt base() const { return out_; }
-  size_t count() const { return count_; }
-};
+		// An output iterator that truncates the output and counts the number of objects
+		// written to it.
+		template <typename OutputIt,
+		          typename Enable = typename std::is_void<
+			          typename std::iterator_traits<OutputIt>::value_type>::type>
+		class truncating_iterator;
 
-// An output iterator that truncates the output and counts the number of objects
-// written to it.
-template <typename OutputIt,
-          typename Enable = typename std::is_void<
-              typename std::iterator_traits<OutputIt>::value_type>::type>
-class truncating_iterator;
+		template <typename OutputIt>
+		class truncating_iterator<OutputIt, std::false_type>
+			: public truncating_iterator_base<OutputIt>
+		{
+			mutable typename truncating_iterator_base<OutputIt>::value_type blackhole_;
 
-template <typename OutputIt>
-class truncating_iterator<OutputIt, std::false_type>
-    : public truncating_iterator_base<OutputIt> {
-  mutable typename truncating_iterator_base<OutputIt>::value_type blackhole_;
+		public:
+			using value_type = typename truncating_iterator_base<OutputIt>::value_type;
 
- public:
-  using value_type = typename truncating_iterator_base<OutputIt>::value_type;
+			truncating_iterator() = default;
 
-  truncating_iterator() = default;
+			truncating_iterator(OutputIt out, size_t limit)
+				: truncating_iterator_base<OutputIt>(out, limit)
+			{
+			}
 
-  truncating_iterator(OutputIt out, size_t limit)
-      : truncating_iterator_base<OutputIt>(out, limit) {}
+			truncating_iterator& operator++()
+			{
+				if (this->count_++ < this->limit_) ++this->out_;
+				return *this;
+			}
 
-  truncating_iterator& operator++() {
-    if (this->count_++ < this->limit_) ++this->out_;
-    return *this;
-  }
+			truncating_iterator operator++(int)
+			{
+				auto it = *this;
+				++*this;
+				return it;
+			}
 
-  truncating_iterator operator++(int) {
-    auto it = *this;
-    ++*this;
-    return it;
-  }
+			value_type& operator*() const
+			{
+				return this->count_ < this->limit_ ? *this->out_ : blackhole_;
+			}
+		};
 
-  value_type& operator*() const {
-    return this->count_ < this->limit_ ? *this->out_ : blackhole_;
-  }
-};
+		template <typename OutputIt>
+		class truncating_iterator<OutputIt, std::true_type>
+			: public truncating_iterator_base<OutputIt>
+		{
+		public:
+			truncating_iterator() = default;
 
-template <typename OutputIt>
-class truncating_iterator<OutputIt, std::true_type>
-    : public truncating_iterator_base<OutputIt> {
- public:
-  truncating_iterator() = default;
+			truncating_iterator(OutputIt out, size_t limit)
+				: truncating_iterator_base<OutputIt>(out, limit)
+			{
+			}
 
-  truncating_iterator(OutputIt out, size_t limit)
-      : truncating_iterator_base<OutputIt>(out, limit) {}
+			template <typename T>
+			truncating_iterator& operator=(T val)
+			{
+				if (this->count_++ < this->limit_) *this->out_++ = val;
+				return *this;
+			}
 
-  template <typename T> truncating_iterator& operator=(T val) {
-    if (this->count_++ < this->limit_) *this->out_++ = val;
-    return *this;
-  }
+			truncating_iterator& operator++() { return *this; }
+			truncating_iterator& operator++(int) { return *this; }
+			truncating_iterator& operator*() { return *this; }
+		};
 
-  truncating_iterator& operator++() { return *this; }
-  truncating_iterator& operator++(int) { return *this; }
-  truncating_iterator& operator*() { return *this; }
-};
+		// A compile-time string which is compiled into fast formatting code.
+		class compiled_string
+		{
+		};
 
-// A compile-time string which is compiled into fast formatting code.
-class compiled_string {};
+		template <typename S>
+		struct is_compiled_string : std::is_base_of<compiled_string, S>
+		{
+		};
 
-template <typename S>
-struct is_compiled_string : std::is_base_of<compiled_string, S> {};
-
-/**
-  \rst
-  Converts a string literal *s* into a format string that will be parsed at
-  compile time and converted into efficient formatting code. Requires C++17
-  ``constexpr if`` compiler support.
-
-  **Example**::
-
-    // Converts 42 into std::string using the most efficient method and no
-    // runtime format string processing.
-    std::string s = fmt::format(FMT_COMPILE("{}"), 42);
-  \endrst
- */
+		/**
+		  \rst
+		  Converts a string literal *s* into a format string that will be parsed at
+		  compile time and converted into efficient formatting code. Requires C++17
+		  ``constexpr if`` compiler support.
+		
+		  **Example**::
+		
+		    // Converts 42 into std::string using the most efficient method and no
+		    // runtime format string processing.
+		    std::string s = fmt::format(FMT_COMPILE("{}"), 42);
+		  \endrst
+		 */
 #if defined(__cpp_if_constexpr) && defined(__cpp_return_type_deduction)
 #  define FMT_COMPILE(s) \
     FMT_STRING_IMPL(s, fmt::detail::compiled_string, explicit)
@@ -134,10 +156,11 @@ struct udl_compiled_string : compiled_string {
 };
 #endif
 
-template <typename T, typename... Tail>
-const T& first(const T& value, const Tail&...) {
-  return value;
-}
+		template <typename T, typename... Tail>
+		const T& first(const T& value, const Tail&...)
+		{
+			return value;
+		}
 
 #if defined(__cpp_if_constexpr) && defined(__cpp_return_type_deduction)
 template <typename... Args> struct type_list {};
@@ -495,9 +518,9 @@ constexpr auto compile(S format_str) {
   }
 }
 #endif  // defined(__cpp_if_constexpr) && defined(__cpp_return_type_deduction)
-}  // namespace detail
+	} // namespace detail
 
-FMT_BEGIN_EXPORT
+	FMT_BEGIN_EXPORT
 
 #if defined(__cpp_if_constexpr) && defined(__cpp_return_type_deduction)
 
@@ -560,36 +583,40 @@ FMT_CONSTEXPR OutputIt format_to(OutputIt out, const S&, Args&&... args) {
 }
 #endif
 
-template <typename OutputIt, typename S, typename... Args,
-          FMT_ENABLE_IF(detail::is_compiled_string<S>::value)>
-format_to_n_result<OutputIt> format_to_n(OutputIt out, size_t n,
-                                         const S& format_str, Args&&... args) {
-  auto it = fmt::format_to(detail::truncating_iterator<OutputIt>(out, n),
-                           format_str, std::forward<Args>(args)...);
-  return {it.base(), it.count()};
-}
+	template <typename OutputIt, typename S, typename... Args,
+	          FMT_ENABLE_IF(detail::is_compiled_string<S>::value)>
+	format_to_n_result<OutputIt> format_to_n(OutputIt out, size_t n,
+	                                         const S& format_str, Args&&... args)
+	{
+		auto it = fmt::format_to(detail::truncating_iterator<OutputIt>(out, n),
+		                         format_str, std::forward<Args>(args)...);
+		return {it.base(), it.count()};
+	}
 
-template <typename S, typename... Args,
-          FMT_ENABLE_IF(detail::is_compiled_string<S>::value)>
-FMT_CONSTEXPR20 size_t formatted_size(const S& format_str,
-                                      const Args&... args) {
-  return fmt::format_to(detail::counting_iterator(), format_str, args...)
-      .count();
-}
+	template <typename S, typename... Args,
+	          FMT_ENABLE_IF(detail::is_compiled_string<S>::value)>
+	FMT_CONSTEXPR20 size_t formatted_size(const S& format_str,
+	                                      const Args&... args)
+	{
+		return fmt::format_to(detail::counting_iterator(), format_str, args...)
+			.count();
+	}
 
-template <typename S, typename... Args,
-          FMT_ENABLE_IF(detail::is_compiled_string<S>::value)>
-void print(std::FILE* f, const S& format_str, const Args&... args) {
-  memory_buffer buffer;
-  fmt::format_to(std::back_inserter(buffer), format_str, args...);
-  detail::print(f, {buffer.data(), buffer.size()});
-}
+	template <typename S, typename... Args,
+	          FMT_ENABLE_IF(detail::is_compiled_string<S>::value)>
+	void print(std::FILE* f, const S& format_str, const Args&... args)
+	{
+		memory_buffer buffer;
+		fmt::format_to(std::back_inserter(buffer), format_str, args...);
+		detail::print(f, {buffer.data(), buffer.size()});
+	}
 
-template <typename S, typename... Args,
-          FMT_ENABLE_IF(detail::is_compiled_string<S>::value)>
-void print(const S& format_str, const Args&... args) {
-  print(stdout, format_str, args...);
-}
+	template <typename S, typename... Args,
+	          FMT_ENABLE_IF(detail::is_compiled_string<S>::value)>
+	void print(const S& format_str, const Args&... args)
+	{
+		print(stdout, format_str, args...);
+	}
 
 #if FMT_USE_NONTYPE_TEMPLATE_ARGS
 inline namespace literals {
@@ -601,7 +628,7 @@ template <detail_exported::fixed_string Str> constexpr auto operator""_cf() {
 }  // namespace literals
 #endif
 
-FMT_END_EXPORT
+	FMT_END_EXPORT
 FMT_END_NAMESPACE
 
 #endif  // FMT_COMPILE_H_

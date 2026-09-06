@@ -3,11 +3,13 @@
 class ExtraClass1
 {
 public:
-    ExtraClass1(int aValue)
-        : myValue(aValue) {}
+	ExtraClass1(int aValue)
+		: myValue(aValue)
+	{
+	}
 
-    void PrintMyContent() const;
+	void PrintMyContent() const;
 
 private:
-    int myValue;
+	int myValue;
 };

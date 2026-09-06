@@ -2,7 +2,7 @@
 
 int main(int, char**)
 {
-    std::cout << "I was built in "
+	std::cout << "I was built in "
 
 #if _DEBUG
         "Debug"
@@ -12,8 +12,8 @@ int main(int, char**)
         "Release"
 #endif
 
-    << std::endl;
+		<< std::endl;
 
 
-    return 0;
+	return 0;
 }

@@ -7,7 +7,9 @@
 
 int main(int, char**)
 {
-    std::cout << "Hello Linux World, from " CREATION_DATE "!" << std::endl;
+	std::cout << "Hello Linux World, from "
+	CREATION_DATE
+	"!" << std::endl;
 
 #if _DEBUG
     std::cout << "- Exe is built in Debug"
@@ -25,27 +27,27 @@ int main(int, char**)
         "!" << std::endl;
 #endif
 
-    {
-        uuid_t uuid;
-        uuid_generate(uuid);
+	{
+		uuid_t uuid;
+		uuid_generate(uuid);
 
-        char* uuidString = new char[37];
-        uuid_unparse(uuid, uuidString);
+		char* uuidString = new char[37];
+		uuid_unparse(uuid, uuidString);
 
-        std::cout << "- Here's a random UUID: " << uuidString << std::endl;
+		std::cout << "- Here's a random UUID: " << uuidString << std::endl;
 
-        delete [] uuidString;
-    }
+		delete [] uuidString;
+	}
 
-    std::vector<int> someArray(5, 6);
+	std::vector<int> someArray(5, 6);
 
-    // from dll1
-    UtilDll1 utilityDll;
-    utilityDll.ComputeMagicNumber(someArray);
+	// from dll1
+	UtilDll1 utilityDll;
+	utilityDll.ComputeMagicNumber(someArray);
 
-    // from static_lib2
-    Util2 utilityStatic;
-    utilityStatic.DoSomethingUseful();
-    StaticLib2::UselessMethod();
-    return 0;
+	// from static_lib2
+	Util2 utilityStatic;
+	utilityStatic.DoSomethingUseful();
+	StaticLib2::UselessMethod();
+	return 0;
 }

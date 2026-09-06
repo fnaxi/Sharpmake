@@ -3,11 +3,13 @@
 class FloatingClass
 {
 public:
-    FloatingClass(int aValue)
-        : myValue(aValue) {}
+	FloatingClass(int aValue)
+		: myValue(aValue)
+	{
+	}
 
-    void PrintMyContent() const;
+	void PrintMyContent() const;
 
 private:
-    int myValue;
+	int myValue;
 };

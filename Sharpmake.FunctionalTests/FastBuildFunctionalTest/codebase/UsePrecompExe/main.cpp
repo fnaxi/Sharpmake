@@ -11,10 +11,10 @@
 
 int main(int, char**)
 {
-    Util::StaticUtilityMethod();
-    Util_NoPrecomp::StaticUtilityMethod();
-    Util_NoPrecomp_ExcludedByExtension::StaticUtilityMethod();
-    Util_WithPrecomp_WeirdExtension::StaticUtilityMethod();
+	Util::StaticUtilityMethod();
+	Util_NoPrecomp::StaticUtilityMethod();
+	Util_NoPrecomp_ExcludedByExtension::StaticUtilityMethod();
+	Util_WithPrecomp_WeirdExtension::StaticUtilityMethod();
 
-    return 0;
+	return 0;
 }

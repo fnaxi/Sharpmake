@@ -3,16 +3,16 @@
 
 namespace Sharpmake
 {
-    public static partial class Android
-    {
-        public sealed partial class AndroidAgdePlatform
-        {
-            private const string _projectStartPlatformConditional =
-    @"  <PropertyGroup Label=""Globals"" Condition=""'$(Platform)'=='Android-arm64-v8a' Or '$(Platform)'=='Android-x86_64' Or '$(Platform)'=='Android-armeabi-v7a' Or '$(Platform)'=='Android-x86'"">
+	public static partial class Android
+	{
+		public sealed partial class AndroidAgdePlatform
+		{
+			private const string _projectStartPlatformConditional =
+				@"  <PropertyGroup Label=""Globals"" Condition=""'$(Platform)'=='Android-arm64-v8a' Or '$(Platform)'=='Android-x86_64' Or '$(Platform)'=='Android-armeabi-v7a' Or '$(Platform)'=='Android-x86'"">
 ";
 
-            private const string _projectDescriptionPlatformSpecific =
-@"    <AndroidNdkDirectory>[ndkRoot]</AndroidNdkDirectory>
+			private const string _projectDescriptionPlatformSpecific =
+				@"    <AndroidNdkDirectory>[ndkRoot]</AndroidNdkDirectory>
     <AndroidNdkVersion>[androidNdkVersion]</AndroidNdkVersion>
     <AndroidSdk>[androidHome]</AndroidSdk>
     <AndroidMinSdkVersion>[androidMinSdkVersion]</AndroidMinSdkVersion>
@@ -20,8 +20,8 @@ namespace Sharpmake
     <PlatformToolset>Clang</PlatformToolset>
 ";
 
-            private const string _projectConfigurationsGeneralTemplate =
-@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"" Label=""Configuration"">
+			private const string _projectConfigurationsGeneralTemplate =
+				@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"" Label=""Configuration"">
     <ConfigurationType>[options.ConfigurationType]</ConfigurationType>
     <UseDebugLibraries>[options.UseDebugLibraries]</UseDebugLibraries>
     <PlatformToolset>[options.PlatformToolset]</PlatformToolset>
@@ -37,11 +37,11 @@ namespace Sharpmake
   </PropertyGroup>
 ";
 
-            // The output directory is converted to a rooted path by prefixing it with $(ProjectDir) to work around
-            // an issue with VS Android build scripts. When a project dependency has its project folder not at the
-            // same folder level as the AndroidPackageProject, VS can't locate its output properly using its relative path.
-            private const string _projectConfigurationsGeneral2Template =
-@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
+			// The output directory is converted to a rooted path by prefixing it with $(ProjectDir) to work around
+			// an issue with VS Android build scripts. When a project dependency has its project folder not at the
+			// same folder level as the AndroidPackageProject, VS can't locate its output properly using its relative path.
+			private const string _projectConfigurationsGeneral2Template =
+				@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
     <TargetName>[options.OutputFileName]</TargetName>
     <OutDir>$(ProjectDir)[options.OutputDirectory]\</OutDir>
     <IntDir>[options.IntermediateDirectory]\</IntDir>
@@ -68,14 +68,14 @@ namespace Sharpmake
   </PropertyGroup>
 ";
 
-            private const string _projectConfigurationsFastBuildMakefile =
-                @"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
+			private const string _projectConfigurationsFastBuildMakefile =
+				@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
     <AndroidApkName>[options.AndroidApkName]</AndroidApkName>
   </PropertyGroup>
 ";
 
-            private const string _projectConfigurationsCompileTemplate =
-@"    <ClCompile>
+			private const string _projectConfigurationsCompileTemplate =
+				@"    <ClCompile>
       <PrecompiledHeader>[options.UsePrecompiledHeader]</PrecompiledHeader>
       <WarningLevel>[options.WarningLevel]</WarningLevel>
       <Optimization>[options.Optimization]</Optimization>
@@ -108,8 +108,8 @@ namespace Sharpmake
     </ClCompile>
 ";
 
-            private const string _projectConfigurationsSharedLinkTemplate =
-@"    <Link>
+			private const string _projectConfigurationsSharedLinkTemplate =
+				@"    <Link>
       <DebuggerSymbolInformation>[options.DebuggerSymbolInformation]</DebuggerSymbolInformation>
       <OutputFile>[options.OutputFile]</OutputFile>
       <AdditionalLibraryDirectories>[options.AdditionalLibraryDirectories];%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -125,13 +125,13 @@ namespace Sharpmake
     </Link>
 ";
 
-            private const string _projectConfigurationsStaticLinkTemplate =
-@"    <Lib>
+			private const string _projectConfigurationsStaticLinkTemplate =
+				@"    <Lib>
       <AdditionalOptions>[options.AdditionalLibrarianOptions]</AdditionalOptions>
       <OutputFile>[options.OutputFile]</OutputFile>
       <NoWarnOnCreate>true</NoWarnOnCreate>
     </Lib>
 ";
-        }
-    }
+		}
+	}
 }

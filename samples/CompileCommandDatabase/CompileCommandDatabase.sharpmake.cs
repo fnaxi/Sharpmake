@@ -9,137 +9,139 @@ using Sharpmake.Generators.JsonCompilationDatabase;
 
 namespace CompileDataBaseCommand
 {
-    public class BaseProject : Project
-    {
-        protected BaseProject()
-        {
-            IsFileNameToLower = false;
-        }
+	public class BaseProject : Project
+	{
+		protected BaseProject()
+		{
+			IsFileNameToLower = false;
+		}
 
-        [Configure]
-        public void ConfigureAll(Configuration conf, Target target)
-        {
-            conf.ProjectFileName = "[project.Name]_[target.DevEnv]_[target.Platform]";
-            conf.ProjectPath = @"[project.SharpmakeCsPath]\projects\[project.Name]";
-        }
-    }
+		[Configure]
+		public void ConfigureAll(Configuration conf, Target target)
+		{
+			conf.ProjectFileName = "[project.Name]_[target.DevEnv]_[target.Platform]";
+			conf.ProjectPath = @"[project.SharpmakeCsPath]\projects\[project.Name]";
+		}
+	}
 
-    public class BaseLibProject : BaseProject
-    {
-        protected BaseLibProject(string name)
-        {
-            Name = name + "ProjectName";
-            AddTargets(new Target(Platform.win64, DevEnv.vs2022, Optimization.Debug, OutputType.Lib));
-            SourceRootPath = "[project.SharpmakeCsPath]/" + name;
-        }
+	public class BaseLibProject : BaseProject
+	{
+		protected BaseLibProject(string name)
+		{
+			Name = name + "ProjectName";
+			AddTargets(new Target(Platform.win64, DevEnv.vs2022, Optimization.Debug, OutputType.Lib));
+			SourceRootPath = "[project.SharpmakeCsPath]/" + name;
+		}
 
-        [Configure]
-        public void ConfigureLib(Configuration conf, Target target)
-        {
-            conf.Output = Configuration.OutputType.Lib;
-            conf.IncludePaths.Add("[project.SourceRootPath]");
+		[Configure]
+		public void ConfigureLib(Configuration conf, Target target)
+		{
+			conf.Output = Configuration.OutputType.Lib;
+			conf.IncludePaths.Add("[project.SourceRootPath]");
 
-            conf.Options.Add(Options.Vc.Librarian.TreatLibWarningAsErrors.Enable);
-        }
-    }
+			conf.Options.Add(Options.Vc.Librarian.TreatLibWarningAsErrors.Enable);
+		}
+	}
 
-    [Generate]
-    public class LibHelloProject : BaseLibProject
-    {
-        public LibHelloProject() : base("LibHello")
-        { }
-    }
+	[Generate]
+	public class LibHelloProject : BaseLibProject
+	{
+		public LibHelloProject() : base("LibHello")
+		{
+		}
+	}
 
-    [Generate]
-    public class LibGoodbyeProject : BaseLibProject
-    {
-        public LibGoodbyeProject() : base("LibGoodbye")
-        { }
-    }
+	[Generate]
+	public class LibGoodbyeProject : BaseLibProject
+	{
+		public LibGoodbyeProject() : base("LibGoodbye")
+		{
+		}
+	}
 
-    [Generate]
-    public class ExeProject : BaseProject
-    {
-        public ExeProject()
-        {
-            Name = "ExeProjectName";
-            AddTargets(new Target(Platform.win64, DevEnv.vs2022, Optimization.Debug));
-            SourceRootPath = "[project.SharpmakeCsPath]/src";
-        }
+	[Generate]
+	public class ExeProject : BaseProject
+	{
+		public ExeProject()
+		{
+			Name = "ExeProjectName";
+			AddTargets(new Target(Platform.win64, DevEnv.vs2022, Optimization.Debug));
+			SourceRootPath = "[project.SharpmakeCsPath]/src";
+		}
 
-        [Configure]
-        public void Configure(Configuration conf, Target target)
-        {
-            conf.Options.Add(Options.Vc.Linker.TreatLinkerWarningAsErrors.Enable);
+		[Configure]
+		public void Configure(Configuration conf, Target target)
+		{
+			conf.Options.Add(Options.Vc.Linker.TreatLinkerWarningAsErrors.Enable);
 
-            conf.AddPrivateDependency<LibHelloProject>(target);
-            conf.AddPrivateDependency<LibGoodbyeProject>(target);
-        }
-    }
+			conf.AddPrivateDependency<LibHelloProject>(target);
+			conf.AddPrivateDependency<LibGoodbyeProject>(target);
+		}
+	}
 
-    [Generate]
-    public class MainSolution : Solution
-    {
-        public MainSolution()
-        {
-            Name = "CompileCommandDatabaseSolution";
-            AddTargets(new Target(Platform.win64, DevEnv.vs2022, Optimization.Debug));
+	[Generate]
+	public class MainSolution : Solution
+	{
+		public MainSolution()
+		{
+			Name = "CompileCommandDatabaseSolution";
+			AddTargets(new Target(Platform.win64, DevEnv.vs2022, Optimization.Debug));
 
-            IsFileNameToLower = false;
-        }
+			IsFileNameToLower = false;
+		}
 
-        [Configure]
-        public void ConfigureAll(Configuration conf, Target target)
-        {
-            conf.SolutionFileName = "[solution.Name]_[target.DevEnv]_[target.Platform]";
-            conf.SolutionPath = @"[solution.SharpmakeCsPath]\projects";
-            conf.AddProject<ExeProject>(target);
-        }
-    }
+		[Configure]
+		public void ConfigureAll(Configuration conf, Target target)
+		{
+			conf.SolutionFileName = "[solution.Name]_[target.DevEnv]_[target.Platform]";
+			conf.SolutionPath = @"[solution.SharpmakeCsPath]\projects";
+			conf.AddProject<ExeProject>(target);
+		}
+	}
 
-    public static class Main
-    {
-        [Sharpmake.Main]
-        public static void SharpmakeMain(Arguments arguments)
-        {
-            // Generally you should only generate either for projets or solution but this is a sample so we do both ;)
-            arguments.Builder.EventPostProjectLink += GenerateProjectDatabase;
-            arguments.Builder.EventPostSolutionLink += GenerateSolutionDatabase;
+	public static class Main
+	{
+		[Sharpmake.Main]
+		public static void SharpmakeMain(Arguments arguments)
+		{
+			// Generally you should only generate either for projets or solution but this is a sample so we do both ;)
+			arguments.Builder.EventPostProjectLink += GenerateProjectDatabase;
+			arguments.Builder.EventPostSolutionLink += GenerateSolutionDatabase;
 
-            KitsRootPaths.SetUseKitsRootForDevEnv(DevEnv.vs2022, KitsRootEnum.KitsRoot10, Options.Vc.General.WindowsTargetPlatformVersion.v10_0_26100_0);
+			KitsRootPaths.SetUseKitsRootForDevEnv(DevEnv.vs2022, KitsRootEnum.KitsRoot10, Options.Vc.General.WindowsTargetPlatformVersion.v10_0_26100_0);
 
-            arguments.Generate<MainSolution>();
-        }
+			arguments.Generate<MainSolution>();
+		}
 
-        private static void GenerateProjectDatabase(Project project)
-        {
-            var outdir = Path.GetDirectoryName(project.ProjectFilesMapping.First().Key);
+		private static void GenerateProjectDatabase(Project project)
+		{
+			var outdir = Path.GetDirectoryName(project.ProjectFilesMapping.First().Key);
 
-            GenerateDatabase(outdir, project.Configurations, CompileCommandFormat.Arguments);
-        }
+			GenerateDatabase(outdir, project.Configurations, CompileCommandFormat.Arguments);
+		}
 
-        private static void GenerateSolutionDatabase(Solution solution)
-        {
-            var outdir = Path.GetDirectoryName(solution.SolutionFilesMapping.First().Key);
+		private static void GenerateSolutionDatabase(Solution solution)
+		{
+			var outdir = Path.GetDirectoryName(solution.SolutionFilesMapping.First().Key);
 
-            var configs = solution.Configurations.SelectMany(c => c.IncludedProjectInfos.Select(pi => pi.Configuration));
+			var configs = solution.Configurations.SelectMany(c => c.IncludedProjectInfos.Select(pi => pi.Configuration));
 
-            GenerateDatabase(outdir, configs, CompileCommandFormat.Command);
-        }
+			GenerateDatabase(outdir, configs, CompileCommandFormat.Command);
+		}
 
-        private static void GenerateDatabase(string outdir, IEnumerable<Project.Configuration> configs, CompileCommandFormat format)
-        {
-            var builder = Builder.Instance;
+		private static void GenerateDatabase(string outdir, IEnumerable<Project.Configuration> configs, CompileCommandFormat format)
+		{
+			var builder = Builder.Instance;
 
-            if (builder == null)
-            {
-                System.Console.Error.WriteLine("CompilationDatabase: No builder instance.");
-                return;
-            }
+			if (builder == null)
+			{
+				System.Console.Error.WriteLine("CompilationDatabase: No builder instance.");
+				return;
+			}
 
-            var generator = new JsonCompilationDatabase();
+			var generator = new JsonCompilationDatabase();
 
-            generator.Generate(builder, outdir, configs, format, new List<string>(), new List<string>());
-        }
-    }
+			generator.Generate(builder, outdir, configs, format, new List<string>(), new List<string>());
+		}
+	}
 }

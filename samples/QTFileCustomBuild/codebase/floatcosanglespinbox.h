@@ -4,18 +4,20 @@
 
 class FloatCosAngleSpinBox : public QDoubleSpinBox
 {
-    Q_OBJECT
+	Q_OBJECT
+
 public:
-    FloatCosAngleSpinBox(float* valueRef, QWidget *parent = 0);
+	FloatCosAngleSpinBox(float* valueRef, QWidget* parent = 0);
 
-    void Bind(float* valueRef) {m_valueRef = valueRef;}
-    void RefreshValue();
+	void Bind(float* valueRef) { m_valueRef = valueRef; }
+	void RefreshValue();
 
-    protected slots:
+protected
+	slots :
 
-        void OnValueChanged(double newVal) ;
+        
+	void OnValueChanged(double newVal);
 
 protected:
-
-    float* m_valueRef;
+	float* m_valueRef;
 };

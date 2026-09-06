@@ -8,5 +8,5 @@
 
 void Util_NoPrecomp::StaticUtilityMethod()
 {
-    printf("%s\n", __func__);
+	printf("%s\n", __func__);
 }

@@ -4,5 +4,5 @@
 
 int fcnB()
 {
-    return fcnA(5);
+	return fcnA(5);
 }

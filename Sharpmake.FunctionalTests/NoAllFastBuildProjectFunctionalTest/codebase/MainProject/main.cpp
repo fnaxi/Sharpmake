@@ -3,6 +3,6 @@
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-    fcnC(fcnB());
-    return 0;
+	fcnC(fcnB());
+	return 0;
 }

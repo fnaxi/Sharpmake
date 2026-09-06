@@ -7,26 +7,26 @@
 
 int main(int argc, char** argv)
 {
-    CURL* curlHandle = curl_easy_init();
-    // TODO... do some stuff
-    curl_easy_cleanup(curlHandle);
+	CURL* curlHandle = curl_easy_init();
+	// TODO... do some stuff
+	curl_easy_cleanup(curlHandle);
 
 
-    // Do some useless stuff with rapidjson
-    rapidjson::Document jsonDoc;
-    jsonDoc.SetArray();
-    rapidjson::Value newSection(rapidjson::kObjectType);
-    newSection.AddMember("count", 0, jsonDoc.GetAllocator());
-    jsonDoc.PushBack(newSection, jsonDoc.GetAllocator());
+	// Do some useless stuff with rapidjson
+	rapidjson::Document jsonDoc;
+	jsonDoc.SetArray();
+	rapidjson::Value newSection(rapidjson::kObjectType);
+	newSection.AddMember("count", 0, jsonDoc.GetAllocator());
+	jsonDoc.PushBack(newSection, jsonDoc.GetAllocator());
 
-    rapidjson::StringBuffer buffer;
+	rapidjson::StringBuffer buffer;
 
-    buffer.Clear();
+	buffer.Clear();
 
-    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-    jsonDoc.Accept(writer);
+	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+	jsonDoc.Accept(writer);
 
-    std::cout << "Here is a JSON from an exe built in "
+	std::cout << "Here is a JSON from an exe built in "
 
 #if _DEBUG
         "Debug"
@@ -36,7 +36,7 @@ int main(int argc, char** argv)
         "Release"
 #endif
 
-     ":\n" << buffer.GetString() << std::endl;
+		":\n" << buffer.GetString() << std::endl;
 
-    return 0;
+	return 0;
 }

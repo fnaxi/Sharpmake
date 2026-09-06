@@ -9,12 +9,12 @@ void PrintBuildString(const char* binaryName)
     const char* configName = "Release";
 #endif
 
-    std::cout << "- " <<
-        binaryName <<
-        " is built in " <<
-        configName <<
+	std::cout << "- " <<
+		binaryName <<
+		" is built in " <<
+		configName <<
 #if USES_FASTBUILD
         " with FastBuild"
 #endif
-        "!" << std::endl;
+		"!" << std::endl;
 }

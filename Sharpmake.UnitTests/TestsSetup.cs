@@ -10,13 +10,13 @@ using NUnit.Framework;
 
 namespace Sharpmake.UnitTests
 {
-    [SetUpFixture]
-    public class TestsSetup
-    {
-        [OneTimeSetUp]
-        public static void Initialize()
-        {
-            PlatformRegistry.RegisterExtensionAssembly(typeof(Windows.Win32Platform).Assembly);
-        }
-    }
+	[SetUpFixture]
+	public class TestsSetup
+	{
+		[OneTimeSetUp]
+		public static void Initialize()
+		{
+			PlatformRegistry.RegisterExtensionAssembly(typeof(Windows.Win32Platform).Assembly);
+		}
+	}
 }

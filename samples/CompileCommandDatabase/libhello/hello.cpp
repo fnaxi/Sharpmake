@@ -4,8 +4,8 @@
 
 namespace libhello
 {
-    void say_hello()
-    {
-        std::cout << "Hello World!" << std::endl;
-    }
+	void say_hello()
+	{
+		std::cout << "Hello World!" << std::endl;
+	}
 }

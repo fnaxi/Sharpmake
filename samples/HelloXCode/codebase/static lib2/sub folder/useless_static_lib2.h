@@ -2,6 +2,5 @@
 
 namespace StaticLib2
 {
-    void UselessMethod();
+	void UselessMethod();
 }
-

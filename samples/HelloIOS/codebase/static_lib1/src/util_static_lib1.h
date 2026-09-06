@@ -3,5 +3,5 @@
 
 namespace static_lib1_utils
 {
-    int ComputeSum(const std::vector<int>& someInts);
+	int ComputeSum(const std::vector<int>& someInts);
 }

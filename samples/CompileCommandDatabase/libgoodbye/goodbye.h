@@ -2,5 +2,5 @@
 
 namespace libgoodbye
 {
-    void say_goodbye();
+	void say_goodbye();
 }

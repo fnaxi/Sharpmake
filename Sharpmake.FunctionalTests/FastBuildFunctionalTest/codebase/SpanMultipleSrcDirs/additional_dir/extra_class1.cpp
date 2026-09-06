@@ -3,5 +3,5 @@
 
 void ExtraClass1::PrintMyContent() const
 {
-    printf("%s value = %d\n", __func__, myValue);
+	printf("%s value = %d\n", __func__, myValue);
 }

@@ -51,7 +51,8 @@
 #  include <windows.h>
 #endif
 
-namespace {
+namespace
+{
 #ifdef _WIN32
 // Return type of read and write functions.
 using rwresult = int;
@@ -67,7 +68,7 @@ using rwresult = ssize_t;
 
 inline std::size_t convert_rwcount(std::size_t count) { return count; }
 #endif
-}  // namespace
+} // namespace
 
 FMT_BEGIN_NAMESPACE
 
@@ -156,36 +157,43 @@ void report_windows_error(int error_code, const char* message) noexcept {
 }
 #endif  // _WIN32
 
-buffered_file::~buffered_file() noexcept {
-  if (file_ && FMT_SYSTEM(fclose(file_)) != 0)
-    report_system_error(errno, "cannot close file");
+buffered_file::~buffered_file() noexcept
+{
+	if (file_&& FMT_SYSTEM(fclose(file_))
+	!=
+	0
+	)
+	report_system_error(errno, "cannot close file");
 }
 
-buffered_file::buffered_file(cstring_view filename, cstring_view mode) {
-  FMT_RETRY_VAL(file_, FMT_SYSTEM(fopen(filename.c_str(), mode.c_str())),
-                nullptr);
-  if (!file_)
-    FMT_THROW(system_error(errno, FMT_STRING("cannot open file {}"),
-                           filename.c_str()));
+buffered_file::buffered_file(cstring_view filename, cstring_view mode)
+{
+	FMT_RETRY_VAL(file_, FMT_SYSTEM(fopen(filename.c_str(), mode.c_str())),
+	              nullptr);
+	if (!file_)
+		FMT_THROW(system_error(errno, FMT_STRING("cannot open file {}"),
+		                       filename.c_str()));
 }
 
-void buffered_file::close() {
-  if (!file_) return;
-  int result = FMT_SYSTEM(fclose(file_));
-  file_ = nullptr;
-  if (result != 0)
-    FMT_THROW(system_error(errno, FMT_STRING("cannot close file")));
+void buffered_file::close()
+{
+	if (!file_) return;
+	int result = FMT_SYSTEM(fclose(file_));
+	file_ = nullptr;
+	if (result != 0)
+		FMT_THROW(system_error(errno, FMT_STRING("cannot close file")));
 }
 
-int buffered_file::descriptor() const {
+int buffered_file::descriptor() const
+{
 #ifdef fileno  // fileno is a macro on OpenBSD so we cannot use FMT_POSIX_CALL.
   int fd = fileno(file_);
 #else
-  int fd = FMT_POSIX_CALL(fileno(file_));
+	int fd = FMT_POSIX_CALL(fileno(file_));
 #endif
-  if (fd == -1)
-    FMT_THROW(system_error(errno, FMT_STRING("cannot get file descriptor")));
-  return fd;
+	if (fd == -1)
+		FMT_THROW(system_error(errno, FMT_STRING("cannot get file descriptor")));
+	return fd;
 }
 
 #if FMT_USE_FCNTL

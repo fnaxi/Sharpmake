@@ -3,15 +3,15 @@
 
 namespace Sharpmake
 {
-    /// <summary>
-    /// Interface for objects that expose additional command line interfaces for a given platform.
-    /// This allows platforms to extend the command line interface of Sharpmake.
-    /// </summary>
-    public interface ICommandLineInterface
-    {
-        /// <summary>
-        /// Validates that the command line arguments are valid.
-        /// </summary>
-        void Validate();
-    }
+	/// <summary>
+	/// Interface for objects that expose additional command line interfaces for a given platform.
+	/// This allows platforms to extend the command line interface of Sharpmake.
+	/// </summary>
+	public interface ICommandLineInterface
+	{
+		/// <summary>
+		/// Validates that the command line arguments are valid.
+		/// </summary>
+		void Validate();
+	}
 }

@@ -31,10 +31,10 @@ void Util2::DoSomethingUseful() const
         "!" << std::endl;
 #endif
 
-    return DoSomethingInternal("Yeah right...");
+	return DoSomethingInternal("Yeah right...");
 }
 
 void Util2::DoSomethingInternal(const char* anArgument) const
 {
-    std::cout << "Useful, right?\n- " << anArgument << std::endl;
+	std::cout << "Useful, right?\n- " << anArgument << std::endl;
 }

@@ -6,15 +6,14 @@
 
 namespace static_lib1_utils
 {
-    std::streampos GetRandomPosition()
-    {
-        CFUUIDRef   uuidRef = CFUUIDCreate(nullptr);
-        CFUUIDBytes data = CFUUIDGetUUIDBytes(uuidRef);
-        CFRelease(uuidRef);
-        
-        PrintBuildString("StaticLib1");
+	std::streampos GetRandomPosition()
+	{
+		CFUUIDRef uuidRef = CFUUIDCreate(nullptr);
+		CFUUIDBytes data = CFUUIDGetUUIDBytes(uuidRef);
+		CFRelease(uuidRef);
 
-        return 1;
-    }
+		PrintBuildString("StaticLib1");
+
+		return 1;
+	}
 }
-

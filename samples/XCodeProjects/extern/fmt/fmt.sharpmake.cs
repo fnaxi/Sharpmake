@@ -6,29 +6,29 @@ using Sharpmake;
 
 namespace XCodeProjects
 {
-    [Sharpmake.Export]
-    public class FmtProject : CommonProject
-    {
-        public FmtProject()
-        {
-            Name = @"fmt";
+	[Sharpmake.Export]
+	public class FmtProject : CommonProject
+	{
+		public FmtProject()
+		{
+			Name = @"fmt";
 
-            AddTargets(CommonTarget.GetMacTargets());
-            AddTargets(CommonTarget.GetIosTargets());
-            AddTargets(CommonTarget.GetTvosTargets());
-            AddTargets(CommonTarget.GetCatalystTargets());
+			AddTargets(CommonTarget.GetMacTargets());
+			AddTargets(CommonTarget.GetIosTargets());
+			AddTargets(CommonTarget.GetTvosTargets());
+			AddTargets(CommonTarget.GetCatalystTargets());
 
-            SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
-        }
+			SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
-            conf.IncludePaths.Add(Path.Join(SourceRootPath, @"include"));
-            conf.Defines.Add("FMT_HEADER_ONLY=1");
-            conf.ExportDefines.Add("FMT_HEADER_ONLY=1");
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
+			conf.IncludePaths.Add(Path.Join(SourceRootPath, @"include"));
+			conf.Defines.Add("FMT_HEADER_ONLY=1");
+			conf.ExportDefines.Add("FMT_HEADER_ONLY=1");
 
-            conf.Output = Configuration.OutputType.None;
-        }
-    }
+			conf.Output = Configuration.OutputType.None;
+		}
+	}
 }

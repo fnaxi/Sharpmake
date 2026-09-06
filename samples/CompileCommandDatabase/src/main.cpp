@@ -5,8 +5,7 @@
 
 int main()
 {
-    libhello::say_hello();
-    libgoodbye::say_goodbye();
-    return 0;
+	libhello::say_hello();
+	libgoodbye::say_goodbye();
+	return 0;
 }
-

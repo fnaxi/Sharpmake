@@ -5,9 +5,11 @@ using System;
 
 namespace Sharpmake
 {
-    /// <summary>
-    /// Marks a .NET assembly as a host of Sharpmake extension types (platform implementations for Sharpmake generators, builder...).
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Assembly)]
-    public class SharpmakeExtensionAttribute : Attribute { }
+	/// <summary>
+	/// Marks a .NET assembly as a host of Sharpmake extension types (platform implementations for Sharpmake generators, builder...).
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Assembly)]
+	public class SharpmakeExtensionAttribute : Attribute
+	{
+	}
 }

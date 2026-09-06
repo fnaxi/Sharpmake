@@ -2,5 +2,5 @@
 
 struct Util_NoPrecomp_ExcludedByExtension
 {
-    static void StaticUtilityMethod();
+	static void StaticUtilityMethod();
 };

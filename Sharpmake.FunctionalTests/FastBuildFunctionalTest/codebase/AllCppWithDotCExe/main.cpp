@@ -10,7 +10,7 @@
 
 int main(int, char**)
 {
-    hello_c();
-    std::cout << "Hello from C++!" << std::endl;
-    return 0;
+	hello_c();
+	std::cout << "Hello from C++!" << std::endl;
+	return 0;
 }

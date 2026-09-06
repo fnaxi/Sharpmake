@@ -16,20 +16,20 @@ using Sharpmake;
 
 namespace HelloIOS
 {
-    [Sharpmake.Generate]
-    public class HelloIOSSolution : CommonSolution
-    {
-        public HelloIOSSolution()
-        {
-            AddTargets(CommonTarget.GetDefaultTargets());
-            Name = "HelloIOS";
-        }
+	[Sharpmake.Generate]
+	public class HelloIOSSolution : CommonSolution
+	{
+		public HelloIOSSolution()
+		{
+			AddTargets(CommonTarget.GetDefaultTargets());
+			Name = "HelloIOS";
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
 
-            conf.AddProject<ExeProject>(target);
-        }
-    }
+			conf.AddProject<ExeProject>(target);
+		}
+	}
 }

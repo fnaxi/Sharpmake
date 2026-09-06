@@ -97,9 +97,13 @@ FMT_END_NAMESPACE
 #endif
 
 FMT_BEGIN_NAMESPACE
-FMT_MODULE_EXPORT
-template <typename Char>
-struct formatter<std::thread::id, Char> : basic_ostream_formatter<Char> {};
+	FMT_MODULE_EXPORT
+
+	template <typename Char>
+	struct formatter<std::thread::id, Char> : basic_ostream_formatter<Char>
+	{
+	};
+
 FMT_END_NAMESPACE
 
 #ifdef __cpp_lib_optional
@@ -240,54 +244,64 @@ FMT_END_NAMESPACE
 #endif  // __cpp_lib_variant
 
 FMT_BEGIN_NAMESPACE
-FMT_MODULE_EXPORT
-template <typename Char> struct formatter<std::error_code, Char> {
-  template <typename ParseContext>
-  FMT_CONSTEXPR auto parse(ParseContext& ctx) -> decltype(ctx.begin()) {
-    return ctx.begin();
-  }
+	FMT_MODULE_EXPORT
 
-  template <typename FormatContext>
-  FMT_CONSTEXPR auto format(const std::error_code& ec, FormatContext& ctx) const
-      -> decltype(ctx.out()) {
-    auto out = ctx.out();
-    out = detail::write_bytes(out, ec.category().name(), format_specs<Char>());
-    out = detail::write<Char>(out, Char(':'));
-    out = detail::write<Char>(out, ec.value());
-    return out;
-  }
-};
+	template <typename Char>
+	struct formatter<std::error_code, Char>
+	{
+		template <typename ParseContext>
+		FMT_CONSTEXPR auto parse(ParseContext& ctx) -> decltype(ctx.begin())
+		{
+			return ctx.begin();
+		}
 
-FMT_MODULE_EXPORT
-template <typename T, typename Char>
-struct formatter<
-    T, Char,
-    typename std::enable_if<std::is_base_of<std::exception, T>::value>::type> {
- private:
-  bool with_typename_ = false;
+		template <typename FormatContext>
+		FMT_CONSTEXPR auto format(const std::error_code& ec, FormatContext& ctx) const
+			-> decltype(ctx.out())
+		{
+			auto out = ctx.out();
+			out = detail::write_bytes(out, ec.category().name(), format_specs<Char>());
+			out = detail::write<Char>(out, Char(':'));
+			out = detail::write<Char>(out, ec.value());
+			return out;
+		}
+	};
 
- public:
-  FMT_CONSTEXPR auto parse(basic_format_parse_context<Char>& ctx)
-      -> decltype(ctx.begin()) {
-    auto it = ctx.begin();
-    auto end = ctx.end();
-    if (it == end || *it == '}') return it;
-    if (*it == 't') {
-      ++it;
-      with_typename_ = true;
-    }
-    return it;
-  }
+	FMT_MODULE_EXPORT
 
-  template <typename OutputIt>
-  auto format(const std::exception& ex,
-              basic_format_context<OutputIt, Char>& ctx) const -> OutputIt {
-    format_specs<Char> spec;
-    auto out = ctx.out();
-    if (!with_typename_)
-      return detail::write_bytes(out, string_view(ex.what()), spec);
+	template <typename T, typename Char>
+	struct formatter<
+			T, Char,
+			typename std::enable_if<std::is_base_of<std::exception, T>::value>::type>
+	{
+	private:
+		bool with_typename_ = false;
 
-    const std::type_info& ti = typeid(ex);
+	public:
+		FMT_CONSTEXPR auto parse(basic_format_parse_context<Char>& ctx)
+			-> decltype(ctx.begin())
+		{
+			auto it = ctx.begin();
+			auto end = ctx.end();
+			if (it == end || *it == '}') return it;
+			if (*it == 't')
+			{
+				++it;
+				with_typename_ = true;
+			}
+			return it;
+		}
+
+		template <typename OutputIt>
+		auto format(const std::exception& ex,
+		            basic_format_context<OutputIt, Char>& ctx) const -> OutputIt
+		{
+			format_specs<Char> spec;
+			auto out = ctx.out();
+			if (!with_typename_)
+				return detail::write_bytes(out, string_view(ex.what()), spec);
+
+			const std::type_info& ti = typeid(ex);
 #ifdef FMT_HAS_ABI_CXA_DEMANGLE
     int status = 0;
     std::size_t size = 0;
@@ -335,15 +349,16 @@ struct formatter<
       demangled_name_view.remove_prefix(7);
     out = detail::write_bytes(out, demangled_name_view, spec);
 #else
-    out = detail::write_bytes(out, string_view(ti.name()), spec);
+			out = detail::write_bytes(out, string_view(ti.name()), spec);
 #endif
-    out = detail::write<Char>(out, Char(':'));
-    out = detail::write<Char>(out, Char(' '));
-    out = detail::write_bytes(out, string_view(ex.what()), spec);
+			out = detail::write<Char>(out, Char(':'));
+			out = detail::write<Char>(out, Char(' '));
+			out = detail::write_bytes(out, string_view(ex.what()), spec);
 
-    return out;
-  }
-};
+			return out;
+		}
+	};
+
 FMT_END_NAMESPACE
 
 #endif  // FMT_STD_H_

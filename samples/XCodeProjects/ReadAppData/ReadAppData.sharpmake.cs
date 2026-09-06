@@ -7,69 +7,70 @@ using Sharpmake;
 
 namespace XCodeProjects
 {
-    [Sharpmake.Generate]
-    public class ReadAppDataProject : CommonProject
-    {
-        public ReadAppDataProject()
-        {
-            Name = @"ReadAppData";
+	[Sharpmake.Generate]
+	public class ReadAppDataProject : CommonProject
+	{
+		public ReadAppDataProject()
+		{
+			Name = @"ReadAppData";
 
-            AddTargets(CommonTarget.GetMacTargets());
-            AddTargets(CommonTarget.GetIosTargets());
-            AddTargets(CommonTarget.GetTvosTargets());
-            AddTargets(CommonTarget.GetCatalystTargets());
+			AddTargets(CommonTarget.GetMacTargets());
+			AddTargets(CommonTarget.GetIosTargets());
+			AddTargets(CommonTarget.GetTvosTargets());
+			AddTargets(CommonTarget.GetCatalystTargets());
 
-            SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
-        }
+			SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
+		}
 
-        private bool _fileCopyAddedForFastbuild = false;
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
+		private bool _fileCopyAddedForFastbuild = false;
 
-            conf.Output = Configuration.OutputType.AppleApp;
-            conf.AddPublicDependency<FmtProject>(target);
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
 
-            conf.XcodeSystemFrameworks.Add("CoreFoundation");
+			conf.Output = Configuration.OutputType.AppleApp;
+			conf.AddPublicDependency<FmtProject>(target);
 
-            if (_fileCopyAddedForFastbuild && conf.IsFastBuild)
-                return;
-            if (conf.IsFastBuild)
-                _fileCopyAddedForFastbuild = true;
+			conf.XcodeSystemFrameworks.Add("CoreFoundation");
 
-            conf.TargetCopyFilesPath = Path.Join(@"./");
-            conf.TargetCopyFiles.Add("foobar.dat");
-            conf.TargetCopyFilesToSubDirectory.Add(
-                new KeyValuePair<string, string>(Path.Join("huba", "hoge.dat"), @"huba")
-            );
-            conf.EventPostBuildCopies.Add(
-                new KeyValuePair<string, string>(Path.Join("huba", "fuga.dat"), @"huba")
-            );
+			if (_fileCopyAddedForFastbuild && conf.IsFastBuild)
+				return;
+			if (conf.IsFastBuild)
+				_fileCopyAddedForFastbuild = true;
 
-            conf.EventPreBuildExe.Add(
-                new Configuration.BuildStepCopy(
-                    Path.Join(SourceRootPath, "huba", "fuga.dat"),
-                    @"hogepre"
-                )
-            );
-            conf.EventPostBuildExe.Add(
-                new Configuration.BuildStepCopy(
-                    Path.Join(SourceRootPath, "huba", "fuga.dat"),
-                    @"hogepost"
-                )
-            );
-            conf.EventCustomPreBuildExe.Add(
-                new Configuration.BuildStepCopy(
-                    Path.Join(SourceRootPath, "huba", "fuga.dat"),
-                    @"hogeprecustom"
-                )
-            );
-            conf.EventCustomPostBuildExe.Add(
-                new Configuration.BuildStepCopy(
-                    Path.Join(SourceRootPath, "huba", "fuga.dat"),
-                    @"hogepostcustom"
-                )
-            );
-        }
-    }
+			conf.TargetCopyFilesPath = Path.Join(@"./");
+			conf.TargetCopyFiles.Add("foobar.dat");
+			conf.TargetCopyFilesToSubDirectory.Add(
+				new KeyValuePair<string, string>(Path.Join("huba", "hoge.dat"), @"huba")
+			);
+			conf.EventPostBuildCopies.Add(
+				new KeyValuePair<string, string>(Path.Join("huba", "fuga.dat"), @"huba")
+			);
+
+			conf.EventPreBuildExe.Add(
+				new Configuration.BuildStepCopy(
+					Path.Join(SourceRootPath, "huba", "fuga.dat"),
+					@"hogepre"
+				)
+			);
+			conf.EventPostBuildExe.Add(
+				new Configuration.BuildStepCopy(
+					Path.Join(SourceRootPath, "huba", "fuga.dat"),
+					@"hogepost"
+				)
+			);
+			conf.EventCustomPreBuildExe.Add(
+				new Configuration.BuildStepCopy(
+					Path.Join(SourceRootPath, "huba", "fuga.dat"),
+					@"hogeprecustom"
+				)
+			);
+			conf.EventCustomPostBuildExe.Add(
+				new Configuration.BuildStepCopy(
+					Path.Join(SourceRootPath, "huba", "fuga.dat"),
+					@"hogepostcustom"
+				)
+			);
+		}
+	}
 }

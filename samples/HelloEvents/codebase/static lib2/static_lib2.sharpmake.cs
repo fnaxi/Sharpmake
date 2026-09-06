@@ -5,25 +5,25 @@ using Sharpmake;
 
 namespace HelloEvents
 {
-    [Sharpmake.Generate]
-    public class StaticLib2Project : CommonProject
-    {
-        public StaticLib2Project()
-        {
-            AddTargets(CommonTarget.GetDefaultTargets());
-            Name = "static lib2";
-        }
+	[Sharpmake.Generate]
+	public class StaticLib2Project : CommonProject
+	{
+		public StaticLib2Project()
+		{
+			AddTargets(CommonTarget.GetDefaultTargets());
+			Name = "static lib2";
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
 
-            conf.SolutionFolder = "StaticLibs";
+			conf.SolutionFolder = "StaticLibs";
 
-            // skip the generation of the lib, and use the obj for the link instead
-            conf.Options.Add(Options.Vc.Linker.UseLibraryDependencyInputs.Enable);
+			// skip the generation of the lib, and use the obj for the link instead
+			conf.Options.Add(Options.Vc.Linker.UseLibraryDependencyInputs.Enable);
 
-            conf.IncludePaths.Add(SourceRootPath);
-        }
-    }
+			conf.IncludePaths.Add(SourceRootPath);
+		}
+	}
 }

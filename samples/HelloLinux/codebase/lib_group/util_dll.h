@@ -13,6 +13,5 @@
 
 struct UtilDll1
 {
-    UTIL_DLL int ComputeMagicNumber(const std::vector<int>& someInts);
+	UTIL_DLL int ComputeMagicNumber(const std::vector<int>& someInts);
 };
-

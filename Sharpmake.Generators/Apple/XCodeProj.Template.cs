@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace Sharpmake.Generators.Apple
 {
-    public partial class XCodeProj
-    {
-        private static class Template
-        {
-            public static string GlobalHeader =
-@"// !$*UTF8*$!
+	public partial class XCodeProj
+	{
+		private static class Template
+		{
+			public static string GlobalHeader =
+				@"// !$*UTF8*$!
 {
 	archiveVersion = [archiveVersion];
 	classes = {
@@ -19,29 +19,33 @@ namespace Sharpmake.Generators.Apple
 	objects = {
 
 ";
-            public static string GlobalFooter =
-@"	};
+
+			public static string GlobalFooter =
+				@"	};
 	rootObject = [RootObject.Uid] /* Project object */;
 }
 ";
 
-            public static string SectionBegin = @"/* Begin [item.SectionString] section */
+			public static string SectionBegin = @"/* Begin [item.SectionString] section */
 ";
-            public static string SectionEnd = @"/* End [item.SectionString] section */
+
+			public static string SectionEnd = @"/* End [item.SectionString] section */
 
 ";
 
-            public static string SectionSubItem =
-@"				[item.Uid] /* [item.Identifier] */,
+			public static string SectionSubItem =
+				@"				[item.Uid] /* [item.Identifier] */,
 ";
-            public static string ProjectReferenceSubItem =
-@"				{
+
+			public static string ProjectReferenceSubItem =
+				@"				{
 					ProductGroup = [group.Uid] /* Products */;
 					ProjectRef = [project.Uid] /* [project.Name] */;
 				},
 ";
-            public static string ProjectTargetAttribute =
-@"					[item.Uid] /* [item.Identifier] */ = {
+
+			public static string ProjectTargetAttribute =
+				@"					[item.Uid] /* [item.Identifier] */ = {
 						DevelopmentTeam = [project.DevelopmentTeam];
 						ProvisioningStyle = [project.ProvisioningStyle];
 						SystemCapabilities = {
@@ -52,28 +56,28 @@ namespace Sharpmake.Generators.Apple
 					};
 ";
 
-            public static Dictionary<ItemSection, string> Section = new Dictionary<ItemSection, string>
-            {
-                { ItemSection.PBXBuildFile,
-@"		[item.Uid] /* [item.File.Name] in [item.File.Type] */ = {
+			public static Dictionary<ItemSection, string> Section = new Dictionary<ItemSection, string>
+			{
+				{
+					ItemSection.PBXBuildFile, @"		[item.Uid] /* [item.File.Name] in [item.File.Type] */ = {
 			isa = PBXBuildFile;
 			fileRef = [item.File.Uid] /* [item.File.Name] */;
 			settings = [item.Settings];
 		};
-"               },
-
-                { ItemSection.PBXContainerItemProxy,
-@"		[item.Uid] /* PBXContainerItemProxy */ = {
+"
+				},
+				{
+					ItemSection.PBXContainerItemProxy, @"		[item.Uid] /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = [item.ProjectReference.Uid];
 			proxyType = [item.ProxyType];
 			remoteGlobalIDString = [item.ProxyItem.Uid];
 			remoteInfo = [item.ProjectReference.ProjectName];
 		};
-"               },
-
-                { ItemSection.PBXFileReference,
-@"		[item.Uid] /* [item.Name] */ = {
+"
+				},
+				{
+					ItemSection.PBXFileReference, @"		[item.Uid] /* [item.Name] */ = {
 			isa = PBXFileReference;
 			explicitFileType = [item.ExplicitFileType];
 			lastKnownFileType = [item.FileType];
@@ -82,20 +86,20 @@ namespace Sharpmake.Generators.Apple
 			path = ""[item.Path]"";
 			sourceTree = [item.SourceTree];
 		};
-"               },
-
-                { ItemSection.PBXFrameworksBuildPhase,
-@"		[item.Uid] /* Frameworks */ = {
+"
+				},
+				{
+					ItemSection.PBXFrameworksBuildPhase, @"		[item.Uid] /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = [item.BuildActionMask];
 			files = (
 [itemChildren]			);
 			runOnlyForDeploymentPostprocessing = [item.RunOnlyForDeploymentPostprocessing];
 		};
-"               },
-
-                {ItemSection.PBXShellScriptBuildPhase,
-@"		[item.Uid] /* Scripts */ =
+"
+				},
+				{
+					ItemSection.PBXShellScriptBuildPhase, @"		[item.Uid] /* Scripts */ =
 		{
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -109,10 +113,9 @@ namespace Sharpmake.Generators.Apple
 			shellScript = ""[item.script]"";
 		};
 "
-                },
-
-                { ItemSection.PBXGroup,
-@"		[item.Uid] /* [item.Identifier] */ = {
+				},
+				{
+					ItemSection.PBXGroup, @"		[item.Uid] /* [item.Identifier] */ = {
 			isa = PBXGroup;
 			children = (
 [itemChildren]			);
@@ -121,10 +124,10 @@ namespace Sharpmake.Generators.Apple
 			sourceTree = [item.SourceTree];
 			usesTabs = [editorOptions.IndentUseTabs];
 		};
-"               },
-
-                { ItemSection.PBXNativeTarget,
-@"		[item.Uid] /* [item.Identifier] */ = {
+"
+				},
+				{
+					ItemSection.PBXNativeTarget, @"		[item.Uid] /* [item.Identifier] */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = [item.ConfigurationList.Uid] /* Build configuration list for PBXNativeTarget ""[item.Identifier]"" */;
 			buildPhases = (
@@ -148,10 +151,10 @@ namespace Sharpmake.Generators.Apple
 			productReference = [item.OutputFile.Uid] /* [item.OutputFile.Name] */;
 			productType = ""[item.ProductType]"";
 		};
-"               },
-
-                { ItemSection.PBXLegacyTarget,
-@"		[item.Uid] /* [item.Identifier] */ = {
+"
+				},
+				{
+					ItemSection.PBXLegacyTarget, @"		[item.Uid] /* [item.Identifier] */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = ""[item.BuildArgumentsString]"";
 			buildConfigurationList = [item.ConfigurationList.Uid] /* Build configuration list for PBXLegacyTarget ""[item.Identifier]"" */;
@@ -166,10 +169,10 @@ namespace Sharpmake.Generators.Apple
 			productName = ""[item.Identifier]"";
 			productType = ""[item.ProductType]"";
 		};
-"               },
-
-                { ItemSection.PBXProject,
-@"		[item.Uid] /* Project object */ = {
+"
+				},
+				{
+					ItemSection.PBXProject, @"		[item.Uid] /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				TargetAttributes = {
@@ -191,50 +194,50 @@ namespace Sharpmake.Generators.Apple
 			targets = (
 [itemTargets]			);
 		};
-"               },
-
-                { ItemSection.PBXReferenceProxy,
-@"		[item.Uid] /* [item.OutputFile.Name] */ = {
+"
+				},
+				{
+					ItemSection.PBXReferenceProxy, @"		[item.Uid] /* [item.OutputFile.Name] */ = {
 			isa = PBXReferenceProxy;
 			fileType = [item.FileType];
 			path = [item.OutputFile.FileName];
 			remoteRef = [item.Proxy.Uid] /* [item.Proxy.Identifier] */;
 			sourceTree = [item.SourceTree];
 		};
-"               },
-
-                { ItemSection.PBXResourcesBuildPhase,
-@"		[item.Uid] /* Resources */ = {
+"
+				},
+				{
+					ItemSection.PBXResourcesBuildPhase, @"		[item.Uid] /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = [item.BuildActionMask];
 			files = (
 [itemChildren]			);
 			runOnlyForDeploymentPostprocessing = [item.RunOnlyForDeploymentPostprocessing];
 		};
-"               },
-
-                { ItemSection.PBXSourcesBuildPhase,
-@"		[item.Uid] /* Sources */ = {
+"
+				},
+				{
+					ItemSection.PBXSourcesBuildPhase, @"		[item.Uid] /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = [item.BuildActionMask];
 			files = (
 [itemChildren]			);
 			runOnlyForDeploymentPostprocessing = [item.RunOnlyForDeploymentPostprocessing];
 		};
-"               },
-
-                { ItemSection.PBXHeadersBuildPhase,
-@"		[item.Uid] /* Headers */ = {
+"
+				},
+				{
+					ItemSection.PBXHeadersBuildPhase, @"		[item.Uid] /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = [item.BuildActionMask];
 			files = (
 [itemChildren]			);
 			runOnlyForDeploymentPostprocessing = [item.RunOnlyForDeploymentPostprocessing];
 		};
-"               },
-
-                { ItemSection.PBXCopyFilesBuildPhase,
-@"		[item.Uid] /* [item.Identifier] */ = {
+"
+				},
+				{
+					ItemSection.PBXCopyFilesBuildPhase, @"		[item.Uid] /* [item.Identifier] */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = [item.BuildActionMask];
 			name = ""[item.Identifier]"";
@@ -244,23 +247,23 @@ namespace Sharpmake.Generators.Apple
 			files = (
 [itemChildren]			);
 		};
-"               },
-
-                { ItemSection.PBXVariantGroup,
-@"
-"               },
-
-                { ItemSection.PBXTargetDependency,
-@"		[item.Uid] /* PBXTargetDependency */ = {
+"
+				},
+				{
+					ItemSection.PBXVariantGroup, @"
+"
+				},
+				{
+					ItemSection.PBXTargetDependency, @"		[item.Uid] /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = ""[item.ProjectReference.Name]"";
 			targetProxy = [item.Proxy.Uid];
 			target = [item.TargetIdentifier];
 		};
-"               },
-
-                { ItemSection.XCBuildConfiguration_NativeTarget,
-@"		[item.Uid] /* Native Target - [item.Optimization] */ = {
+"
+				},
+				{
+					ItemSection.XCBuildConfiguration_NativeTarget, @"		[item.Uid] /* Native Target - [item.Optimization] */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ""[item.Options.CodeSignEntitlements]"";
@@ -366,10 +369,10 @@ namespace Sharpmake.Generators.Apple
 			};
 			name = [item.Options.TargetName];
 		};
-"               },
-
-                { ItemSection.XCBuildConfiguration_LegacyTarget,
-@"		[item.Uid] /* Legacy Target - [item.Optimization] */ = {
+"
+				},
+				{
+					ItemSection.XCBuildConfiguration_LegacyTarget, @"		[item.Uid] /* Legacy Target - [item.Optimization] */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FASTBUILD_TARGET = ""[item.Options.FastBuildTarget]"";
@@ -378,10 +381,10 @@ namespace Sharpmake.Generators.Apple
 			};
 			name = [item.Options.TargetName];
 		};
-"               },
-
-                { ItemSection.XCBuildConfiguration_UnitTestTarget,
-@"		[item.Uid] /* UnitTest Target - [item.Optimization] */ = {
+"
+				},
+				{
+					ItemSection.XCBuildConfiguration_UnitTestTarget, @"		[item.Uid] /* UnitTest Target - [item.Optimization] */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = ""$(TEST_HOST)"";
@@ -410,10 +413,10 @@ namespace Sharpmake.Generators.Apple
 		};
 			name = [item.Options.TargetName];
 		};
-"               },
-
-                { ItemSection.XCBuildConfiguration_Project,
-@"		[item.Uid] /* Project - [item.Optimization] */ = {
+"
+				},
+				{
+					ItemSection.XCBuildConfiguration_Project, @"		[item.Uid] /* Project - [item.Optimization] */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = [item.Options.AlwaysSearchUserPaths];
@@ -483,50 +486,51 @@ namespace Sharpmake.Generators.Apple
 			};
 			name = [item.Options.TargetName];
 		};
-"               },
-
-                { ItemSection.XCConfigurationList,
-@"		[item.Uid] /* Build configuration list for [item.ConfigurationType] ""[item.RelatedItem.Identifier]"" */ = {
+"
+				},
+				{
+					ItemSection.XCConfigurationList, @"		[item.Uid] /* Build configuration list for [item.ConfigurationType] ""[item.RelatedItem.Identifier]"" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 [itemChildren]			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = ""[item.DefaultConfiguration.Identifier]"";
 		};
-"               }
-            };
+"
+				}
+			};
 
-            public static string CommandLineArgumentsBegin =
-@"      <CommandLineArguments>
+			public static string CommandLineArgumentsBegin =
+				@"      <CommandLineArguments>
 ";
 
-            public static string CommandLineArgument =
-@"         <CommandLineArgument
+			public static string CommandLineArgument =
+				@"         <CommandLineArgument
             argument = ""[argument]""
             isEnabled = ""YES"">
          </CommandLineArgument>
 ";
 
-            public static string CommandLineArgumentsEnd =
-@"      </CommandLineArguments>";
+			public static string CommandLineArgumentsEnd =
+				@"      </CommandLineArguments>";
 
-            public static string EnvironmentVariablesBegin =
-@"      <EnvironmentVariables>
+			public static string EnvironmentVariablesBegin =
+				@"      <EnvironmentVariables>
 ";
 
-            public static string EnvironmentVariablesEnd =
-@"      </EnvironmentVariables>";
+			public static string EnvironmentVariablesEnd =
+				@"      </EnvironmentVariables>";
 
-            public static string EnvironmentVariable =
-@"         <EnvironmentVariable
+			public static string EnvironmentVariable =
+				@"         <EnvironmentVariable
             key = ""[name]""
             value = ""[value]""
             isEnabled = ""YES"">
          </EnvironmentVariable>
 ";
 
-            public static string SchemeTestableReference =
-@"
+			public static string SchemeTestableReference =
+				@"
          <TestableReference
             skipped = ""NO"">
             <BuildableReference
@@ -538,11 +542,11 @@ namespace Sharpmake.Generators.Apple
             </BuildableReference>
          </TestableReference>";
 
-            /// <summary>
-            /// This section is used to configure the executable to run for native projects.
-            /// </summary>
-            public static string SchemeRunnableNativeProject = 
-@"      <BuildableProductRunnable>
+			/// <summary>
+			/// This section is used to configure the executable to run for native projects.
+			/// </summary>
+			public static string SchemeRunnableNativeProject =
+				@"      <BuildableProductRunnable>
           <BuildableReference
               BuildableIdentifier = ""primary""
               BlueprintIdentifier = ""[item.Uid]""
@@ -553,27 +557,27 @@ namespace Sharpmake.Generators.Apple
       </BuildableProductRunnable>
 ";
 
-            /// <summary>
-            /// This section is used to configure the executable to run for makefile projects.
-            /// </summary>
-            public static string SchemeRunnableMakeFileProject =
-@"      <PathRunnable
+			/// <summary>
+			/// This section is used to configure the executable to run for makefile projects.
+			/// </summary>
+			public static string SchemeRunnableMakeFileProject =
+				@"      <PathRunnable
          runnableDebuggingMode = ""0""
          FilePath = ""[runnableFilePath]"">
       </PathRunnable>
 ";
 
-            /// <summary>
-            /// First part of schema file
-            /// </summary>
-            /// <remarks>
-            /// Schema files have the following format:
-            /// SchemeFileTemplatePart1
-            /// SchemeRunnableNativeProject OR SchemeRunnableMakeFileProject
-            /// SchemeFileTemplatePart2
-            /// </remarks>
-            public static string SchemeFileTemplatePart1 =
-@"<?xml version=""1.0"" encoding=""UTF-8""?>
+			/// <summary>
+			/// First part of schema file
+			/// </summary>
+			/// <remarks>
+			/// Schema files have the following format:
+			/// SchemeFileTemplatePart1
+			/// SchemeRunnableNativeProject OR SchemeRunnableMakeFileProject
+			/// SchemeFileTemplatePart2
+			/// </remarks>
+			public static string SchemeFileTemplatePart1 =
+				@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <Scheme
    LastUpgradeVersion = ""0460""
    version = ""1.3"">
@@ -620,11 +624,11 @@ namespace Sharpmake.Generators.Apple
       allowLocationSimulation = ""YES"">
 ";
 
-            /// <summary>
-            /// Secondpart of schema file
-            /// </summary>
-            public static string SchemeFileTemplatePart2 = 
-@"[commandLineArguments]
+			/// <summary>
+			/// Secondpart of schema file
+			/// </summary>
+			public static string SchemeFileTemplatePart2 =
+				@"[commandLineArguments]
 [environmentVariables]
       <AdditionalOptions>
       </AdditionalOptions>
@@ -645,6 +649,6 @@ namespace Sharpmake.Generators.Apple
    </ArchiveAction>
 </Scheme>
 ";
-        }
-    }
+		}
+	}
 }

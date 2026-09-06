@@ -2,5 +2,5 @@
 
 int main(int, char**)
 {
-    return PREBUILD_GENERATED_DEFINE();
+	return PREBUILD_GENERATED_DEFINE();
 }

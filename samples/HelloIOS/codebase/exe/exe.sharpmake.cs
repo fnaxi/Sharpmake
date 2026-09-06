@@ -17,68 +17,70 @@ using Sharpmake;
 
 namespace HelloIOS
 {
-    [Sharpmake.Generate]
-    public class ExeProject : CommonProject
-    {
-        public ExeProject()
-        {
-            Name = "exe";
-            
-            ResourceFilesExtensions.Add(".storyboard");
+	[Sharpmake.Generate]
+	public class ExeProject : CommonProject
+	{
+		public ExeProject()
+		{
+			Name = "exe";
 
-            #region XCTest
-            XcodeUnitTestTargetName = "HelloXCTest";
+			ResourceFilesExtensions.Add(".storyboard");
 
-            XcodeUnitTestSourceRootPath = Path.Combine(SourceRootPath, "ios", "unittest");
+			#region XCTest
 
-            string buildExcludedUnitTestFile = Path.Combine(SourceRootPath, "ios", "unittest", "excluded_from_build.mm");
-            XcodeUnitTestSourceFilesBuildExclude.Add(buildExcludedUnitTestFile);
+			XcodeUnitTestTargetName = "HelloXCTest";
 
-            // exclude unittest files from app, suppose the files under unittest folder are only for XCTest
-            SourceFilesExcludeRegex.Add(@"\/ios\/unittest\/");
-            #endregion XCTest
-        }
+			XcodeUnitTestSourceRootPath = Path.Combine(SourceRootPath, "ios", "unittest");
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
+			string buildExcludedUnitTestFile = Path.Combine(SourceRootPath, "ios", "unittest", "excluded_from_build.mm");
+			XcodeUnitTestSourceFilesBuildExclude.Add(buildExcludedUnitTestFile);
 
-            conf.Output = Configuration.OutputType.Exe;
+			// exclude unittest files from app, suppose the files under unittest folder are only for XCTest
+			SourceFilesExcludeRegex.Add(@"\/ios\/unittest\/");
 
-            conf.PrecompHeader = "stdafx.h";
-            conf.PrecompSource = "stdafx.cpp";
+			#endregion XCTest
+		}
 
-            conf.AddPrivateDependency<StaticLib1Project>(target);
-            conf.AddPrivateDependency<StaticLib2Project>(target);
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
 
-            conf.Defines.Add("CREATION_DATE=\"July 2020\"");
-        }
+			conf.Output = Configuration.OutputType.Exe;
 
-        public override void ConfigureIos(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureIos(conf, target);
+			conf.PrecompHeader = "stdafx.h";
+			conf.PrecompSource = "stdafx.cpp";
 
-            conf.Output = Configuration.OutputType.AppleApp;
-            conf.PrecompHeader = null;
-            conf.PrecompSource = null;
+			conf.AddPrivateDependency<StaticLib1Project>(target);
+			conf.AddPrivateDependency<StaticLib2Project>(target);
 
-            conf.IncludePaths.Add(SourceRootPath + "/ios");
+			conf.Defines.Add("CREATION_DATE=\"July 2020\"");
+		}
 
-            string plistPath = SourceRootPath + "/ios/Info.plist";
-            conf.Options.Add(new Sharpmake.Options.XCode.Compiler.InfoPListFile(plistPath));
-            conf.Options.Add(new Sharpmake.Options.XCode.Compiler.ProductBundleIdentifier("com.example.helloios"));
+		public override void ConfigureIos(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureIos(conf, target);
 
-            {
-                #region XCTest
+			conf.Output = Configuration.OutputType.AppleApp;
+			conf.PrecompHeader = null;
+			conf.PrecompSource = null;
 
-                string unitTestPlistPath = SourceRootPath + "/ios/UnitTestInfo.plist";
-                conf.Options.Add(new Sharpmake.Options.XCode.Compiler.UnitTestInfoPListFile(unitTestPlistPath));
+			conf.IncludePaths.Add(SourceRootPath + "/ios");
 
-                #endregion
-            }
+			string plistPath = SourceRootPath + "/ios/Info.plist";
+			conf.Options.Add(new Sharpmake.Options.XCode.Compiler.InfoPListFile(plistPath));
+			conf.Options.Add(new Sharpmake.Options.XCode.Compiler.ProductBundleIdentifier("com.example.helloios"));
 
-            conf.XcodeSystemFrameworks.Add("UIKit");
-            conf.XcodeSystemFrameworks.Add("Foundation");
-        }
-    }
+			{
+				#region XCTest
+
+				string unitTestPlistPath = SourceRootPath + "/ios/UnitTestInfo.plist";
+				conf.Options.Add(new Sharpmake.Options.XCode.Compiler.UnitTestInfoPListFile(unitTestPlistPath));
+
+				#endregion
+			}
+
+			conf.XcodeSystemFrameworks.Add("UIKit");
+			conf.XcodeSystemFrameworks.Add("Foundation");
+		}
+	}
 }

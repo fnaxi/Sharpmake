@@ -5,11 +5,13 @@
 
 int main(int, char**)
 {
-    std::cout << "Hello XCode World, from " CREATION_DATE "!" << std::endl;
+	std::cout << "Hello XCode World, from "
+	CREATION_DATE
+	"!" << std::endl;
 
-    PrintBuildString("Exe_Prelinked");
+	PrintBuildString("Exe_Prelinked");
 
-    static_prelinked_lib_consumer::Test();
-    
-    return 0;
+	static_prelinked_lib_consumer::Test();
+
+	return 0;
 }

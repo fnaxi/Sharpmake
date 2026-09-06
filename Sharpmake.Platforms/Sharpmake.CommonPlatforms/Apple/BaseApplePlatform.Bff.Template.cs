@@ -3,9 +3,9 @@
 
 namespace Sharpmake
 {
-    public abstract partial class BaseApplePlatform
-    {
-        private const string _linkerOptionsTemplate = @"
+	public abstract partial class BaseApplePlatform
+	{
+		private const string _linkerOptionsTemplate = @"
     .LinkerOptions          = '-o ""%2"" ""%1""[outputTypeArgument]'
                             // Library Search Path
                             // ---------------------------
@@ -33,7 +33,7 @@ namespace Sharpmake
                             + ' [cmdLineOptions.DyLibInstallName]'
 ";
 
-        private const string _compilerExtraOptionsGeneral = @"
+		private const string _compilerExtraOptionsGeneral = @"
     .CompilerExtraOptions   = ''
             // General options
             // -------------------------
@@ -57,7 +57,7 @@ namespace Sharpmake
             + ' [cmdLineOptions.PrivateInlines]'
 ";
 
-        private const string _compilerExtraOptionsAdditional = @"
+		private const string _compilerExtraOptionsAdditional = @"
             // Additional compiler options
             //--------------------------
             + ' [options.AdditionalCompilerOptions]'
@@ -67,8 +67,8 @@ namespace Sharpmake
             + ' [cmdLineOptions.CompilerFrameworkPaths]'
 ";
 
-        private const string _compilerOptimizationOptions =
-                @"
+		private const string _compilerOptimizationOptions =
+			@"
     // Optimizations options
     // ---------------------
     .CompilerOptimizations = ''
@@ -76,7 +76,7 @@ namespace Sharpmake
             + ' [options.AdditionalCompilerOptimizeOptions]'
 ";
 
-        private const string _swiftCompilerExtraOptionsGeneral = @"
+		private const string _swiftCompilerExtraOptionsGeneral = @"
     .CompilerExtraOptions   = ''
             // General options
             // -------------------------
@@ -92,19 +92,19 @@ namespace Sharpmake
             + ' -Xcc [cmdLineOptions.DisableExceptions]'
 ";
 
-        private const string _swiftCompilerExtraOptionsAdditional = @"
+		private const string _swiftCompilerExtraOptionsAdditional = @"
             // Additional compiler options
             //--------------------------
             + ' [cmdLineOptions.SwiftAdditionalCompilerOptions]'
 ";
 
-        private const string _swiftCompilerOptimizationOptions =
-                @"
+		private const string _swiftCompilerOptimizationOptions =
+			@"
     // Optimizations options
     // ---------------------
     .CompilerOptimizations = ''
             + ' [cmdLineOptions.SwiftOptimizationLevel]'
             + ' [cmdLineOptions.GenerateDebuggingSymbols]'
 ";
-    }
+	}
 }

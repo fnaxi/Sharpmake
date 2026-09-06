@@ -71,54 +71,60 @@
 #define FMT_RETRY(result, expression) FMT_RETRY_VAL(result, expression, -1)
 
 FMT_BEGIN_NAMESPACE
-FMT_BEGIN_EXPORT
+	FMT_BEGIN_EXPORT
 
-/**
-  \rst
-  A reference to a null-terminated string. It can be constructed from a C
-  string or ``std::string``.
+	/**
+	  \rst
+	  A reference to a null-terminated string. It can be constructed from a C
+	  string or ``std::string``.
+	
+	  You can use one of the following type aliases for common character types:
+	
+	  +---------------+-----------------------------+
+	  | Type          | Definition                  |
+	  +===============+=============================+
+	  | cstring_view  | basic_cstring_view<char>    |
+	  +---------------+-----------------------------+
+	  | wcstring_view | basic_cstring_view<wchar_t> |
+	  +---------------+-----------------------------+
+	
+	  This class is most useful as a parameter type to allow passing
+	  different types of strings to a function, for example::
+	
+	    template <typename... Args>
+	    std::string format(cstring_view format_str, const Args & ... args);
+	
+	    format("{}", 42);
+	    format(std::string("{}"), 42);
+	  \endrst
+	 */
+	template <typename Char>
+	class basic_cstring_view
+	{
+	private:
+		const Char* data_;
 
-  You can use one of the following type aliases for common character types:
+	public:
+		/** Constructs a string reference object from a C string. */
+		basic_cstring_view(const Char* s) : data_(s)
+		{
+		}
 
-  +---------------+-----------------------------+
-  | Type          | Definition                  |
-  +===============+=============================+
-  | cstring_view  | basic_cstring_view<char>    |
-  +---------------+-----------------------------+
-  | wcstring_view | basic_cstring_view<wchar_t> |
-  +---------------+-----------------------------+
+		/**
+		  \rst
+		  Constructs a string reference from an ``std::string`` object.
+		  \endrst
+		 */
+		basic_cstring_view(const std::basic_string<Char>& s) : data_(s.c_str())
+		{
+		}
 
-  This class is most useful as a parameter type to allow passing
-  different types of strings to a function, for example::
+		/** Returns the pointer to a C string. */
+		const Char* c_str() const { return data_; }
+	};
 
-    template <typename... Args>
-    std::string format(cstring_view format_str, const Args & ... args);
-
-    format("{}", 42);
-    format(std::string("{}"), 42);
-  \endrst
- */
-template <typename Char> class basic_cstring_view {
- private:
-  const Char* data_;
-
- public:
-  /** Constructs a string reference object from a C string. */
-  basic_cstring_view(const Char* s) : data_(s) {}
-
-  /**
-    \rst
-    Constructs a string reference from an ``std::string`` object.
-    \endrst
-   */
-  basic_cstring_view(const std::basic_string<Char>& s) : data_(s.c_str()) {}
-
-  /** Returns the pointer to a C string. */
-  const Char* c_str() const { return data_; }
-};
-
-using cstring_view = basic_cstring_view<char>;
-using wcstring_view = basic_cstring_view<wchar_t>;
+	using cstring_view = basic_cstring_view<char>;
+	using wcstring_view = basic_cstring_view<wchar_t>;
 
 #ifdef _WIN32
 FMT_API const std::error_category& system_category() noexcept;
@@ -169,12 +175,13 @@ std::system_error windows_error(int error_code, string_view message,
 // Can be used to report errors from destructors.
 FMT_API void report_windows_error(int error_code, const char* message) noexcept;
 #else
-inline const std::error_category& system_category() noexcept {
-  return std::system_category();
-}
+	inline const std::error_category& system_category() noexcept
+	{
+		return std::system_category();
+	}
 #endif  // _WIN32
 
-// std::system is not available on some platforms such as iOS (#2248).
+	// std::system is not available on some platforms such as iOS (#2248).
 #ifdef __OSX__
 template <typename S, typename... Args, typename Char = char_t<S>>
 void say(const S& format_str, Args&&... args) {
@@ -182,57 +189,66 @@ void say(const S& format_str, Args&&... args) {
 }
 #endif
 
-// A buffered file.
-class buffered_file {
- private:
-  FILE* file_;
+	// A buffered file.
+	class buffered_file
+	{
+	private:
+		FILE* file_;
 
-  friend class file;
+		friend class file;
 
-  explicit buffered_file(FILE* f) : file_(f) {}
+		explicit buffered_file(FILE* f) : file_(f)
+		{
+		}
 
- public:
-  buffered_file(const buffered_file&) = delete;
-  void operator=(const buffered_file&) = delete;
+	public:
+		buffered_file(const buffered_file&) = delete;
+		void operator=(const buffered_file&) = delete;
 
-  // Constructs a buffered_file object which doesn't represent any file.
-  buffered_file() noexcept : file_(nullptr) {}
+		// Constructs a buffered_file object which doesn't represent any file.
+		buffered_file() noexcept : file_(nullptr)
+		{
+		}
 
-  // Destroys the object closing the file it represents if any.
-  FMT_API ~buffered_file() noexcept;
+		// Destroys the object closing the file it represents if any.
+		FMT_API ~buffered_file() noexcept;
 
- public:
-  buffered_file(buffered_file&& other) noexcept : file_(other.file_) {
-    other.file_ = nullptr;
-  }
+	public:
+		buffered_file(buffered_file&& other) noexcept : file_(other.file_)
+		{
+			other.file_ = nullptr;
+		}
 
-  buffered_file& operator=(buffered_file&& other) {
-    close();
-    file_ = other.file_;
-    other.file_ = nullptr;
-    return *this;
-  }
+		buffered_file& operator=(buffered_file&& other)
+		{
+			close();
+			file_ = other.file_;
+			other.file_ = nullptr;
+			return *this;
+		}
 
-  // Opens a file.
-  FMT_API buffered_file(cstring_view filename, cstring_view mode);
+		// Opens a file.
+		FMT_API buffered_file(cstring_view filename, cstring_view mode);
 
-  // Closes the file.
-  FMT_API void close();
+		// Closes the file.
+		FMT_API void close();
 
-  // Returns the pointer to a FILE object representing this file.
-  FILE* get() const noexcept { return file_; }
+		// Returns the pointer to a FILE object representing this file.
+		FILE* get() const noexcept { return file_; }
 
-  FMT_API int descriptor() const;
+		FMT_API int descriptor() const;
 
-  void vprint(string_view format_str, format_args args) {
-    fmt::vprint(file_, format_str, args);
-  }
+		void vprint(string_view format_str, format_args args)
+		{
+			fmt::vprint(file_, format_str, args);
+		}
 
-  template <typename... Args>
-  inline void print(string_view format_str, const Args&... args) {
-    vprint(format_str, fmt::make_format_args(args...));
-  }
-};
+		template <typename... Args>
+		inline void print(string_view format_str, const Args&... args)
+		{
+			vprint(format_str, fmt::make_format_args(args...));
+		}
+	};
 
 #if FMT_USE_FCNTL
 // A file. Closed file is represented by a file object with descriptor -1.
@@ -445,7 +461,7 @@ inline ostream output_file(cstring_view path, T... params) {
 }
 #endif  // FMT_USE_FCNTL
 
-FMT_END_EXPORT
+	FMT_END_EXPORT
 FMT_END_NAMESPACE
 
 #endif  // FMT_OS_H_

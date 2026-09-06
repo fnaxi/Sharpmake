@@ -2,5 +2,5 @@
 
 struct Util
 {
-    static void StaticUtilityMethod();
+	static void StaticUtilityMethod();
 };

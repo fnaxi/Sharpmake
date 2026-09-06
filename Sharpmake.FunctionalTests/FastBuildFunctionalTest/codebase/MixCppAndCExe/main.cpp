@@ -2,9 +2,8 @@
 #error This file mustn't be compiled as C
 #endif
 
-extern "C"
-{
-    #include "hello_c.h"
+extern "C" {
+#include "hello_c.h"
 }
 
 #define _HAS_EXCEPTIONS 0
@@ -13,7 +12,7 @@ extern "C"
 
 int main(int, char**)
 {
-    hello_c();
-    std::cout << "Hello from C++!" << std::endl;
-    return 0;
+	hello_c();
+	std::cout << "Hello from C++!" << std::endl;
+	return 0;
 }

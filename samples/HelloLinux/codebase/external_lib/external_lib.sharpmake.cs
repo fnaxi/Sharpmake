@@ -8,27 +8,27 @@ using System.Linq;
 
 namespace HelloLinux
 {
-    [Export]
-    //This export keyword will:
-    // 1 - Prevent the generation of a dedicated makefile for this project
-    // 2 - Prevent the inclusion of this project into the LDDEPS list of your makefile 
-    // In this example only the configured projectName will be added into the LDLIBS flag in the generated makefile.
-    public class ExternalLibProject : CommonProject
-    {
-        public ExternalLibProject()
-        {
-            AddTargets(CommonTarget.GetDefaultTargets());
+	[Export]
+	//This export keyword will:
+	// 1 - Prevent the generation of a dedicated makefile for this project
+	// 2 - Prevent the inclusion of this project into the LDDEPS list of your makefile 
+	// In this example only the configured projectName will be added into the LDLIBS flag in the generated makefile.
+	public class ExternalLibProject : CommonProject
+	{
+		public ExternalLibProject()
+		{
+			AddTargets(CommonTarget.GetDefaultTargets());
 
-            //We name this project voluntarly curl in order to link to a library already existing in this OS. 
-            Name = "curl";
-        }
+			//We name this project voluntarly curl in order to link to a library already existing in this OS. 
+			Name = "curl";
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
 
-            //We use the static library format because it's the one already existing inside the OS.
-            conf.Output = Configuration.OutputType.Lib;
-        }
-    }
+			//We use the static library format because it's the one already existing inside the OS.
+			conf.Output = Configuration.OutputType.Lib;
+		}
+	}
 }

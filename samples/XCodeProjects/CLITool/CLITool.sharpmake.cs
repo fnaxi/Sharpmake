@@ -5,26 +5,26 @@ using Sharpmake;
 
 namespace XCodeProjects
 {
-    [Sharpmake.Generate]
-    public class CLIToolProject : CommonProject
-    {
-        public CLIToolProject()
-        {
-            Name = @"CLITool";
+	[Sharpmake.Generate]
+	public class CLIToolProject : CommonProject
+	{
+		public CLIToolProject()
+		{
+			Name = @"CLITool";
 
-            AddTargets(CommonTarget.GetMacTargets());
-            AddTargets(CommonTarget.GetIosTargets());
-            AddTargets(CommonTarget.GetTvosTargets());
-            AddTargets(CommonTarget.GetCatalystTargets());
+			AddTargets(CommonTarget.GetMacTargets());
+			AddTargets(CommonTarget.GetIosTargets());
+			AddTargets(CommonTarget.GetTvosTargets());
+			AddTargets(CommonTarget.GetCatalystTargets());
 
-            SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
-        }
+			SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
 
-            conf.Output = Configuration.OutputType.Exe;
-        }
-    }
+			conf.Output = Configuration.OutputType.Exe;
+		}
+	}
 }

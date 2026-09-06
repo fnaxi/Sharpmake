@@ -5,27 +5,27 @@ using Sharpmake;
 
 namespace XCodeProjects
 {
-    [Sharpmake.Generate]
-    public class SampleBundleProject : CommonProject
-    {
-        public SampleBundleProject()
-        {
-            Name = @"Sample";
+	[Sharpmake.Generate]
+	public class SampleBundleProject : CommonProject
+	{
+		public SampleBundleProject()
+		{
+			Name = @"Sample";
 
-            AddTargets(CommonTarget.GetMacTargets());
-            AddTargets(CommonTarget.GetIosTargets());
-            AddTargets(CommonTarget.GetTvosTargets());
-            AddTargets(CommonTarget.GetCatalystTargets());
+			AddTargets(CommonTarget.GetMacTargets());
+			AddTargets(CommonTarget.GetIosTargets());
+			AddTargets(CommonTarget.GetTvosTargets());
+			AddTargets(CommonTarget.GetCatalystTargets());
 
-            SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
-        }
+			SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
 
-            conf.Output = Configuration.OutputType.AppleBundle;
-            conf.AddPublicDependency<FmtProject>(target);
-        }
-    }
+			conf.Output = Configuration.OutputType.AppleBundle;
+			conf.AddPublicDependency<FmtProject>(target);
+		}
+	}
 }

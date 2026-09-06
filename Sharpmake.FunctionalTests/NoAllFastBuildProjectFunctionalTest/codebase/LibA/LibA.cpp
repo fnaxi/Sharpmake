@@ -2,5 +2,5 @@
 
 int fcnA(int value)
 {
-    return value - 2;
+	return value - 2;
 }

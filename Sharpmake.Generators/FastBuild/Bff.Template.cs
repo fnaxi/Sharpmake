@@ -3,13 +3,13 @@
 
 namespace Sharpmake.Generators.FastBuild
 {
-    public partial class Bff
-    {
-        public static class Template
-        {
-            public static class ConfigurationFile
-            {
-                public static string HeaderFile = @"
+	public partial class Bff
+	{
+		public static class Template
+		{
+			public static class ConfigurationFile
+			{
+				public static string HeaderFile = @"
 //=================================================================================================================
 // [fastBuildProjectName] FASTBuild config file
 //=================================================================================================================
@@ -17,32 +17,32 @@ namespace Sharpmake.Generators.FastBuild
 
 ";
 
-                public static string Define = @"#define [fastBuildDefine]
+				public static string Define = @"#define [fastBuildDefine]
 ";
 
 
-                public static string CustomSectionHeader = @"
+				public static string CustomSectionHeader = @"
 //=================================================================================================================
 // FASTBuild custom section
 //=================================================================================================================
 ";
 
 
-                public static string Includes = @"
+				public static string Includes = @"
 //=================================================================================================================
 // [fastBuildProjectName] .bff includes
 //=================================================================================================================
 [fastBuildOrderedBffDependencies]
 ";
 
-                public static string GlobalConfigurationInclude = @"
+				public static string GlobalConfigurationInclude = @"
 //=================================================================================================================
 // Global Configuration include
 //=================================================================================================================
 [fastBuildGlobalConfigurationInclude]
 ";
 
-                public static string GlobalSettings = @"
+				public static string GlobalSettings = @"
 //=================================================================================================================
 // Global Settings
 //=================================================================================================================
@@ -58,20 +58,21 @@ Settings
 }
 ";
 
-                public static string ConcurrencyGroup =
-@"[fastBuildConcurrencyGroupSectionName] =
+				public static string ConcurrencyGroup =
+					@"[fastBuildConcurrencyGroupSectionName] =
 [
     .ConcurrencyGroupName = '[fastBuildConcurrencyGroupName]'
     .ConcurrencyLimit = [fastBuildConcurrencyLimit]
     .ConcurrencyPerJobMiB = [fastBuildConcurrencyPerJobMiB]
 ]
 ";
-                public static string AllowCaching = @"
+
+				public static string AllowCaching = @"
     .AllowCaching = [fastBuildAllowCaching]
 ";
 
-                public static readonly string WinEnvironment =
-@"    #import TMP
+				public static readonly string WinEnvironment =
+					@"    #import TMP
     #import TEMP
     #import USERPROFILE
     #import COMSPEC
@@ -87,8 +88,8 @@ Settings
     }
 ";
 
-                public static readonly string OsxEnvironment =
-@"    #import TMPDIR
+				public static readonly string OsxEnvironment =
+					@"    #import TMPDIR
     .Environment =
     {
         ""TMPDIR=$TMPDIR$"",
@@ -97,19 +98,19 @@ Settings
     }
 ";
 
-                public static readonly string LinuxEnvironment =
-@"    .Environment =
+				public static readonly string LinuxEnvironment =
+					@"    .Environment =
     {
         ""PATH=[fastBuildPATH]""
 [envAdditionalVariables]
     }
 ";
 
-                public static string MasmConfigNameSuffix = "Masm";
-                public static string NasmConfigNameSuffix = "Nasm";
-                public static string Win64ConfigName = ".win64Config";
+				public static string MasmConfigNameSuffix = "Masm";
+				public static string NasmConfigNameSuffix = "Nasm";
+				public static string Win64ConfigName = ".win64Config";
 
-                public static string CompilerSetting = @"
+				public static string CompilerSetting = @"
 //=================================================================================================================
 Compiler( '[fastbuildCompilerName]' )
 {
@@ -122,7 +123,7 @@ Compiler( '[fastbuildCompilerName]' )
 }
 ";
 
-                internal static string ResourceCompilerSettings = @"
+				internal static string ResourceCompilerSettings = @"
 Compiler( '[fastBuildResourceCompilerName]' )
 {
     .Executable             = '[fastBuildResourceCompiler]'
@@ -130,7 +131,7 @@ Compiler( '[fastBuildResourceCompilerName]' )
 }
 ";
 
-                internal static string MasmCompilerSettings = @"
+				internal static string MasmCompilerSettings = @"
 Compiler( '[fastBuildMasmCompilerName]' )
 {
     .Executable             = '[fastBuildMasmCompiler]'
@@ -138,8 +139,8 @@ Compiler( '[fastBuildMasmCompilerName]' )
 }
 ";
 
-                // TODOANT
-                internal static string NasmCompilerSettings = @"
+				// TODOANT
+				internal static string NasmCompilerSettings = @"
 Compiler( '[fastBuildNasmCompilerName]' )
 {
     .Executable             = '[fastBuildNasmCompiler]'
@@ -147,7 +148,7 @@ Compiler( '[fastBuildNasmCompilerName]' )
 }
 ";
 
-                public static string CompilerConfiguration = @"
+				public static string CompilerConfiguration = @"
 [fastBuildConfigurationName] =
 [
     Using( [fastBuildUsing] )
@@ -163,7 +164,7 @@ Compiler( '[fastBuildNasmCompilerName]' )
 ]
 ";
 
-                public static string LinkerOptions = @"
+				public static string LinkerOptions = @"
     .LinkerOptions          = '/OUT:""%2""[dllOption]'
                             // Input files
                             // ---------------------------
@@ -234,7 +235,7 @@ Compiler( '[fastBuildNasmCompilerName]' )
                             + ' [options.AdditionalLinkerOptions]'
 ";
 
-                public static string PCHOptions = @"
+				public static string PCHOptions = @"
     // Precompiled Headers options
     // ---------------------------
     .PCHInputFile           = '[fastBuildPrecompiledSourceFile]'
@@ -247,7 +248,8 @@ Compiler( '[fastBuildNasmCompilerName]' )
                             + ' $CompilerOptimizations$'
 
 ";
-                public static string PCHOptionsClang = @"
+
+				public static string PCHOptionsClang = @"
     // Precompiled Header options for Clang
     // ------------------------------------
     .PCHInputFile           = '[fastBuildPrecompiledSourceFile]'
@@ -258,18 +260,20 @@ Compiler( '[fastBuildNasmCompilerName]' )
                             + ' $CompilerOptimizations$'
 
 ";
-                public static string PCHOptionsDeoptimize = @"
+
+				public static string PCHOptionsDeoptimize = @"
     .PCHOptionsDeoptimized = .PCHOptions
 ";
 
-                public static string UsePrecompClang = @"-include-pch $PCHOutputFile$'
+				public static string UsePrecompClang = @"-include-pch $PCHOutputFile$'
                             + ' [options.AdditionalCompilerOptionsOnPCHUse]'
                             + '";
-                public static string UsePrecomp = @"/Yu""[cmdLineOptions.PrecompiledHeaderThrough]"" /Fp""$PCHOutputFile$""'
+
+				public static string UsePrecomp = @"/Yu""[cmdLineOptions.PrecompiledHeaderThrough]"" /Fp""$PCHOutputFile$""'
                             + ' [options.AdditionalCompilerOptionsOnPCHUse]'
                             + ' [fastBuildPCHForceInclude]";
 
-                public static string ResourceCompilerOptions = @"
+				public static string ResourceCompilerOptions = @"
     // Resource Compiler options
     // -------------------------
     .Compiler               = .ResourceCompiler
@@ -280,13 +284,13 @@ Compiler( '[fastBuildNasmCompilerName]' )
 
 ";
 
-                public static string ResourceCompilerExtraOptions = @"
+				public static string ResourceCompilerExtraOptions = @"
     .ResourceCompilerExtraOptions   = ' /l 0x0409 /nologo'
                                     + ' [cmdLineOptions.AdditionalResourceIncludeDirectories]'
                                     + ' [cmdLineOptions.ResourcePreprocessorDefinitions]'
 ";
 
-                public static string EmbeddedResourceCompilerOptions = @"
+				public static string EmbeddedResourceCompilerOptions = @"
     // Resource Compiler options
     // -------------------------
     .Compiler               = '[fastBuildEmbeddedResourceCompiler]'
@@ -298,7 +302,7 @@ Compiler( '[fastBuildNasmCompilerName]' )
 
 ";
 
-                public static string CompilerOptionsCommon = @"
+				public static string CompilerOptionsCommon = @"
     .CompilerInputUnity       = '[fastBuildUnityName]'
     .CompilerOutputPath       = '$Intermediate$'
     .CompilerInputPath        = [fastBuildInputPath]
@@ -309,7 +313,7 @@ Compiler( '[fastBuildNasmCompilerName]' )
 
 ";
 
-                public static string CompilerOptionsCPP = @"
+				public static string CompilerOptionsCPP = @"
     // Compiler options
     // ----------------
     .CompilerOptions        = '""%1"" /Fo""%2"" /c'
@@ -317,21 +321,24 @@ Compiler( '[fastBuildNasmCompilerName]' )
                             + ' $CompilerExtraOptions$'
                             + ' $CompilerOptimizations$'
 ";
-                public static string CompilerOptionsMasm = @"
+
+				public static string CompilerOptionsMasm = @"
     // Compiler options
     // ----------------
     .CompilerOptions        = ' $CompilerExtraOptions$'
                             + ' /Fo""%2"" /c /Ta ""%1""'
 ";
-                // TODOANT
-                public static string CompilerOptionsNasm = @"
+
+				// TODOANT
+				public static string CompilerOptionsNasm = @"
     // Compiler options
     // ----------------
     .CompilerOptions        = ' $CompilerExtraOptions$'
                             + ' -Xvc -Ox -o""%2"" ""%1""'
                             + ' [cmdLineOptions.NasmCompilerFormat] '
 ";
-                public static string CompilerOptionsClang = @"
+
+				public static string CompilerOptionsClang = @"
     // Compiler options
     // ----------------
     .CompilerOptions        = '[fastBuildClangFileLanguage]""%1"" -o ""%2"" -c'
@@ -340,11 +347,11 @@ Compiler( '[fastBuildNasmCompilerName]' )
                             + ' $CompilerOptimizations$'
 ";
 
-                public static string LibrarianAdditionalInputs = @"
+				public static string LibrarianAdditionalInputs = @"
     .LibrarianAdditionalInputs = [fastBuildLibrarianAdditionalInputs]
 ";
 
-                public static string LibrarianOptions = @"
+				public static string LibrarianOptions = @"
     .LibrarianOutput        = '[fastBuildOutputFile]'
     .LibrarianOptions       = '""%1"" /OUT:""%2""'
                             + ' [cmdLineOptions.LinkerSuppressStartupBanner]'
@@ -353,14 +360,14 @@ Compiler( '[fastBuildNasmCompilerName]' )
 
 ";
 
-                public static string LibrarianOptionsClang = @"
+				public static string LibrarianOptionsClang = @"
     .LibrarianOutput        = '[fastBuildOutputFile]'
     .LibrarianOptions       = 'rcs[cmdLineOptions.UseThinArchives] ""%2"" ""%1""'
                             + ' [options.AdditionalLibrarianOptions]'
 
 ";
 
-                public static string MasmCompilerExtraOptions = @"
+				public static string MasmCompilerExtraOptions = @"
     .CompilerExtraOptions   = ''
             + ' [cmdLineOptions.AdditionalAssemblyIncludeDirectories]'
             + ' /nologo'
@@ -369,15 +376,15 @@ Compiler( '[fastBuildNasmCompilerName]' )
             + ' [cmdLineOptions.PreprocessorDefinitions]'
 ";
 
-                // TODOANT: NasmCompilerExtraOptions
-                public static string NasmCompilerExtraOptions = @"
+				// TODOANT: NasmCompilerExtraOptions
+				public static string NasmCompilerExtraOptions = @"
     .CompilerExtraOptions   = ''
             + ' [cmdLineOptions.AdditionalAssemblyNasmIncludeDirectories]'
             + ' [cmdLineOptions.NasmPreprocessorDefinitions]'
             + ' [cmdLineOptions.PreIncludedFiles]'
 ";
 
-                public static string CPPCompilerExtraOptions = @"
+				public static string CPPCompilerExtraOptions = @"
     .CompilerExtraOptions   = ''
             + ' [cmdLineOptions.AdditionalIncludeDirectories]'
             + ' [cmdLineOptions.AdditionalUsingDirectories]'
@@ -437,8 +444,9 @@ Compiler( '[fastBuildNasmCompilerName]' )
             + ' [options.AdditionalCompilerOptions]'
             + ' [fastBuildCompilerForceUsing]'
 ";
-                public static string CPPCompilerOptimizationOptions =
-@"
+
+				public static string CPPCompilerOptimizationOptions =
+					@"
     .CompilerOptimizations = ''
             + ' [cmdLineOptions.Optimization]'
             + ' [cmdLineOptions.InlineFunctionExpansion]'
@@ -452,7 +460,7 @@ Compiler( '[fastBuildNasmCompilerName]' )
             + ' [options.AdditionalCompilerOptimizeOptions]'
 ";
 
-                public static string CPPCompilerOptionsDeoptimize = @"
+				public static string CPPCompilerOptionsDeoptimize = @"
     .CompilerOptionsDeoptimized = '""%1"" /Fo""%2"" /c'
                             + ' [fastBuildCompilerPCHOptions]'
                             + ' [fastBuildPCHForceInclude]'
@@ -460,33 +468,35 @@ Compiler( '[fastBuildNasmCompilerName]' )
                             + ' /Od'
 ";
 
-                public static readonly string ClangCompilerOptionsDeoptimize = @"
+				public static readonly string ClangCompilerOptionsDeoptimize = @"
     .CompilerOptionsDeoptimized = '[fastBuildClangFileLanguage]""%1"" -o ""%2"" -c'
                             + ' [fastBuildCompilerPCHOptionsClang]'
                             + ' $CompilerExtraOptions$'
                             + ' [fastBuildCompilerDeoptimizeOptionClang]'
 ";
-                public static string DeOptimizeOption = @"
+
+				public static string DeOptimizeOption = @"
     .DeoptimizeWritableFiles = [fastBuildDeoptimizationWritableFiles]
     .DeoptimizeWritableFilesWithToken = [fastBuildDeoptimizationWritableFilesWithToken]
 ";
-                public static string PreBuildDependencies = @"
+
+				public static string PreBuildDependencies = @"
     .PreBuildDependencies = [fastBuildPreBuildTargets]
 ";
 
-                public static string PlatformBeginSection = @"
+				public static string PlatformBeginSection = @"
 ////////////////////////////////////////////////////////////////////////////////
 // PLATFORM SPECIFIC SECTION
 #if [fastBuildDefine]
 ";
 
-                public static string PlatformEndSection = @"
+				public static string PlatformEndSection = @"
 #endif // [fastBuildDefine]
 ////////////////////////////////////////////////////////////////////////////////
 ";
 
 
-                public static string LibBeginSection = @"
+				public static string LibBeginSection = @"
 //=================================================================================================================
 Library( '[fastBuildOutputFileShortName]_[fastBuildOutputType]' )
 {
@@ -494,9 +504,9 @@ Library( '[fastBuildOutputFileShortName]_[fastBuildOutputType]' )
     .Intermediate           = '[cmdLineOptions.IntermediateDirectory]\'
 ";
 
-                public static string EndSection = "}\n\n";
+				public static string EndSection = "}\n\n";
 
-                public static string TargetSection = @"
+				public static string TargetSection = @"
 //=================================================================================================================
 Alias( '[fastBuildOutputFileShortName]' )
 {
@@ -505,7 +515,7 @@ Alias( '[fastBuildOutputFileShortName]' )
 
 ";
 
-                public static string TargetForLibraryDependencySection = @"
+				public static string TargetForLibraryDependencySection = @"
 //=================================================================================================================
 Alias( '[fastBuildOutputFileShortName]_LibraryDependency' )
 {
@@ -514,7 +524,7 @@ Alias( '[fastBuildOutputFileShortName]_LibraryDependency' )
 
 ";
 
-                public static string CopyFileSection = @"
+				public static string CopyFileSection = @"
 //=================================================================================================================
 Copy( '[fastBuildCopyAlias]' )
 {
@@ -525,7 +535,7 @@ Copy( '[fastBuildCopyAlias]' )
 
 ";
 
-                public static string ExeDllBeginSection = @"
+				public static string ExeDllBeginSection = @"
 //=================================================================================================================
 [fastBuildOutputType]( '[fastBuildOutputFileShortName]_[fastBuildOutputType]' )
 {
@@ -541,7 +551,7 @@ Copy( '[fastBuildCopyAlias]' )
     .ConcurrencyGroupName   = '[fastbuildConcurrencyGroupName]'
 ";
 
-                public static string ResourcesBeginSection = @"
+				public static string ResourcesBeginSection = @"
 //=================================================================================================================
 ObjectList( '[fastBuildOutputFileShortName]_resources' )
 {
@@ -549,7 +559,7 @@ ObjectList( '[fastBuildOutputFileShortName]_resources' )
     .Intermediate           = '[cmdLineOptions.IntermediateDirectory]\'
 ";
 
-                public static string EmbeddedResourcesBeginSection = @"
+				public static string EmbeddedResourcesBeginSection = @"
 //=================================================================================================================
 ObjectList( '[fastBuildOutputFileShortName]_embedded' )
 {
@@ -557,7 +567,7 @@ ObjectList( '[fastBuildOutputFileShortName]_embedded' )
     .Intermediate           = '[cmdLineOptions.IntermediateDirectory]\'
 ";
 
-                public static string ObjectListBeginSection = @"
+				public static string ObjectListBeginSection = @"
 //=================================================================================================================
 ObjectList( '[fastBuildOutputFileShortName]_objects' )
 {
@@ -565,7 +575,7 @@ ObjectList( '[fastBuildOutputFileShortName]_objects' )
     .Intermediate           = '[cmdLineOptions.IntermediateDirectory]\'
 ";
 
-                public static string GenericExecutableSection = @"
+				public static string GenericExecutableSection = @"
 //=================================================================================================================
 Exec( '[fastBuildPreBuildName]' )
 {
@@ -582,7 +592,7 @@ Exec( '[fastBuildPreBuildName]' )
 
 ";
 
-                public static string TestSection = @"
+				public static string TestSection = @"
 //=================================================================================================================
 Test( '[fastBuildTest]' )
 {
@@ -597,12 +607,13 @@ Test( '[fastBuildTest]' )
 
 ";
 
-                public static string UnityBeginSection = @"
+				public static string UnityBeginSection = @"
 //=================================================================================================================
 // Master .bff Unity/Blob files (shared across configs)
 //=================================================================================================================
 ";
-                public static string UnitySection = @"
+
+				public static string UnitySection = @"
 Unity( '[unityFile.UnityName]' )
 {
     .UnityInputPath                     = [unityFile.UnityInputPath]
@@ -624,7 +635,7 @@ Unity( '[unityFile.UnityName]' )
 }
 ";
 
-                public static string CopyDirSection = @"
+				public static string CopyDirSection = @"
 //=================================================================================================================
 CopyDir( '[fastBuildCopyDirName]' )
 {
@@ -635,8 +646,9 @@ CopyDir( '[fastBuildCopyDirName]' )
     .PreBuildDependencies               = [fastBuildCopyDirDependencies]
 }
 ";
-                // All config sections. For now this section is used for submit assistant(when there is a source file filter)
-                public static string AllConfigsSection = @"
+
+				// All config sections. For now this section is used for submit assistant(when there is a source file filter)
+				public static string AllConfigsSection = @"
 //=================================================================================================================
 // All Configs Alias
 //=================================================================================================================
@@ -647,14 +659,14 @@ Alias( 'All-Configs' )
 }
 ";
 
-                public static string IncludeMasterBff = @"
+				public static string IncludeMasterBff = @"
 //=================================================================================================================
 // Entry BFF for [solutionFileName]
 //=================================================================================================================
 #once
 #include ""[masterBffFilePath]""
 ";
-            }
-        }
-    }
+			}
+		}
+	}
 }

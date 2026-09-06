@@ -3,21 +3,21 @@
 
 namespace Sharpmake.Generators.VisualStudio
 {
-    internal partial class PackagesConfig
-    {
-        public static class Template
-        {
-            public static string Begin =
-@"<?xml version=""1.0"" encoding=""utf-8""?>
+	internal partial class PackagesConfig
+	{
+		public static class Template
+		{
+			public static string Begin =
+				@"<?xml version=""1.0"" encoding=""utf-8""?>
 <packages>";
 
-            public static string End =
-@"
+			public static string End =
+				@"
 </packages>";
 
-            public static string DependenciesItem =
-@"
+			public static string DependenciesItem =
+				@"
   <package id=""[dependency.Name]"" version=""[dependency.Version]"" targetFramework=""[framework]"" />";
-        }
-    }
+		}
+	}
 }

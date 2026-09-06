@@ -5,16 +5,18 @@ using System.Text;
 
 namespace Sharpmake.Generators
 {
-    internal class XmlFileGenerator : FileGenerator
-    {
-        private static readonly Encoding s_xmlEncoding = new UTF8Encoding(true);
+	internal class XmlFileGenerator : FileGenerator
+	{
+		private static readonly Encoding s_xmlEncoding = new UTF8Encoding(true);
 
-        public XmlFileGenerator()
-            : base(s_xmlEncoding)
-        { }
+		public XmlFileGenerator()
+			: base(s_xmlEncoding)
+		{
+		}
 
-        public XmlFileGenerator(Resolver resolver)
-            : base(s_xmlEncoding, resolver)
-        { }
-    }
+		public XmlFileGenerator(Resolver resolver)
+			: base(s_xmlEncoding, resolver)
+		{
+		}
+	}
 }

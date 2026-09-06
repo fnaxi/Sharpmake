@@ -8,8 +8,7 @@
 
 int exe()
 {
-
-    Util2::Log("Hello Android World, from " CREATION_DATE "!");
+	Util2::Log("Hello Android World, from " CREATION_DATE "!");
 
 #if _DEBUG
     Util2::Log("- Exe is built in Debug !");
@@ -20,14 +19,14 @@ int exe()
 #endif
 
 
-    // from static_lib1
-    static_lib1_utils::GetRandomPosition();
+	// from static_lib1
+	static_lib1_utils::GetRandomPosition();
 
-    // from static_lib2
-    Util2 utilityStatic;
-    utilityStatic.DoSomethingUseful();
-    StaticLib2::UselessMethod();
-    return 0;
+	// from static_lib2
+	Util2 utilityStatic;
+	utilityStatic.DoSomethingUseful();
+	StaticLib2::UselessMethod();
+	return 0;
 }
 
 /**
@@ -37,5 +36,5 @@ int exe()
  */
 void android_main(struct android_app* state)
 {
-    exit(exe());
+	exit(exe());
 }

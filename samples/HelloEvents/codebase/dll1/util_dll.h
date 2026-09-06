@@ -16,6 +16,5 @@
 
 struct UtilDll1
 {
-    UTIL_DLL int ComputeSum(const std::vector<int>& someInts);
+	UTIL_DLL int ComputeSum(const std::vector<int>& someInts);
 };
-

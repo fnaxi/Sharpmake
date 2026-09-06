@@ -7,86 +7,90 @@ using Sharpmake.Generators.VisualStudio;
 
 namespace Sharpmake
 {
-    public static partial class Apple
-    {
-        [PlatformImplementation(Platform.watchos,
-            typeof(IPlatformDescriptor),
-            typeof(IFastBuildCompilerSettings),
-            typeof(IPlatformBff),
-            typeof(IClangPlatformBff),
-            typeof(IApplePlatformBff),
-            typeof(IPlatformVcxproj),
-            typeof(Project.Configuration.IConfigurationTasks))]
-        public sealed partial class watchOsPlatform : BaseApplePlatform
-        {
-            public override Platform SharpmakePlatform => Platform.watchos;
+	public static partial class Apple
+	{
+		[PlatformImplementation(Platform.watchos,
+			typeof(IPlatformDescriptor),
+			typeof(IFastBuildCompilerSettings),
+			typeof(IPlatformBff),
+			typeof(IClangPlatformBff),
+			typeof(IApplePlatformBff),
+			typeof(IPlatformVcxproj),
+			typeof(Project.Configuration.IConfigurationTasks))]
+		public sealed partial class watchOsPlatform : BaseApplePlatform
+		{
+			public override Platform SharpmakePlatform => Platform.watchos;
 
-            #region IPlatformDescriptor implementation
-            public override string SimplePlatformString => "watchOS";
-            #endregion
+			#region IPlatformDescriptor implementation
 
-            #region IPlatformBff implementation
-            public override string BffPlatformDefine => "_WATCHOS";
+			public override string SimplePlatformString => "watchOS";
 
-            public override string CConfigName(Configuration conf)
-            {
-                return ".watchosConfig";
-            }
+			#endregion
 
-            public override string CppConfigName(Configuration conf)
-            {
-                return ".watchosppConfig";
-            }
+			#region IPlatformBff implementation
 
-            public override string SwiftConfigName(Configuration conf)
-            {
-                return ".watchosswiftConfig";
-            }
-            #endregion
+			public override string BffPlatformDefine => "_WATCHOS";
 
-            public override void SelectCompilerOptions(IGenerationContext context)
-            {
-                base.SelectCompilerOptions(context);
+			public override string CConfigName(Configuration conf)
+			{
+				return ".watchosConfig";
+			}
 
-                var options = context.Options;
-                var cmdLineOptions = context.CommandLineOptions;
-                var conf = context.Configuration;
+			public override string CppConfigName(Configuration conf)
+			{
+				return ".watchosppConfig";
+			}
 
-                // Sysroot
-                options["SDKRoot"] = "watchos";
-                cmdLineOptions["SDKRoot"] = $"-isysroot {ApplePlatform.Settings.WatchOSSDKPath}";
+			public override string SwiftConfigName(Configuration conf)
+			{
+				return ".watchosswiftConfig";
+			}
 
-                // Target
-                options["MacOSDeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
-                options["IPhoneOSDeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
-                options["TvOSDeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
+			#endregion
 
-                Options.XCode.Compiler.WatchOSDeploymentTarget watchosDeploymentTarget = Options.GetObject<Options.XCode.Compiler.WatchOSDeploymentTarget>(conf);
-                if (watchosDeploymentTarget != null)
-                {
-                    options["WatchOSDeploymentTarget"] = watchosDeploymentTarget.MinimumVersion;
-                    string deploymentTarget = $"{GetDeploymentTargetPrefix(conf)}{watchosDeploymentTarget.MinimumVersion}";
-                    cmdLineOptions["DeploymentTarget"] = IsLinkerInvokedViaCompiler ? deploymentTarget : FileGeneratorUtilities.RemoveLineTag;
-                    cmdLineOptions["SwiftDeploymentTarget"] = deploymentTarget;
-                }
-                else
-                {
-                    options["WatchOSDeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
-                    cmdLineOptions["DeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
-                    cmdLineOptions["SwiftDeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
-                }
+			public override void SelectCompilerOptions(IGenerationContext context)
+			{
+				base.SelectCompilerOptions(context);
 
-                options["SupportsMaccatalyst"] = FileGeneratorUtilities.RemoveLineTag;
-                options["SupportsMacDesignedForIphoneIpad"] = FileGeneratorUtilities.RemoveLineTag;
-            }
+				var options = context.Options;
+				var cmdLineOptions = context.CommandLineOptions;
+				var conf = context.Configuration;
 
-            public override void SelectLinkerOptions(IGenerationContext context)
-            {
-                base.SelectLinkerOptions(context);
+				// Sysroot
+				options["SDKRoot"] = "watchos";
+				cmdLineOptions["SDKRoot"] = $"-isysroot {ApplePlatform.Settings.WatchOSSDKPath}";
 
-                // Sysroot
-                SelectCustomSysLibRoot(context, ApplePlatform.Settings.WatchOSSDKPath);
-            }
-        }
-    }
+				// Target
+				options["MacOSDeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
+				options["IPhoneOSDeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
+				options["TvOSDeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
+
+				Options.XCode.Compiler.WatchOSDeploymentTarget watchosDeploymentTarget = Options.GetObject<Options.XCode.Compiler.WatchOSDeploymentTarget>(conf);
+				if (watchosDeploymentTarget != null)
+				{
+					options["WatchOSDeploymentTarget"] = watchosDeploymentTarget.MinimumVersion;
+					string deploymentTarget = $"{GetDeploymentTargetPrefix(conf)}{watchosDeploymentTarget.MinimumVersion}";
+					cmdLineOptions["DeploymentTarget"] = IsLinkerInvokedViaCompiler ? deploymentTarget : FileGeneratorUtilities.RemoveLineTag;
+					cmdLineOptions["SwiftDeploymentTarget"] = deploymentTarget;
+				}
+				else
+				{
+					options["WatchOSDeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
+					cmdLineOptions["DeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
+					cmdLineOptions["SwiftDeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
+				}
+
+				options["SupportsMaccatalyst"] = FileGeneratorUtilities.RemoveLineTag;
+				options["SupportsMacDesignedForIphoneIpad"] = FileGeneratorUtilities.RemoveLineTag;
+			}
+
+			public override void SelectLinkerOptions(IGenerationContext context)
+			{
+				base.SelectLinkerOptions(context);
+
+				// Sysroot
+				SelectCustomSysLibRoot(context, ApplePlatform.Settings.WatchOSSDKPath);
+			}
+		}
+	}
 }

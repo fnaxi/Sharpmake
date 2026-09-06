@@ -6,5 +6,5 @@
 
 void hello_c()
 {
-    std::cout << "Hello from C++ in a .c!" << std::endl;
+	std::cout << "Hello from C++ in a .c!" << std::endl;
 }

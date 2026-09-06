@@ -2,5 +2,5 @@
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-    return (fcnB() == 3) ? 0 : 1;
+	return (fcnB() == 3) ? 0 : 1;
 }

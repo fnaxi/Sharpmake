@@ -5,7 +5,7 @@ using json = nlohmann::json;
 
 int main(int, char**)
 {
-    std::cout << "I was built in "
+	std::cout << "I was built in "
 
 #if _DEBUG
         "Debug"
@@ -18,20 +18,21 @@ int main(int, char**)
 #if _WIN64
         " x64"
 #else
-        " x86"
+		" x86"
 #endif
 
-        << std::endl;
+		<< std::endl;
 
 
-    json j = {
-        {"happy", true},
-        {"pi", 3.141},
-    };
+	json j = {
+		{"happy", true},
+		{"pi", 3.141},
+	};
 
-    for (auto& element : j) {
-        std::cout << element << '\n';
-    }
+	for (auto& element : j)
+	{
+		std::cout << element << '\n';
+	}
 
-    return 0;
+	return 0;
 }

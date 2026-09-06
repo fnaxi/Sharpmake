@@ -1,7 +1,7 @@
 #include "src/pch.h"
 
 #if !_DEBUG
-    #error Expected Debug define (_DEBUG) was not found
+#error Expected Debug define (_DEBUG) was not found
 #endif
 
 #if defined(NDEBUG) && NDEBUG

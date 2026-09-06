@@ -3,12 +3,12 @@
 
 namespace Sharpmake.Generators.Generic
 {
-    public partial class MakeProject
-    {
-        private static class Template
-        {
-            public static string GlobalTemplate =
-@"include $(CLEAR_VARS)
+	public partial class MakeProject
+	{
+		private static class Template
+		{
+			public static string GlobalTemplate =
+				@"include $(CLEAR_VARS)
 
 ifeq ($(COMPIL_FINAL),1)
 	LOCAL_EXPORT_CFLAGS += [item.CFlagsExportedFinal]
@@ -60,20 +60,20 @@ LOCAL_LDLIBS := [item.SharedLibraries]
 [item.BuildType]
 ";
 
-            public static string IncludePathTemplate = @"LOCAL_C_INCLUDES += [Path]";
+			public static string IncludePathTemplate = @"LOCAL_C_INCLUDES += [Path]";
 
-            public static string SourceFileTemplate = @"LOCAL_SRC_FILES += [Path]";
+			public static string SourceFileTemplate = @"LOCAL_SRC_FILES += [Path]";
 
-            public static string BuildSharedLibraryTemplate = @"include $(BUILD_SHARED_LIBRARY)";
-            public static string BuildStaticLibraryTemplate = @"include $(BUILD_STATIC_LIBRARY)";
+			public static string BuildSharedLibraryTemplate = @"include $(BUILD_SHARED_LIBRARY)";
+			public static string BuildStaticLibraryTemplate = @"include $(BUILD_STATIC_LIBRARY)";
 
-            public static string PrebuiltStaticLibraryTemplate =
-@"include $(CLEAR_VARS)
+			public static string PrebuiltStaticLibraryTemplate =
+				@"include $(CLEAR_VARS)
 LOCAL_MODULE := [item.ModuleName]
 LOCAL_ARM_MODE := [item.ArmMode]
 LOCAL_SRC_FILES := [item.LibraryPath]
 include $(PREBUILT_STATIC_LIBRARY)
 ";
-        }
-    }
+		}
+	}
 }

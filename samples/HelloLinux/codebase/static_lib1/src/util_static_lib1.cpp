@@ -4,8 +4,8 @@
 
 namespace static_lib1_utils
 {
-    std::streampos GetRandomPosition()
-    {
+	std::streampos GetRandomPosition()
+	{
 #if _DEBUG
     std::cout << "- StaticLib1 is built in Debug"
 #  if USES_FASTBUILD
@@ -22,7 +22,6 @@ namespace static_lib1_utils
         "!" << std::endl;
 #endif
 
-        return 1;
-    }
+		return 1;
+	}
 }
-

@@ -6,5 +6,5 @@
 
 void hello_c(void)
 {
-    printf("Hello from C code!\n");
+	printf("Hello from C code!\n");
 }

@@ -8,24 +8,24 @@ extern void floating_file_method();
 
 int main(int, char**)
 {
-    Util::StaticUtilityMethod();
+	Util::StaticUtilityMethod();
 
-    // call things from the additional_dir
-    {
-        ExtraClass1 e1(4);
-        e1.PrintMyContent();
+	// call things from the additional_dir
+	{
+		ExtraClass1 e1(4);
+		e1.PrintMyContent();
 
-        ExtraClass2* e2 = new ExtraClass2(6);
-        e2->PrintMyContent();
-        delete e2;
-    }
+		ExtraClass2* e2 = new ExtraClass2(6);
+		e2->PrintMyContent();
+		delete e2;
+	}
 
-    // call things from the dir_individual_files
-    {
-        FloatingClass f(2);
-        f.PrintMyContent();
-        floating_file_method();
-    }
+	// call things from the dir_individual_files
+	{
+		FloatingClass f(2);
+		f.PrintMyContent();
+		floating_file_method();
+	}
 
-    return 0;
+	return 0;
 }

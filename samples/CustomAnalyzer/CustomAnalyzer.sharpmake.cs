@@ -28,19 +28,19 @@ namespace CustomAnalyzer;
 [Generate]
 public class SampleProject : Project
 {
-    public SampleProject()
-    {
-        Name = "CustomAnalyzerSample";
-        AddTargets(new Target(Platform.win64, DevEnv.vs2022, Optimization.Debug | Optimization.Release));
-        SourceRootPath = @"[project.SharpmakeCsPath]\codebase";
-    }
+	public SampleProject()
+	{
+		Name = "CustomAnalyzerSample";
+		AddTargets(new Target(Platform.win64, DevEnv.vs2022, Optimization.Debug | Optimization.Release));
+		SourceRootPath = @"[project.SharpmakeCsPath]\codebase";
+	}
 
-    [Configure]
-    public void ConfigureAll(Configuration conf, Target target)
-    {
-        conf.ProjectFileName = "[project.Name]_[target.DevEnv]_[target.Platform]";
-        conf.ProjectPath = @"[project.SharpmakeCsPath]\projects";
-    }
+	[Configure]
+	public void ConfigureAll(Configuration conf, Target target)
+	{
+		conf.ProjectFileName = "[project.Name]_[target.DevEnv]_[target.Platform]";
+		conf.ProjectPath = @"[project.SharpmakeCsPath]\projects";
+	}
 }
 
 // Missing [Sharpmake.Generate]
@@ -49,45 +49,45 @@ public class SampleProject : Project
 // Add [Sharpmake.Generate] above this class to fix the warning
 public class ForgottenProject : Project
 {
-    public ForgottenProject()
-    {
-        Name = "Forgotten";
-        AddTargets(new Target(Platform.win64, DevEnv.vs2022, Optimization.Debug | Optimization.Release));
-        SourceRootPath = @"[project.SharpmakeCsPath]\codebase";
-    }
+	public ForgottenProject()
+	{
+		Name = "Forgotten";
+		AddTargets(new Target(Platform.win64, DevEnv.vs2022, Optimization.Debug | Optimization.Release));
+		SourceRootPath = @"[project.SharpmakeCsPath]\codebase";
+	}
 
-    [Configure]
-    public void ConfigureAll(Configuration conf, Target target)
-    {
-        conf.ProjectFileName = "[project.Name]_[target.DevEnv]_[target.Platform]";
-        conf.ProjectPath = @"[project.SharpmakeCsPath]\projects";
-    }
+	[Configure]
+	public void ConfigureAll(Configuration conf, Target target)
+	{
+		conf.ProjectFileName = "[project.Name]_[target.DevEnv]_[target.Platform]";
+		conf.ProjectPath = @"[project.SharpmakeCsPath]\projects";
+	}
 }
 
 [Generate]
 public class CustomAnalyzerSolution : Sharpmake.Solution
 {
-    public CustomAnalyzerSolution()
-    {
-        Name = "CustomAnalyzer";
-        AddTargets(new Target(Platform.win64, DevEnv.vs2022, Optimization.Debug | Optimization.Release));
-    }
+	public CustomAnalyzerSolution()
+	{
+		Name = "CustomAnalyzer";
+		AddTargets(new Target(Platform.win64, DevEnv.vs2022, Optimization.Debug | Optimization.Release));
+	}
 
-    [Configure]
-    public void ConfigureAll(Configuration conf, Target target)
-    {
-        conf.SolutionFileName = "[solution.Name]_[target.DevEnv]_[target.Platform]";
-        conf.SolutionPath = @"[solution.SharpmakeCsPath]\projects";
-        conf.AddProject<SampleProject>(target);
-    }
+	[Configure]
+	public void ConfigureAll(Configuration conf, Target target)
+	{
+		conf.SolutionFileName = "[solution.Name]_[target.DevEnv]_[target.Platform]";
+		conf.SolutionPath = @"[solution.SharpmakeCsPath]\projects";
+		conf.AddProject<SampleProject>(target);
+	}
 }
 
 public static class Main
 {
-    [Sharpmake.Main]
-    public static void SharpmakeMain(Sharpmake.Arguments arguments)
-    {
-        KitsRootPaths.SetUseKitsRootForDevEnv(DevEnv.vs2022, KitsRootEnum.KitsRoot10, Options.Vc.General.WindowsTargetPlatformVersion.Latest);
-        arguments.Generate<CustomAnalyzerSolution>();
-    }
+	[Sharpmake.Main]
+	public static void SharpmakeMain(Sharpmake.Arguments arguments)
+	{
+		KitsRootPaths.SetUseKitsRootForDevEnv(DevEnv.vs2022, KitsRootEnum.KitsRoot10, Options.Vc.General.WindowsTargetPlatformVersion.Latest);
+		arguments.Generate<CustomAnalyzerSolution>();
+	}
 }

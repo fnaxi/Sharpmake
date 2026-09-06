@@ -4,9 +4,10 @@
 #include "..\theEmptyCPPProject\TestClass.h"
 using namespace System;
 
-namespace CLRCPPProj {
-
-	public ref class Class1
+namespace CLRCPPProj
+{
+	public
+ ref class Class1
 	{
 	public:
 		void Test()

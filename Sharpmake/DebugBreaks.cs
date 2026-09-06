@@ -6,157 +6,163 @@ using System.Diagnostics;
 
 namespace Sharpmake
 {
-    /// <summary>
-    /// The DebugBreaks are used to help with debugging, allowing conditional breakpoints that are
-    /// built-in in code.  Feel free to add more as you need them while debugging Sharpmake. 
-    /// </summary>
-    public static class DebugBreaks
-    {
-        public static bool IsEnabled;
-        static DebugBreaks()
-        {
-            IsEnabled = Debugger.IsAttached;
-        }
+	/// <summary>
+	/// The DebugBreaks are used to help with debugging, allowing conditional breakpoints that are
+	/// built-in in code.  Feel free to add more as you need them while debugging Sharpmake. 
+	/// </summary>
+	public static class DebugBreaks
+	{
+		public static bool IsEnabled;
 
-        [Flags]
-        // Context is used to enable or disable specific breaks.
-        // Feel free to add more in code for better granularity.
-        public enum Context
-        {
-            AddMatchFiles = 0x1,
-            Blobbing = 0x2,
-            Resolving = 0x4,
-            BlobbingResolving = 0x8,
-            All = AddMatchFiles | Blobbing | Resolving | BlobbingResolving
-        }
+		static DebugBreaks()
+		{
+			IsEnabled = Debugger.IsAttached;
+		}
 
-        public static Context BreakOnContext = Context.All;
+		[Flags]
+		// Context is used to enable or disable specific breaks.
+		// Feel free to add more in code for better granularity.
+		public enum Context
+		{
+			AddMatchFiles = 0x1,
+			Blobbing = 0x2,
+			Resolving = 0x4,
+			BlobbingResolving = 0x8,
+			All = AddMatchFiles | Blobbing | Resolving | BlobbingResolving
+		}
 
-        // Complete project path to break on; not case-sensitive
-        public static string ProjectPath = null;
+		public static Context BreakOnContext = Context.All;
 
-        // Complete source path to break on; not case-sensitive
-        public static string SourcePath = null;
+		// Complete project path to break on; not case-sensitive
+		public static string ProjectPath = null;
 
-        public static string BlobPath = null;
+		// Complete source path to break on; not case-sensitive
+		public static string SourcePath = null;
 
-        public delegate bool FilterProjectConfigurationDelegate(Project.Configuration conf);
+		public static string BlobPath = null;
 
-        public static FilterProjectConfigurationDelegate FilterProjectConfiguration = null;
+		public delegate bool FilterProjectConfigurationDelegate(Project.Configuration conf);
 
-        public static string FilterProjectConfigurationStringSubStr = null;
+		public static FilterProjectConfigurationDelegate FilterProjectConfiguration = null;
 
-        public static string FilterProjectConfigurationNameSubStr = null;
+		public static string FilterProjectConfigurationStringSubStr = null;
 
-        public static bool ShouldBreakOnProjectConfiguration(Context context, Project.Configuration conf)
-        {
-            if (!IsEnabled)
-                return false;
-            if (!BreakOnContext.HasFlag(context))
-                return false;
-            if (BlobPath != null && conf.BlobPath != BlobPath)
-                return false;
-            if (FilterProjectConfigurationStringSubStr != null)
-                return conf.ToString().Contains(FilterProjectConfigurationStringSubStr);
-            if (FilterProjectConfigurationNameSubStr != null)
-                return conf.Name.Contains(FilterProjectConfigurationNameSubStr);
-            if (FilterProjectConfiguration != null)
-                return FilterProjectConfiguration(conf);
-            return false;
-        }
+		public static string FilterProjectConfigurationNameSubStr = null;
 
-        public static bool CanBreakOnProjectConfiguration(Project.Configuration conf)
-        {
-            if (!IsEnabled)
-                return false;
-            if (BlobPath != null && conf.BlobPath != BlobPath)
-                return false;
-            if (FilterProjectConfigurationStringSubStr != null)
-                return conf.ToString().Contains(FilterProjectConfigurationStringSubStr);
-            if (FilterProjectConfigurationNameSubStr != null)
-                return conf.Name.Contains(FilterProjectConfigurationNameSubStr);
-            if (FilterProjectConfiguration != null)
-                return FilterProjectConfiguration(conf);
-            return true;
-        }
+		public static bool ShouldBreakOnProjectConfiguration(Context context, Project.Configuration conf)
+		{
+			if (!IsEnabled)
+				return false;
+			if (!BreakOnContext.HasFlag(context))
+				return false;
+			if (BlobPath != null && conf.BlobPath != BlobPath)
+				return false;
+			if (FilterProjectConfigurationStringSubStr != null)
+				return conf.ToString().Contains(FilterProjectConfigurationStringSubStr);
+			if (FilterProjectConfigurationNameSubStr != null)
+				return conf.Name.Contains(FilterProjectConfigurationNameSubStr);
+			if (FilterProjectConfiguration != null)
+				return FilterProjectConfiguration(conf);
+			return false;
+		}
 
-        public static bool ShouldBreakOnProjectPath(Context context, string projectPath, Project.Configuration conf)
-        {
-            if (!IsEnabled)
-                return false;
-            if (!BreakOnContext.HasFlag(context))
-                return false;
-            if (BlobPath != null && conf.BlobPath != BlobPath)
-                return false;
-            if (ProjectPath != null &&
-                string.Compare(projectPath, ProjectPath, StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                return CanBreakOnProjectConfiguration(conf);
-            }
-            return false;
-        }
+		public static bool CanBreakOnProjectConfiguration(Project.Configuration conf)
+		{
+			if (!IsEnabled)
+				return false;
+			if (BlobPath != null && conf.BlobPath != BlobPath)
+				return false;
+			if (FilterProjectConfigurationStringSubStr != null)
+				return conf.ToString().Contains(FilterProjectConfigurationStringSubStr);
+			if (FilterProjectConfigurationNameSubStr != null)
+				return conf.Name.Contains(FilterProjectConfigurationNameSubStr);
+			if (FilterProjectConfiguration != null)
+				return FilterProjectConfiguration(conf);
+			return true;
+		}
 
-        public static bool ShouldBreakOnProjectPath(Context context, string projectPath)
-        {
-            if (!IsEnabled)
-                return false;
-            if (!BreakOnContext.HasFlag(context))
-                return false;
-            if (ProjectPath != null &&
-                string.Compare(projectPath, ProjectPath, StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                return true;
-            }
-            return false;
-        }
+		public static bool ShouldBreakOnProjectPath(Context context, string projectPath, Project.Configuration conf)
+		{
+			if (!IsEnabled)
+				return false;
+			if (!BreakOnContext.HasFlag(context))
+				return false;
+			if (BlobPath != null && conf.BlobPath != BlobPath)
+				return false;
+			if (ProjectPath != null &&
+				string.Compare(projectPath, ProjectPath, StringComparison.OrdinalIgnoreCase) == 0)
+			{
+				return CanBreakOnProjectConfiguration(conf);
+			}
+
+			return false;
+		}
+
+		public static bool ShouldBreakOnProjectPath(Context context, string projectPath)
+		{
+			if (!IsEnabled)
+				return false;
+			if (!BreakOnContext.HasFlag(context))
+				return false;
+			if (ProjectPath != null &&
+				string.Compare(projectPath, ProjectPath, StringComparison.OrdinalIgnoreCase) == 0)
+			{
+				return true;
+			}
+
+			return false;
+		}
 
 
+		public static bool ShouldBreakOnSourcePath(Context context, Strings sourcePaths, Project.Configuration conf)
+		{
+			if (!IsEnabled)
+				return false;
+			if (!BreakOnContext.HasFlag(context))
+				return false;
+			if (BlobPath != null && conf.BlobPath != BlobPath)
+				return false;
+			if (SourcePath != null && CanBreakOnProjectConfiguration(conf))
+			{
+				return ShouldBreakOnSourcePath(context, sourcePaths);
+			}
 
-        public static bool ShouldBreakOnSourcePath(Context context, Strings sourcePaths, Project.Configuration conf)
-        {
-            if (!IsEnabled)
-                return false;
-            if (!BreakOnContext.HasFlag(context))
-                return false;
-            if (BlobPath != null && conf.BlobPath != BlobPath)
-                return false;
-            if (SourcePath != null && CanBreakOnProjectConfiguration(conf))
-            {
-                return ShouldBreakOnSourcePath(context, sourcePaths);
-            }
-            return false;
-        }
+			return false;
+		}
 
-        public static bool ShouldBreakOnSourcePath(Context context, Strings sourcePaths)
-        {
-            if (!IsEnabled)
-                return false;
-            if (!BreakOnContext.HasFlag(context))
-                return false;
-            if (SourcePath != null)
-            {
-                if (sourcePaths.Contains(SourcePath))
-                    return true;
-                foreach (string sourcePath in sourcePaths.Values)
-                {
-                    if (ShouldBreakOnSourcePath(context, sourcePath))
-                        return true;
-                }
-            }
-            return false;
-        }
-        public static bool ShouldBreakOnSourcePath(Context context, string sourcePath)
-        {
-            if (!IsEnabled)
-                return false;
-            if (!BreakOnContext.HasFlag(context))
-                return false;
-            if (SourcePath != null &&
-                string.Compare(sourcePath, SourcePath, StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                return true;
-            }
-            return false;
-        }
-    }
+		public static bool ShouldBreakOnSourcePath(Context context, Strings sourcePaths)
+		{
+			if (!IsEnabled)
+				return false;
+			if (!BreakOnContext.HasFlag(context))
+				return false;
+			if (SourcePath != null)
+			{
+				if (sourcePaths.Contains(SourcePath))
+					return true;
+				foreach (string sourcePath in sourcePaths.Values)
+				{
+					if (ShouldBreakOnSourcePath(context, sourcePath))
+						return true;
+				}
+			}
+
+			return false;
+		}
+
+		public static bool ShouldBreakOnSourcePath(Context context, string sourcePath)
+		{
+			if (!IsEnabled)
+				return false;
+			if (!BreakOnContext.HasFlag(context))
+				return false;
+			if (SourcePath != null &&
+				string.Compare(sourcePath, SourcePath, StringComparison.OrdinalIgnoreCase) == 0)
+			{
+				return true;
+			}
+
+			return false;
+		}
+	}
 }

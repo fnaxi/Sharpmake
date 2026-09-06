@@ -12,9 +12,9 @@
 
 int UtilDll1::ComputeSum(const std::vector<int>& someInts)
 {
-    int acc = 0;
-    for (int item : someInts)
-        acc += item;
+	int acc = 0;
+	for (int item : someInts)
+		acc += item;
 
 #if defined(_DEBUG) && _DEBUG
     std::cout << "- Dll1 is built in Debug"
@@ -32,8 +32,7 @@ int UtilDll1::ComputeSum(const std::vector<int>& someInts)
         "!" << std::endl;
 #endif
 
-    acc += static_cast<int>(static_lib1_utils::GetRandomPosition());
+	acc += static_cast<int>(static_lib1_utils::GetRandomPosition());
 
-    return acc;
+	return acc;
 }
-

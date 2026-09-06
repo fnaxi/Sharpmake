@@ -6,37 +6,38 @@ using Sharpmake;
 
 namespace HelloAndroidAgde
 {
-    [Sharpmake.Generate]
-    public class HelloAndroidAgdeSolution : CommonSolution
-    {
-        public HelloAndroidAgdeSolution()
-        {
-            AddTargets(CommonTarget.GetDefaultTargets());
-            Name = "HelloAndroidAgde";
-        }
+	[Sharpmake.Generate]
+	public class HelloAndroidAgdeSolution : CommonSolution
+	{
+		public HelloAndroidAgdeSolution()
+		{
+			AddTargets(CommonTarget.GetDefaultTargets());
+			Name = "HelloAndroidAgde";
+		}
 
-        private bool _hasCopiedResources = false;
-        public override void ConfigureAgde(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAgde(conf, target);
+		private bool _hasCopiedResources = false;
 
-            conf.AddProject<ExeProject>(target);
+		public override void ConfigureAgde(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAgde(conf, target);
 
-            if (!_hasCopiedResources)
-            {
-                //copy top-level build gradle files to root dir
-                AndroidUtil.DirectoryCopy(Path.Combine(conf.Solution.SharpmakeCsPath, @"..\gradle\root"), conf.SolutionPath);
-                _hasCopiedResources = true;
+			conf.AddProject<ExeProject>(target);
 
-                var gradlePropertiesFile = Path.Combine(conf.SolutionPath, "gradle.properties");
-                if (File.Exists(gradlePropertiesFile))
-                {
-                    using (StreamWriter sw = File.AppendText(gradlePropertiesFile))
-                    {
-                        sw.WriteLine(string.Format("ndkRoot={0}", Android.GlobalSettings.NdkRoot.Replace("\\", "/")));
-                    }
-                }
-            }
-        }
-    }
+			if (!_hasCopiedResources)
+			{
+				//copy top-level build gradle files to root dir
+				AndroidUtil.DirectoryCopy(Path.Combine(conf.Solution.SharpmakeCsPath, @"..\gradle\root"), conf.SolutionPath);
+				_hasCopiedResources = true;
+
+				var gradlePropertiesFile = Path.Combine(conf.SolutionPath, "gradle.properties");
+				if (File.Exists(gradlePropertiesFile))
+				{
+					using (StreamWriter sw = File.AppendText(gradlePropertiesFile))
+					{
+						sw.WriteLine(string.Format("ndkRoot={0}", Android.GlobalSettings.NdkRoot.Replace("\\", "/")));
+					}
+				}
+			}
+		}
+	}
 }

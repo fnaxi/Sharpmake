@@ -5,7 +5,7 @@
 #endif
 
 #if !NDEBUG
-    #error Expected Release define (NDEBUG) was not found
+#error Expected Release define (NDEBUG) was not found
 #endif
 
 #warning Release is built!

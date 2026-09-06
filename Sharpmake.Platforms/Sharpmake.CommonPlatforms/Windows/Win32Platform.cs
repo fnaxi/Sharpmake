@@ -7,44 +7,48 @@ using Sharpmake.Generators.VisualStudio;
 
 namespace Sharpmake
 {
-    public static partial class Windows
-    {
-        [PlatformImplementation(Platform.win32,
-            typeof(IPlatformDescriptor),
-            typeof(Project.Configuration.IConfigurationTasks),
-            typeof(IFastBuildCompilerSettings),
-            typeof(IWindowsFastBuildCompilerSettings),
-            typeof(IPlatformVcxproj))]
-        public sealed class Win32Platform : BaseWindowsPlatform
-        {
-            #region IPlatformDescriptor implementation
-            public override string SimplePlatformString => "Win32";
-            public override string GetToolchainPlatformString(ITarget target) => "Win32";
-            #endregion
+	public static partial class Windows
+	{
+		[PlatformImplementation(Platform.win32,
+			typeof(IPlatformDescriptor),
+			typeof(Project.Configuration.IConfigurationTasks),
+			typeof(IFastBuildCompilerSettings),
+			typeof(IWindowsFastBuildCompilerSettings),
+			typeof(IPlatformVcxproj))]
+		public sealed class Win32Platform : BaseWindowsPlatform
+		{
+			#region IPlatformDescriptor implementation
 
-            #region IPlatformVcxproj implementation
-            public override IEnumerable<string> GetImplicitlyDefinedSymbols(IGenerationContext context)
-            {
-                var defines = new List<string>();
-                defines.AddRange(base.GetImplicitlyDefinedSymbols(context));
-                defines.Add("WIN32");
+			public override string SimplePlatformString => "Win32";
+			public override string GetToolchainPlatformString(ITarget target) => "Win32";
 
-                return defines;
-            }
+			#endregion
 
-            public override void SetupPlatformTargetOptions(IGenerationContext context)
-            {
-                context.Options["TargetMachine"] = "MachineX86";
-                context.CommandLineOptions["TargetMachine"] = "/MACHINE:X86";
-                context.CommandLineOptions["NasmCompilerFormat"] = "-fwin32";
-            }
+			#region IPlatformVcxproj implementation
 
-            public override void SelectPlatformAdditionalDependenciesOptions(IGenerationContext context)
-            {
-                base.SelectPlatformAdditionalDependenciesOptions(context);
-                context.Options["AdditionalDependencies"] += ";%(AdditionalDependencies)";
-            }
-            #endregion
-        }
-    }
+			public override IEnumerable<string> GetImplicitlyDefinedSymbols(IGenerationContext context)
+			{
+				var defines = new List<string>();
+				defines.AddRange(base.GetImplicitlyDefinedSymbols(context));
+				defines.Add("WIN32");
+
+				return defines;
+			}
+
+			public override void SetupPlatformTargetOptions(IGenerationContext context)
+			{
+				context.Options["TargetMachine"] = "MachineX86";
+				context.CommandLineOptions["TargetMachine"] = "/MACHINE:X86";
+				context.CommandLineOptions["NasmCompilerFormat"] = "-fwin32";
+			}
+
+			public override void SelectPlatformAdditionalDependenciesOptions(IGenerationContext context)
+			{
+				base.SelectPlatformAdditionalDependenciesOptions(context);
+				context.Options["AdditionalDependencies"] += ";%(AdditionalDependencies)";
+			}
+
+			#endregion
+		}
+	}
 }

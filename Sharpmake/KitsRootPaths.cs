@@ -9,233 +9,253 @@ using System.Linq;
 
 namespace Sharpmake
 {
-    public class KitsRootPaths
-    {
-        private static Dictionary<DevEnv, Tuple<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>> s_defaultKitsRootForDevEnv = new Dictionary<DevEnv, Tuple<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>>();
-        private static Dictionary<KitsRootEnum, string> s_defaultKitsRoots = new Dictionary<KitsRootEnum, string>();
+	public class KitsRootPaths
+	{
+		private static Dictionary<DevEnv, Tuple<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>> s_defaultKitsRootForDevEnv =
+			new Dictionary<DevEnv, Tuple<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>>();
 
-        private static Dictionary<DevEnv, Tuple<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>> s_useKitsRootForDevEnv = new Dictionary<DevEnv, Tuple<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>>();
-        private static Dictionary<KitsRootEnum, string> s_kitsRoots = new Dictionary<KitsRootEnum, string>();
+		private static Dictionary<KitsRootEnum, string> s_defaultKitsRoots = new Dictionary<KitsRootEnum, string>();
 
-        private static readonly ConcurrentDictionary<DotNetFramework, string> s_netFxKitsDir = new ConcurrentDictionary<DotNetFramework, string>();
+		private static Dictionary<DevEnv, Tuple<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>> s_useKitsRootForDevEnv =
+			new Dictionary<DevEnv, Tuple<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>>();
 
-        private static readonly ConcurrentDictionary<DotNetFramework, string> s_netFxToolsDir = new ConcurrentDictionary<DotNetFramework, string>();
+		private static Dictionary<KitsRootEnum, string> s_kitsRoots = new Dictionary<KitsRootEnum, string>();
 
-        private static ConcurrentDictionary<Options.Vc.General.WindowsTargetPlatformVersion, bool> s_windowsTargetPlatformVersionInstalled = new ConcurrentDictionary<Options.Vc.General.WindowsTargetPlatformVersion, bool>();
+		private static readonly ConcurrentDictionary<DotNetFramework, string> s_netFxKitsDir = new ConcurrentDictionary<DotNetFramework, string>();
 
-        private static KitsRootPaths s_kitsRootsInstance = new KitsRootPaths();
+		private static readonly ConcurrentDictionary<DotNetFramework, string> s_netFxToolsDir = new ConcurrentDictionary<DotNetFramework, string>();
 
-        public KitsRootPaths()
-        {
-            string kitsRegistryKeyString = string.Format(@"SOFTWARE{0}\Microsoft\Windows Kits\Installed Roots",
-                Environment.Is64BitProcess ? @"\Wow6432Node" : string.Empty);
+		private static ConcurrentDictionary<Options.Vc.General.WindowsTargetPlatformVersion, bool> s_windowsTargetPlatformVersionInstalled =
+			new ConcurrentDictionary<Options.Vc.General.WindowsTargetPlatformVersion, bool>();
 
-            s_defaultKitsRoots[KitsRootEnum.KitsRoot] = Util.GetRegistryLocalMachineSubKeyValue(kitsRegistryKeyString, KitsRootEnum.KitsRoot.ToString(), @"C:\Program Files (x86)\Windows Kits\8.0\", enableLog: false);
-            s_defaultKitsRoots[KitsRootEnum.KitsRoot81] = Util.GetRegistryLocalMachineSubKeyValue(kitsRegistryKeyString, KitsRootEnum.KitsRoot81.ToString(), @"C:\Program Files (x86)\Windows Kits\8.1\", enableLog: false);
-            s_defaultKitsRoots[KitsRootEnum.KitsRoot10] = Util.GetRegistryLocalMachineSubKeyValue(kitsRegistryKeyString, KitsRootEnum.KitsRoot10.ToString(), @"C:\Program Files (x86)\Windows Kits\10\", enableLog: false);
+		private static KitsRootPaths s_kitsRootsInstance = new KitsRootPaths();
 
-            s_defaultKitsRootForDevEnv[DevEnv.vs2015] = Tuple.Create<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>(KitsRootEnum.KitsRoot81, Options.Vc.General.WindowsTargetPlatformVersion.v8_1);
-            s_defaultKitsRootForDevEnv[DevEnv.vs2017] = Tuple.Create<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>(KitsRootEnum.KitsRoot10, Options.Vc.General.WindowsTargetPlatformVersion.v10_0_10586_0);
-            s_defaultKitsRootForDevEnv[DevEnv.vs2019] = Tuple.Create<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>(KitsRootEnum.KitsRoot10, Options.Vc.General.WindowsTargetPlatformVersion.v10_0_16299_0);
-            s_defaultKitsRootForDevEnv[DevEnv.vs2022] = Tuple.Create<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>(KitsRootEnum.KitsRoot10, Options.Vc.General.WindowsTargetPlatformVersion.v10_0_19041_0);
-            s_defaultKitsRootForDevEnv[DevEnv.vs2026] = Tuple.Create<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>(KitsRootEnum.KitsRoot10, Options.Vc.General.WindowsTargetPlatformVersion.v10_0_26100_0);
-        }
+		public KitsRootPaths()
+		{
+			string kitsRegistryKeyString = string.Format(@"SOFTWARE{0}\Microsoft\Windows Kits\Installed Roots",
+				Environment.Is64BitProcess ? @"\Wow6432Node" : string.Empty);
 
-        public static string GetRoot(KitsRootEnum kitsRoot)
-        {
-            if (s_kitsRootsInstance == null)
-                throw new Error();
+			s_defaultKitsRoots[KitsRootEnum.KitsRoot] = Util.GetRegistryLocalMachineSubKeyValue(kitsRegistryKeyString, KitsRootEnum.KitsRoot.ToString(),
+				@"C:\Program Files (x86)\Windows Kits\8.0\", enableLog: false);
+			s_defaultKitsRoots[KitsRootEnum.KitsRoot81] = Util.GetRegistryLocalMachineSubKeyValue(kitsRegistryKeyString, KitsRootEnum.KitsRoot81.ToString(),
+				@"C:\Program Files (x86)\Windows Kits\8.1\", enableLog: false);
+			s_defaultKitsRoots[KitsRootEnum.KitsRoot10] = Util.GetRegistryLocalMachineSubKeyValue(kitsRegistryKeyString, KitsRootEnum.KitsRoot10.ToString(),
+				@"C:\Program Files (x86)\Windows Kits\10\", enableLog: false);
 
-            if (s_kitsRoots.ContainsKey(kitsRoot))
-                return s_kitsRoots[kitsRoot];
+			s_defaultKitsRootForDevEnv[DevEnv.vs2015] =
+				Tuple.Create<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>(KitsRootEnum.KitsRoot81, Options.Vc.General.WindowsTargetPlatformVersion.v8_1);
+			s_defaultKitsRootForDevEnv[DevEnv.vs2017] =
+				Tuple.Create<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>(KitsRootEnum.KitsRoot10,
+					Options.Vc.General.WindowsTargetPlatformVersion.v10_0_10586_0);
+			s_defaultKitsRootForDevEnv[DevEnv.vs2019] =
+				Tuple.Create<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>(KitsRootEnum.KitsRoot10,
+					Options.Vc.General.WindowsTargetPlatformVersion.v10_0_16299_0);
+			s_defaultKitsRootForDevEnv[DevEnv.vs2022] =
+				Tuple.Create<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>(KitsRootEnum.KitsRoot10,
+					Options.Vc.General.WindowsTargetPlatformVersion.v10_0_19041_0);
+			s_defaultKitsRootForDevEnv[DevEnv.vs2026] =
+				Tuple.Create<KitsRootEnum, Options.Vc.General.WindowsTargetPlatformVersion?>(KitsRootEnum.KitsRoot10,
+					Options.Vc.General.WindowsTargetPlatformVersion.v10_0_26100_0);
+		}
 
-            return GetDefaultRoot(kitsRoot);
-        }
+		public static string GetRoot(KitsRootEnum kitsRoot)
+		{
+			if (s_kitsRootsInstance == null)
+				throw new Error();
 
-        public static string GetDefaultRoot(KitsRootEnum kitsRoot)
-        {
-            if (s_kitsRootsInstance == null)
-                throw new Error();
+			if (s_kitsRoots.ContainsKey(kitsRoot))
+				return s_kitsRoots[kitsRoot];
 
-            if (s_defaultKitsRoots.ContainsKey(kitsRoot))
-                return s_defaultKitsRoots[kitsRoot];
+			return GetDefaultRoot(kitsRoot);
+		}
 
-            throw new NotImplementedException("DefaultKitsRoots path was not set with " + kitsRoot);
-        }
+		public static string GetDefaultRoot(KitsRootEnum kitsRoot)
+		{
+			if (s_kitsRootsInstance == null)
+				throw new Error();
 
-        public static void SetRoot(KitsRootEnum kitsRoot, string kitsRootPath)
-        {
-            s_kitsRoots[kitsRoot] = kitsRootPath;
-        }
+			if (s_defaultKitsRoots.ContainsKey(kitsRoot))
+				return s_defaultKitsRoots[kitsRoot];
 
-        public static bool IsKitsRootForDevEnvOverriden(DevEnv devEnv)
-        {
-            return s_useKitsRootForDevEnv.ContainsKey(devEnv);
-        }
+			throw new NotImplementedException("DefaultKitsRoots path was not set with " + kitsRoot);
+		}
 
-        public static KitsRootEnum GetUseKitsRootForDevEnv(DevEnv devEnv)
-        {
-            if (s_useKitsRootForDevEnv.ContainsKey(devEnv))
-                return s_useKitsRootForDevEnv[devEnv].Item1;
+		public static void SetRoot(KitsRootEnum kitsRoot, string kitsRootPath)
+		{
+			s_kitsRoots[kitsRoot] = kitsRootPath;
+		}
 
-            if (s_defaultKitsRootForDevEnv.ContainsKey(devEnv))
-                return s_defaultKitsRootForDevEnv[devEnv].Item1;
+		public static bool IsKitsRootForDevEnvOverriden(DevEnv devEnv)
+		{
+			return s_useKitsRootForDevEnv.ContainsKey(devEnv);
+		}
 
-            throw new NotImplementedException("No KitsRoot to use with " + devEnv);
-        }
+		public static KitsRootEnum GetUseKitsRootForDevEnv(DevEnv devEnv)
+		{
+			if (s_useKitsRootForDevEnv.ContainsKey(devEnv))
+				return s_useKitsRootForDevEnv[devEnv].Item1;
 
-        public static bool UsesDefaultKitRoot(DevEnv devEnv)
-        {
-            KitsRootEnum kitsRoot = GetUseKitsRootForDevEnv(devEnv);
-            return kitsRoot == s_defaultKitsRootForDevEnv[devEnv].Item1;
-        }
+			if (s_defaultKitsRootForDevEnv.ContainsKey(devEnv))
+				return s_defaultKitsRootForDevEnv[devEnv].Item1;
 
-        public static bool IsDefaultKitRootPath(DevEnv devEnv)
-        {
-            KitsRootEnum kitsRoot = GetUseKitsRootForDevEnv(devEnv);
-            return GetDefaultRoot(kitsRoot) == GetRoot(kitsRoot);
-        }
+			throw new NotImplementedException("No KitsRoot to use with " + devEnv);
+		}
 
-        public static void SetUseKitsRootForDevEnv(DevEnv devEnv, KitsRootEnum kitsRoot, Options.Vc.General.WindowsTargetPlatformVersion? windowsTargetPlatformVersion = null)
-        {
-            windowsTargetPlatformVersion = windowsTargetPlatformVersion ?? s_defaultKitsRootForDevEnv[devEnv].Item2;
+		public static bool UsesDefaultKitRoot(DevEnv devEnv)
+		{
+			KitsRootEnum kitsRoot = GetUseKitsRootForDevEnv(devEnv);
+			return kitsRoot == s_defaultKitsRootForDevEnv[devEnv].Item1;
+		}
 
-            switch (kitsRoot)
-            {
-                case KitsRootEnum.KitsRoot:
-                    if (windowsTargetPlatformVersion.HasValue)
-                        throw new Error("Unsupported setting: WindowsTargetPlatformVersion is not customizable for KitsRoot 8.0.");
-                    break;
-                case KitsRootEnum.KitsRoot81:
-                    if (windowsTargetPlatformVersion.HasValue && windowsTargetPlatformVersion.Value != Options.Vc.General.WindowsTargetPlatformVersion.v8_1)
-                        throw new Error("Unsupported setting: WindowsTargetPlatformVersion is not customizable for KitsRoot 8.1.");
-                    break;
-                case KitsRootEnum.KitsRoot10:
-                    if (!windowsTargetPlatformVersion.HasValue)
-                        throw new Error("KitsRoot10 needs to be set for " + devEnv + ".");
+		public static bool IsDefaultKitRootPath(DevEnv devEnv)
+		{
+			KitsRootEnum kitsRoot = GetUseKitsRootForDevEnv(devEnv);
+			return GetDefaultRoot(kitsRoot) == GetRoot(kitsRoot);
+		}
 
-                    if (windowsTargetPlatformVersion == Options.Vc.General.WindowsTargetPlatformVersion.v8_1)
-                        throw new Error("Inconsistent values detected: KitsRoot10 set for " + devEnv + ", but windowsTargetPlatform is set to 8.1");
+		public static void SetUseKitsRootForDevEnv(DevEnv devEnv, KitsRootEnum kitsRoot, Options.Vc.General.WindowsTargetPlatformVersion? windowsTargetPlatformVersion = null)
+		{
+			windowsTargetPlatformVersion = windowsTargetPlatformVersion ?? s_defaultKitsRootForDevEnv[devEnv].Item2;
 
-                    break;
-            }
-            s_useKitsRootForDevEnv[devEnv] = Tuple.Create(kitsRoot, windowsTargetPlatformVersion);
-        }
+			switch (kitsRoot)
+			{
+				case KitsRootEnum.KitsRoot:
+					if (windowsTargetPlatformVersion.HasValue)
+						throw new Error("Unsupported setting: WindowsTargetPlatformVersion is not customizable for KitsRoot 8.0.");
+					break;
+				case KitsRootEnum.KitsRoot81:
+					if (windowsTargetPlatformVersion.HasValue && windowsTargetPlatformVersion.Value != Options.Vc.General.WindowsTargetPlatformVersion.v8_1)
+						throw new Error("Unsupported setting: WindowsTargetPlatformVersion is not customizable for KitsRoot 8.1.");
+					break;
+				case KitsRootEnum.KitsRoot10:
+					if (!windowsTargetPlatformVersion.HasValue)
+						throw new Error("KitsRoot10 needs to be set for " + devEnv + ".");
 
-        public static Options.Vc.General.WindowsTargetPlatformVersion GetWindowsTargetPlatformVersionForDevEnv(DevEnv devEnv)
-        {
-            Options.Vc.General.WindowsTargetPlatformVersion? version = null;
-            if (s_useKitsRootForDevEnv.ContainsKey(devEnv))
-                version = s_useKitsRootForDevEnv[devEnv].Item2;
-            else if (s_defaultKitsRootForDevEnv.ContainsKey(devEnv))
-                version = s_defaultKitsRootForDevEnv[devEnv].Item2;
+					if (windowsTargetPlatformVersion == Options.Vc.General.WindowsTargetPlatformVersion.v8_1)
+						throw new Error("Inconsistent values detected: KitsRoot10 set for " + devEnv + ", but windowsTargetPlatform is set to 8.1");
 
-            if (version != null)
-                return version.Value;
+					break;
+			}
 
-            throw new NotImplementedException("No WindowsTargetPlatformVersion associated with " + devEnv);
-        }
+			s_useKitsRootForDevEnv[devEnv] = Tuple.Create(kitsRoot, windowsTargetPlatformVersion);
+		}
 
-        public static string GetNETFXKitsDir(DotNetFramework dotNetFramework)
-        {
-            string netFxKitsDir;
-            if (s_netFxKitsDir.TryGetValue(dotNetFramework, out netFxKitsDir))
-                return netFxKitsDir;
+		public static Options.Vc.General.WindowsTargetPlatformVersion GetWindowsTargetPlatformVersionForDevEnv(DevEnv devEnv)
+		{
+			Options.Vc.General.WindowsTargetPlatformVersion? version = null;
+			if (s_useKitsRootForDevEnv.ContainsKey(devEnv))
+				version = s_useKitsRootForDevEnv[devEnv].Item2;
+			else if (s_defaultKitsRootForDevEnv.ContainsKey(devEnv))
+				version = s_defaultKitsRootForDevEnv[devEnv].Item2;
 
-            if (dotNetFramework >= DotNetFramework.v4_7)
-            {
-                var netFXSdkRegistryKeyString = string.Format(@"SOFTWARE{0}\Microsoft\Microsoft SDKs\NETFXSDK",
-                    Environment.Is64BitProcess ? @"\Wow6432Node" : string.Empty);
+			if (version != null)
+				return version.Value;
 
-                netFxKitsDir = Util.GetRegistryLocalMachineSubKeyValue(netFXSdkRegistryKeyString + @"\" + dotNetFramework.ToVersionString(), "KitsInstallationFolder", $@"C:\Program Files (x86)\Windows Kits\NETFXSDK\{dotNetFramework.ToVersionString()}\");
+			throw new NotImplementedException("No WindowsTargetPlatformVersion associated with " + devEnv);
+		}
 
-                s_netFxKitsDir.TryAdd(dotNetFramework, netFxKitsDir);
+		public static string GetNETFXKitsDir(DotNetFramework dotNetFramework)
+		{
+			string netFxKitsDir;
+			if (s_netFxKitsDir.TryGetValue(dotNetFramework, out netFxKitsDir))
+				return netFxKitsDir;
 
-                return netFxKitsDir;
-            }
+			if (dotNetFramework >= DotNetFramework.v4_7)
+			{
+				var netFXSdkRegistryKeyString = string.Format(@"SOFTWARE{0}\Microsoft\Microsoft SDKs\NETFXSDK",
+					Environment.Is64BitProcess ? @"\Wow6432Node" : string.Empty);
 
-            throw new NotImplementedException("No NETFXKitsDir associated with " + dotNetFramework);
-        }
+				netFxKitsDir = Util.GetRegistryLocalMachineSubKeyValue(netFXSdkRegistryKeyString + @"\" + dotNetFramework.ToVersionString(), "KitsInstallationFolder",
+					$@"C:\Program Files (x86)\Windows Kits\NETFXSDK\{dotNetFramework.ToVersionString()}\");
 
-        public static string GetNETFXToolsDir(DotNetFramework dotNetFramework)
-        {
-            string netFxToolsDir;
-            if (s_netFxToolsDir.TryGetValue(dotNetFramework, out netFxToolsDir))
-                return netFxToolsDir;
+				s_netFxKitsDir.TryAdd(dotNetFramework, netFxKitsDir);
 
-            var microsoftSdksRegistryKeyString = string.Format(@"SOFTWARE{0}\Microsoft\Microsoft SDKs",
-                Environment.Is64BitProcess ? @"\Wow6432Node" : string.Empty);
+				return netFxKitsDir;
+			}
 
-            if ((dotNetFramework & DotNetFramework.all_netframework) == 0)
-            {
-                throw new Exception("dotNetFramework argument must be a .net framework");
-            }
-            if (dotNetFramework >= DotNetFramework.v4_7)
-            {
-                netFxToolsDir = Util.GetRegistryLocalMachineSubKeyValue(
-                    $@"{microsoftSdksRegistryKeyString}\NETFXSDK\{dotNetFramework.ToVersionString()}\WinSDK-NetFx40Tools-x86",
-                    "InstallationFolder",
-                    $@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX {dotNetFramework.ToVersionString()} Tools\");
-            }
-            else
-            {
-                throw new NotImplementedException("No NETFXToolsDir associated with " + dotNetFramework);
-            }
+			throw new NotImplementedException("No NETFXKitsDir associated with " + dotNetFramework);
+		}
 
-            s_netFxToolsDir.TryAdd(dotNetFramework, netFxToolsDir);
-            return netFxToolsDir;
-        }
+		public static string GetNETFXToolsDir(DotNetFramework dotNetFramework)
+		{
+			string netFxToolsDir;
+			if (s_netFxToolsDir.TryGetValue(dotNetFramework, out netFxToolsDir))
+				return netFxToolsDir;
 
-        public static bool IsWindowsTargetPlatformVersionInstalled(Options.Vc.General.WindowsTargetPlatformVersion version)
-        {
-            bool isInstalled = false;
-            if (s_windowsTargetPlatformVersionInstalled.TryGetValue(version, out isInstalled))
-            {
-                return isInstalled;
-            }
+			var microsoftSdksRegistryKeyString = string.Format(@"SOFTWARE{0}\Microsoft\Microsoft SDKs",
+				Environment.Is64BitProcess ? @"\Wow6432Node" : string.Empty);
 
-            // cache which version folders exist on the current system
-            string path;
-            if (version == Options.Vc.General.WindowsTargetPlatformVersion.v8_1)
-            {
-                path = s_defaultKitsRoots[KitsRootEnum.KitsRoot81];
-            }
-            else
-            {
-                path = Path.Combine(s_defaultKitsRoots[KitsRootEnum.KitsRoot10], "Include", version.ToVersionString());
-            }
+			if ((dotNetFramework & DotNetFramework.all_netframework) == 0)
+			{
+				throw new Exception("dotNetFramework argument must be a .net framework");
+			}
 
-            isInstalled = Directory.Exists(path);
-            s_windowsTargetPlatformVersionInstalled.TryAdd(version, isInstalled);
+			if (dotNetFramework >= DotNetFramework.v4_7)
+			{
+				netFxToolsDir = Util.GetRegistryLocalMachineSubKeyValue(
+					$@"{microsoftSdksRegistryKeyString}\NETFXSDK\{dotNetFramework.ToVersionString()}\WinSDK-NetFx40Tools-x86",
+					"InstallationFolder",
+					$@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX {dotNetFramework.ToVersionString()} Tools\");
+			}
+			else
+			{
+				throw new NotImplementedException("No NETFXToolsDir associated with " + dotNetFramework);
+			}
 
-            return isInstalled;
-        }
+			s_netFxToolsDir.TryAdd(dotNetFramework, netFxToolsDir);
+			return netFxToolsDir;
+		}
 
-        public static void SetKitsRoot10ToHighestInstalledVersion(DevEnv? devEnv = null)
-        {
-            Options.Vc.General.WindowsTargetPlatformVersion? highestVersion = null;
+		public static bool IsWindowsTargetPlatformVersionInstalled(Options.Vc.General.WindowsTargetPlatformVersion version)
+		{
+			bool isInstalled = false;
+			if (s_windowsTargetPlatformVersionInstalled.TryGetValue(version, out isInstalled))
+			{
+				return isInstalled;
+			}
 
-            var targetVersions = EnumUtils.EnumerateValues<Options.Vc.General.WindowsTargetPlatformVersion>().Reverse();
-            foreach (var version in targetVersions)
-            {
-                if (IsWindowsTargetPlatformVersionInstalled(version))
-                {
-                    highestVersion = version;
-                    break;
-                }
-            }
+			// cache which version folders exist on the current system
+			string path;
+			if (version == Options.Vc.General.WindowsTargetPlatformVersion.v8_1)
+			{
+				path = s_defaultKitsRoots[KitsRootEnum.KitsRoot81];
+			}
+			else
+			{
+				path = Path.Combine(s_defaultKitsRoots[KitsRootEnum.KitsRoot10], "Include", version.ToVersionString());
+			}
 
-            if (devEnv.HasValue)
-            {
-                SetUseKitsRootForDevEnv(devEnv.Value, KitsRootEnum.KitsRoot10, highestVersion);
-            }
-            else
-            {
-                foreach (var env in EnumUtils.EnumerateValues<DevEnv>())
-                {
-                    SetUseKitsRootForDevEnv(env, KitsRootEnum.KitsRoot10, highestVersion);
-                }
-            }
-        }
-    }
+			isInstalled = Directory.Exists(path);
+			s_windowsTargetPlatformVersionInstalled.TryAdd(version, isInstalled);
+
+			return isInstalled;
+		}
+
+		public static void SetKitsRoot10ToHighestInstalledVersion(DevEnv? devEnv = null)
+		{
+			Options.Vc.General.WindowsTargetPlatformVersion? highestVersion = null;
+
+			var targetVersions = EnumUtils.EnumerateValues<Options.Vc.General.WindowsTargetPlatformVersion>().Reverse();
+			foreach (var version in targetVersions)
+			{
+				if (IsWindowsTargetPlatformVersionInstalled(version))
+				{
+					highestVersion = version;
+					break;
+				}
+			}
+
+			if (devEnv.HasValue)
+			{
+				SetUseKitsRootForDevEnv(devEnv.Value, KitsRootEnum.KitsRoot10, highestVersion);
+			}
+			else
+			{
+				foreach (var env in EnumUtils.EnumerateValues<DevEnv>())
+				{
+					SetUseKitsRootForDevEnv(env, KitsRootEnum.KitsRoot10, highestVersion);
+				}
+			}
+		}
+	}
 }

@@ -5,15 +5,15 @@ using System.Collections.Generic;
 
 namespace Sharpmake.Generators.VisualStudio
 {
-    public interface IVcxprojGenerationContext : IGenerationContext
-    {
-        string ProjectPath { get; }
-        string ProjectFileName { get; }
-        IReadOnlyList<Project.Configuration> ProjectConfigurations { get; }
-        IReadOnlyDictionary<Project.Configuration, Options.ExplicitOptions> ProjectConfigurationOptions { get; }
-        DevEnvRange DevelopmentEnvironmentsRange { get; }
-        IReadOnlyDictionary<Platform, IPlatformVcxproj> PresentPlatforms { get; }
+	public interface IVcxprojGenerationContext : IGenerationContext
+	{
+		string ProjectPath { get; }
+		string ProjectFileName { get; }
+		IReadOnlyList<Project.Configuration> ProjectConfigurations { get; }
+		IReadOnlyDictionary<Project.Configuration, Options.ExplicitOptions> ProjectConfigurationOptions { get; }
+		DevEnvRange DevelopmentEnvironmentsRange { get; }
+		IReadOnlyDictionary<Platform, IPlatformVcxproj> PresentPlatforms { get; }
 
-        Resolver EnvironmentVariableResolver { get; }
-    }
+		Resolver EnvironmentVariableResolver { get; }
+	}
 }

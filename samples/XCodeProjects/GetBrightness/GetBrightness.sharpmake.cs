@@ -5,30 +5,30 @@ using Sharpmake;
 
 namespace XCodeProjects
 {
-    [Sharpmake.Generate]
-    public class GetBrightnessProject : CommonProject
-    {
-        public GetBrightnessProject()
-        {
-            Name = @"GetBrightness";
+	[Sharpmake.Generate]
+	public class GetBrightnessProject : CommonProject
+	{
+		public GetBrightnessProject()
+		{
+			Name = @"GetBrightness";
 
-            AddTargets(CommonTarget.GetMacTargets());
-            AddTargets(CommonTarget.GetIosTargets());
-            AddTargets(CommonTarget.GetTvosTargets());
-            AddTargets(CommonTarget.GetCatalystTargets());
+			AddTargets(CommonTarget.GetMacTargets());
+			AddTargets(CommonTarget.GetIosTargets());
+			AddTargets(CommonTarget.GetTvosTargets());
+			AddTargets(CommonTarget.GetCatalystTargets());
 
-            SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
-        }
+			SourceRootPath = Util.GetCurrentSharpmakeFileInfo().DirectoryName;
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
 
-            conf.Output = Configuration.OutputType.Exe;
-            conf.AddPublicDependency<FmtProject>(target);
-            conf.AddPublicDependency<BrightnessControlProject>(target, DependencySetting.Default);
-            //! invoking a configuration callback
-            BrightnessControlProject.ApplyClientConfiguration(conf, target);
-        }
-    }
+			conf.Output = Configuration.OutputType.Exe;
+			conf.AddPublicDependency<FmtProject>(target);
+			conf.AddPublicDependency<BrightnessControlProject>(target, DependencySetting.Default);
+			//! invoking a configuration callback
+			BrightnessControlProject.ApplyClientConfiguration(conf, target);
+		}
+	}
 }

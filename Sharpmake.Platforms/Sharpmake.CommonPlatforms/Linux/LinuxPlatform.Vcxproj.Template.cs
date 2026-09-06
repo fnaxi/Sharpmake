@@ -3,15 +3,16 @@
 
 namespace Sharpmake
 {
-    public static partial class Linux
-    {
-        public sealed partial class LinuxPlatform
-        {
-            private const string _projectStartPlatformConditional =
-@"  <PropertyGroup Label=""Globals"" Condition=""'$(Platform)'=='[platformName]' and ([configurationsConditional])"">
+	public static partial class Linux
+	{
+		public sealed partial class LinuxPlatform
+		{
+			private const string _projectStartPlatformConditional =
+				@"  <PropertyGroup Label=""Globals"" Condition=""'$(Platform)'=='[platformName]' and ([configurationsConditional])"">
 ";
-            private const string _projectConfigurationsCompileTemplate =
-                @"    <ClCompile>
+
+			private const string _projectConfigurationsCompileTemplate =
+				@"    <ClCompile>
       <PrecompiledHeader>[options.UsePrecompiledHeader]</PrecompiledHeader>
       <PreprocessorDefinitions>[EscapeXML:options.PreprocessorDefinitions];%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ForcedIncludeFiles>[options.ForcedIncludeFiles]</ForcedIncludeFiles>
@@ -41,8 +42,8 @@ namespace Sharpmake
     </ClCompile>
 ";
 
-            private const string _projectConfigurationsStaticLinkTemplate =
-                            @"    <Link>
+			private const string _projectConfigurationsStaticLinkTemplate =
+				@"    <Link>
       <GenerateDebugInformation>[options.LinkerGenerateDebugInformation]</GenerateDebugInformation>
       <EnableCOMDATFolding>[options.EnableCOMDATFolding]</EnableCOMDATFolding>
       <OptimizeReferences>[options.OptimizeReferences]</OptimizeReferences>
@@ -56,8 +57,8 @@ namespace Sharpmake
     </Lib>
 ";
 
-            private const string _projectConfigurationsLinkTemplate =
-                    @"    <Link>
+			private const string _projectConfigurationsLinkTemplate =
+				@"    <Link>
       <OutputFile>[options.OutputFile]</OutputFile>
       <AdditionalLibraryDirectories>[options.AdditionalLibraryDirectories]</AdditionalLibraryDirectories>
       <AdditionalOptions>[options.AdditionalLinkerOptions] %(AdditionalOptions)</AdditionalOptions>
@@ -74,8 +75,8 @@ namespace Sharpmake
     </Link>
 ";
 
-            private const string _userFileConfigurationGeneralTemplate =
-                @"    <LocalDebuggerCommand>[conf.VcxprojUserFile.LocalDebuggerCommand]</LocalDebuggerCommand>
+			private const string _userFileConfigurationGeneralTemplate =
+				@"    <LocalDebuggerCommand>[conf.VcxprojUserFile.LocalDebuggerCommand]</LocalDebuggerCommand>
     <LocalDebuggerCommandArguments>[conf.VcxprojUserFile.LocalDebuggerCommandArguments]</LocalDebuggerCommandArguments>
     <LocalDebuggerWorkingDirectory>[conf.VcxprojUserFile.LocalDebuggerWorkingDirectory]</LocalDebuggerWorkingDirectory>
     <LocalDebuggerAttach>[conf.VcxprojUserFile.LocalDebuggerAttachString]</LocalDebuggerAttach>
@@ -88,8 +89,8 @@ namespace Sharpmake
     <DebuggerFlavor>LinuxDebugger</DebuggerFlavor>
 ";
 
-            private const string _projectConfigurationsGeneral2 =
-                @"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
+			private const string _projectConfigurationsGeneral2 =
+				@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
     <TargetName>[options.OutputFileName]</TargetName>
     <OutDir>[options.OutputDirectoryRemote]</OutDir>
     <IntDir>[options.IntermediateDirectoryRemote]</IntDir>
@@ -114,8 +115,8 @@ namespace Sharpmake
   </PropertyGroup>
 ";
 
-            private const string _projectConfigurationsFastBuildMakefile =
-            @"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
+			private const string _projectConfigurationsFastBuildMakefile =
+				@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
     <TargetName>[options.OutputFileName]</TargetName>
     <LocalDebuggerWorkingDirectory>$(TargetDir)</LocalDebuggerWorkingDirectory>
     <RemoteRootDir>
@@ -152,11 +153,11 @@ del ""[options.OutputDirectory]\[conf.TargetFileFullName]"" &gt;NUL 2&gt;NUL</Cl
   </ItemDefinitionGroup>
 ";
 
-            private const string _projectDescriptionPlatformSpecific =
-                @"    <ApplicationType>[applicationType]</ApplicationType>
+			private const string _projectDescriptionPlatformSpecific =
+				@"    <ApplicationType>[applicationType]</ApplicationType>
     <ApplicationTypeRevision>[applicationTypeRevision]</ApplicationTypeRevision>
     <TargetLinuxPlatform>[targetLinuxPlatform]</TargetLinuxPlatform>
 ";
-        }
-    }
+		}
+	}
 }

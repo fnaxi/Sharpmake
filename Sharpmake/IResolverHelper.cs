@@ -3,9 +3,9 @@
 
 namespace Sharpmake
 {
-    // Delegate template resolving to an external class (using an existing resolver)
-    public interface IResolverHelper
-    {
-        string Resolve(Resolver resolver);
-    }
+	// Delegate template resolving to an external class (using an existing resolver)
+	public interface IResolverHelper
+	{
+		string Resolve(Resolver resolver);
+	}
 }

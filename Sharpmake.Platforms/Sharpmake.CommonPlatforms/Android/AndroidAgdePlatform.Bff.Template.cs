@@ -3,11 +3,11 @@
 
 namespace Sharpmake
 {
-    public static partial class Android
-    {
-        public sealed partial class AndroidAgdePlatform
-        {
-            public static readonly string _linkerOptionsTemplate = @"
+	public static partial class Android
+	{
+		public sealed partial class AndroidAgdePlatform
+		{
+			public static readonly string _linkerOptionsTemplate = @"
     .LinkerOptions          = '-o ""%2"" ""%1""'
                             // System options
                             // -------------------------
@@ -37,7 +37,7 @@ namespace Sharpmake
                             + ' [options.AdditionalLinkerOptions]'
 ";
 
-            public static readonly string _compilerExtraOptionsTemplate = @"
+			public static readonly string _compilerExtraOptionsTemplate = @"
     .CompilerExtraOptions   = ''
             // System options
             // -------------------------
@@ -73,14 +73,14 @@ namespace Sharpmake
             + ' [options.AdditionalCompilerOptions]'
 ";
 
-            public static readonly string _compilerOptimizationOptionsTemplate =
-                    @"
+			public static readonly string _compilerOptimizationOptionsTemplate =
+				@"
     // Optimizations options
     // ---------------------
     .CompilerOptimizations = ''
             + ' [cmdLineOptions.Optimization]'
             + ' [options.AdditionalCompilerOptimizeOptions]'
 ";
-        }
-    }
+		}
+	}
 }

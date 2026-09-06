@@ -5,20 +5,20 @@ using Sharpmake;
 
 namespace HelloLinux
 {
-    [Sharpmake.Generate]
-    public class HeaderOnlyLibProject : CommonProject
-    {
-        public HeaderOnlyLibProject()
-        {
-            AddTargets(CommonTarget.GetDefaultTargets());
-            Name = "header-only-lib";
-        }
+	[Sharpmake.Generate]
+	public class HeaderOnlyLibProject : CommonProject
+	{
+		public HeaderOnlyLibProject()
+		{
+			AddTargets(CommonTarget.GetDefaultTargets());
+			Name = "header-only-lib";
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
-            conf.Output = Configuration.OutputType.Utility;
-            conf.IncludePaths.Add(SourceRootPath);
-        }
-    }
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
+			conf.Output = Configuration.OutputType.Utility;
+			conf.IncludePaths.Add(SourceRootPath);
+		}
+	}
 }

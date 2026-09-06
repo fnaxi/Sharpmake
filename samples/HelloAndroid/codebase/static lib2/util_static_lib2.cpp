@@ -26,17 +26,17 @@ void Util2::DoSomethingUseful() const
         "!");
 #endif
 
-    return DoSomethingInternal("Yeah right...");
+	return DoSomethingInternal("Yeah right...");
 }
 
 void Util2::DoSomethingInternal(const char* anArgument) const
 {
-    char buff[256];
-    snprintf(buff, sizeof(buff), "Useful, right?\n- %s", anArgument);
-    Log((const char*)buff);
+	char buff[256];
+	snprintf(buff, sizeof(buff), "Useful, right?\n- %s", anArgument);
+	Log((const char*)buff);
 }
 
 void Util2::Log(const char* s)
 {
-    __android_log_print(ANDROID_LOG_VERBOSE, "HelloAndroid", "%s", s);
+	__android_log_print(ANDROID_LOG_VERBOSE, "HelloAndroid", "%s", s);
 }

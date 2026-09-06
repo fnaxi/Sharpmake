@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Sharpmake.Generators.FastBuild
 {
-    public interface IBffGenerationContext : IGenerationContext
-    {
-        IReadOnlyList<Project.Configuration> ProjectConfigurations { get; }
-    }
+	public interface IBffGenerationContext : IGenerationContext
+	{
+		IReadOnlyList<Project.Configuration> ProjectConfigurations { get; }
+	}
 }

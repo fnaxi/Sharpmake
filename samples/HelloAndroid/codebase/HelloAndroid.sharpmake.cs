@@ -6,26 +6,26 @@ using Sharpmake;
 
 namespace HelloAndroid
 {
-    [Sharpmake.Generate]
-    public class HelloAndroidSolution : CommonSolution
-    {
-        public string GradleRootPath = Path.Combine(Globals.TmpDirectory, @"..\..\gradle\root");
+	[Sharpmake.Generate]
+	public class HelloAndroidSolution : CommonSolution
+	{
+		public string GradleRootPath = Path.Combine(Globals.TmpDirectory, @"..\..\gradle\root");
 
-        public HelloAndroidSolution()
-        {
-            AddTargets(CommonTarget.GetDefaultTargets());
-            Name = "HelloAndroid";
+		public HelloAndroidSolution()
+		{
+			AddTargets(CommonTarget.GetDefaultTargets());
+			Name = "HelloAndroid";
 
-            ExePackaging.DirectoryCopyResourceFiles(GradleRootPath, ExePackaging.AndroidPackageProjectsPath + @"\exepackaging");
-        }
+			ExePackaging.DirectoryCopyResourceFiles(GradleRootPath, ExePackaging.AndroidPackageProjectsPath + @"\exepackaging");
+		}
 
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
 
-            conf.AddProject<ExePackaging>(target);
-            conf.SetStartupProject<ExePackaging>();
-        }
-    }
+			conf.AddProject<ExePackaging>(target);
+			conf.SetStartupProject<ExePackaging>();
+		}
+	}
 }

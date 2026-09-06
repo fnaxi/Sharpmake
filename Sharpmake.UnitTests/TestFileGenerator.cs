@@ -10,274 +10,269 @@ using Sharpmake.Generators;
 
 namespace Sharpmake.UnitTests
 {
-    public class TestFileGenerator
-    {
-        [Resolver.Resolvable]
-        private class ResolvableType
-        {
-            public string Value1 { get; set; } = "Value1_Test";
-        }
+	public class TestFileGenerator
+	{
+		[Resolver.Resolvable]
+		private class ResolvableType
+		{
+			public string Value1 { get; set; } = "Value1_Test";
+		}
 
-        private class FileGeneratorTestHelper
-        {
-            public FileGenerator Generator { get; private set; }
-            public MemoryStream Stream { get; private set; } = new MemoryStream();
+		private class FileGeneratorTestHelper
+		{
+			public FileGenerator Generator { get; private set; }
+			public MemoryStream Stream { get; private set; } = new MemoryStream();
 
-            public StreamWriter Writer { get; private set; }
+			public StreamWriter Writer { get; private set; }
 
-            public FileGeneratorTestHelper(Encoding encoding = null)
-            {
-                if (encoding == null)
-                {
-                    Generator = new FileGenerator();
-                }
-                else
-                {
-                    Generator = new FileGenerator(encoding);
+			public FileGeneratorTestHelper(Encoding encoding = null)
+			{
+				if (encoding == null)
+				{
+					Generator = new FileGenerator();
+				}
+				else
+				{
+					Generator = new FileGenerator(encoding);
+				}
 
-                }
-                Writer = new StreamWriter(Stream, Generator.Encoding, leaveOpen: true);
-            }
+				Writer = new StreamWriter(Stream, Generator.Encoding, leaveOpen: true);
+			}
 
-            public void Write(string content)
-            {
-                Generator.Write(content);
-                if (!content.Contains(FileGeneratorUtilities.RemoveLineTag))
-                    Writer.Write(content);
-            }
+			public void Write(string content)
+			{
+				Generator.Write(content);
+				if (!content.Contains(FileGeneratorUtilities.RemoveLineTag))
+					Writer.Write(content);
+			}
 
-            public void WriteLine(string content)
-            {
-                Generator.WriteLine(content);
-                if (!content.Contains(FileGeneratorUtilities.RemoveLineTag))
-                    Writer.WriteLine(content);
-            }
+			public void WriteLine(string content)
+			{
+				Generator.WriteLine(content);
+				if (!content.Contains(FileGeneratorUtilities.RemoveLineTag))
+					Writer.WriteLine(content);
+			}
 
-            public void WriteWithFallback(string content, string fallbackValue, string resolvedContent)
-            {
-                Generator.Write(content, fallbackValue);
-                if (!content.Contains(FileGeneratorUtilities.RemoveLineTag))
-                    Writer.Write(resolvedContent);
-            }
+			public void WriteWithFallback(string content, string fallbackValue, string resolvedContent)
+			{
+				Generator.Write(content, fallbackValue);
+				if (!content.Contains(FileGeneratorUtilities.RemoveLineTag))
+					Writer.Write(resolvedContent);
+			}
 
-            public void WriteLineWithFallback(string content, string fallbackValue, string resolvedContent)
-            {
-                Generator.WriteLine(content, fallbackValue);
-                if (!content.Contains(FileGeneratorUtilities.RemoveLineTag))
-                    Writer.WriteLine(resolvedContent);
-            }
+			public void WriteLineWithFallback(string content, string fallbackValue, string resolvedContent)
+			{
+				Generator.WriteLine(content, fallbackValue);
+				if (!content.Contains(FileGeneratorUtilities.RemoveLineTag))
+					Writer.WriteLine(resolvedContent);
+			}
 
-            public void WriteVerbatim(string content)
-            {
-                Generator.WriteVerbatim(content);
-                Writer.Write(content);
-            }
+			public void WriteVerbatim(string content)
+			{
+				Generator.WriteVerbatim(content);
+				Writer.Write(content);
+			}
 
-            public void WriteLineVerbatim(string content)
-            {
-                Generator.WriteLineVerbatim(content);
-                Writer.WriteLine(content);
-            }
+			public void WriteLineVerbatim(string content)
+			{
+				Generator.WriteLineVerbatim(content);
+				Writer.WriteLine(content);
+			}
 
-            public bool IsEmpty()
-            {
-                bool r1 = Generator.IsEmpty();
-                Writer.Flush();
-                bool r2 = Stream.Length == 0;
-                Assert.That(r2, Is.EqualTo(r1));
-                return r1;
-            }
+			public bool IsEmpty()
+			{
+				bool r1 = Generator.IsEmpty();
+				Writer.Flush();
+				bool r2 = Stream.Length == 0;
+				Assert.That(r2, Is.EqualTo(r1));
+				return r1;
+			}
 
-            public void Clear()
-            {
-                Generator.Clear();
-                Writer.Flush();
-                Stream.SetLength(0);
-            }
+			public void Clear()
+			{
+				Generator.Clear();
+				Writer.Flush();
+				Stream.SetLength(0);
+			}
 
-            public void Flush()
-            {
-                Generator.Flush();
-                Writer.Flush();
-            }
+			public void Flush()
+			{
+				Generator.Flush();
+				Writer.Flush();
+			}
+		}
 
-        }
+		// Needed since the argument to the test are complex
+		static object[] EncodingTypesParams = { new object[] { null }, new object[] { new UTF8Encoding(true) }, };
 
-        // Needed since the argument to the test are complex
-        static object[] EncodingTypesParams =
-        {
-            new object[] { null },
-            new object[] { new UTF8Encoding(true) },
-        };
+		private void VerifyResults(FileGeneratorTestHelper testHelper)
+		{
+			testHelper.Flush();
 
-        private void VerifyResults(FileGeneratorTestHelper testHelper)
-        {
-            testHelper.Flush();
+			string tmpFile1 = Path.GetTempFileName();
+			string tmpFile2 = Path.GetTempFileName();
+			try
+			{
+				// Check that generated content is different than default content of tmp file(empty)
+				var fileInfo1 = new FileInfo(tmpFile1);
+				var fileInfo2 = new FileInfo(tmpFile2);
 
-            string tmpFile1 = Path.GetTempFileName();
-            string tmpFile2 = Path.GetTempFileName();
-            try
-            {
-                // Check that generated content is different than default content of tmp file(empty)
-                var fileInfo1 = new FileInfo(tmpFile1);
-                var fileInfo2 = new FileInfo(tmpFile2);
+				Assert.That(testHelper.Generator.IsFileDifferent(fileInfo1), Is.True);
+				Assert.That(testHelper.Generator.IsFileDifferent(fileInfo2), Is.True);
 
-                Assert.That(testHelper.Generator.IsFileDifferent(fileInfo1), Is.True);
-                Assert.That(testHelper.Generator.IsFileDifferent(fileInfo2), Is.True);
+				// Write the file using reference stream
+				Assert.That(Util.FileWriteIfDifferentInternal(fileInfo1, testHelper.Stream, true), Is.True);
+				fileInfo1.Refresh();
 
-                // Write the file using reference stream
-                Assert.That(Util.FileWriteIfDifferentInternal(fileInfo1, testHelper.Stream, true), Is.True);
-                fileInfo1.Refresh();
+				// Using second file to write a file using generator.
+				Assert.That(testHelper.Generator.FileWriteIfDifferent(fileInfo2, true), Is.True);
+				fileInfo2.Refresh();
 
-                // Using second file to write a file using generator.
-                Assert.That(testHelper.Generator.FileWriteIfDifferent(fileInfo2, true), Is.True);
-                fileInfo2.Refresh();
+				// Verify that generator content is the same.
+				Assert.That(testHelper.Generator.IsFileDifferent(fileInfo1), Is.False);
 
-                // Verify that generator content is the same.
-                Assert.That(testHelper.Generator.IsFileDifferent(fileInfo1), Is.False);
+				// Verify that written file is identical to stream
+				Assert.That(Util.IsFileDifferent(fileInfo2, testHelper.Stream), Is.False);
 
-                // Verify that written file is identical to stream
-                Assert.That(Util.IsFileDifferent(fileInfo2, testHelper.Stream), Is.False);
+				// Read the two files and verify that they are identical
+				var contentFile1 = File.ReadAllBytes(tmpFile1);
+				var contentFile2 = File.ReadAllBytes(tmpFile2);
+				ReadOnlySpan<byte> span1 = new ReadOnlySpan<byte>(contentFile1);
+				ReadOnlySpan<byte> span2 = new ReadOnlySpan<byte>(contentFile2);
+				Assert.That(span1.SequenceEqual(span2), Is.True);
+			}
+			finally
+			{
+				File.Delete(tmpFile1);
+				File.Delete(tmpFile2);
+			}
+		}
 
-                // Read the two files and verify that they are identical
-                var contentFile1 = File.ReadAllBytes(tmpFile1);
-                var contentFile2 = File.ReadAllBytes(tmpFile2);
-                ReadOnlySpan<byte> span1 = new ReadOnlySpan<byte>(contentFile1);
-                ReadOnlySpan<byte> span2 = new ReadOnlySpan<byte>(contentFile2);
-                Assert.That(span1.SequenceEqual(span2), Is.True);
-            }
-            finally
-            {
-                File.Delete(tmpFile1);
-                File.Delete(tmpFile2);
-            }
-        }
+		[TestCaseSource(nameof(EncodingTypesParams))]
+		public void TestBasicWrites(Encoding encoding)
+		{
+			var testHelper = new FileGeneratorTestHelper(encoding);
+			if (encoding != null)
+			{
+				Assert.That(testHelper.Generator.Encoding, Is.EqualTo(encoding));
+			}
 
-        [TestCaseSource(nameof(EncodingTypesParams))]
-        public void TestBasicWrites(Encoding encoding)
-        {
-            var testHelper = new FileGeneratorTestHelper(encoding);
-            if (encoding != null)
-            {
-                Assert.That(testHelper.Generator.Encoding, Is.EqualTo(encoding));
-            }
+			testHelper.Write("testWrite");
+			testHelper.WriteLine("testWriteLine");
+			testHelper.WriteVerbatim("testWriteVerbatim");
+			testHelper.WriteLineVerbatim("testWriteLineVerbatim");
 
-            testHelper.Write("testWrite");
-            testHelper.WriteLine("testWriteLine");
-            testHelper.WriteVerbatim("testWriteVerbatim");
-            testHelper.WriteLineVerbatim("testWriteLineVerbatim");
+			VerifyResults(testHelper);
+		}
 
-            VerifyResults(testHelper);
-        }
+		[Test]
+		public void TestWritesWithResolve()
+		{
+			var testHelper = new FileGeneratorTestHelper();
 
-        [Test]
-        public void TestWritesWithResolve()
-        {
-            var testHelper = new FileGeneratorTestHelper();
+			ResolvableType obj = new ResolvableType();
 
-            ResolvableType obj = new ResolvableType();
+			testHelper.Generator.Resolver.SetParameter("obj", obj);
+			testHelper.Generator.Resolver.Resolve(obj);
 
-            testHelper.Generator.Resolver.SetParameter("obj", obj);
-            testHelper.Generator.Resolver.Resolve(obj);
+			testHelper.WriteLineWithFallback("abcdef", "fallback", "abcdef");
+			testHelper.WriteLineWithFallback("abc[unkownfield]def", "fallback", "abcfallbackdef");
+			testHelper.WriteLineWithFallback("abc[obj.Value1]def", "fallback", "abc" + obj.Value1 + "def");
+			testHelper.WriteLineWithFallback("abc[obj.UnknownField]def", "fallback", "abcfallbackdef");
 
-            testHelper.WriteLineWithFallback("abcdef", "fallback", "abcdef");
-            testHelper.WriteLineWithFallback("abc[unkownfield]def", "fallback", "abcfallbackdef");
-            testHelper.WriteLineWithFallback("abc[obj.Value1]def", "fallback", "abc" + obj.Value1 + "def");
-            testHelper.WriteLineWithFallback("abc[obj.UnknownField]def", "fallback", "abcfallbackdef");
+			testHelper.WriteWithFallback("abcdef", "fallback", "abcdef");
+			testHelper.WriteWithFallback("abc[unkownfield]def", "fallback", "abcfallbackdef");
+			testHelper.WriteWithFallback("abc[obj.Value1]def", "fallback", "abc" + obj.Value1 + "def");
+			testHelper.WriteWithFallback("abc[obj.UnknownField]def", "fallback", "abcfallbackdef");
 
-            testHelper.WriteWithFallback("abcdef", "fallback", "abcdef");
-            testHelper.WriteWithFallback("abc[unkownfield]def", "fallback", "abcfallbackdef");
-            testHelper.WriteWithFallback("abc[obj.Value1]def", "fallback", "abc" + obj.Value1 + "def");
-            testHelper.WriteWithFallback("abc[obj.UnknownField]def", "fallback", "abcfallbackdef");
+			VerifyResults(testHelper);
+		}
 
-            VerifyResults(testHelper);
-        }
+		[Test]
+		public void TestResolveEnvironmentVariables()
+		{
+			// Note: This is not an environment variable but the ResolveEnvironmentVariables doesn't really resolve any environment variable
+			// so this is the best we can do until we kill this feature.
 
-        [Test]
-        public void TestResolveEnvironmentVariables()
-        {
-            // Note: This is not an environment variable but the ResolveEnvironmentVariables doesn't really resolve any environment variable
-            // so this is the best we can do until we kill this feature.
+			var testHelper = new FileGeneratorTestHelper();
+			testHelper.WriteLineWithFallback("$(name1)", null, "name1_value");
 
-            var testHelper = new FileGeneratorTestHelper();
-            testHelper.WriteLineWithFallback("$(name1)", null, "name1_value");
+			// Verify that win64 environment resolver is available. If not it means one time setup fixture wasn't initialized correctly.
+			var envVarResolver = PlatformRegistry.Get<IPlatformDescriptor>(Platform.win64).GetPlatformEnvironmentResolver();
+			Assert.That(envVarResolver, Is.Not.Null);
 
-            // Verify that win64 environment resolver is available. If not it means one time setup fixture wasn't initialized correctly.
-            var envVarResolver = PlatformRegistry.Get<IPlatformDescriptor>(Platform.win64).GetPlatformEnvironmentResolver();
-            Assert.That(envVarResolver, Is.Not.Null);
+			testHelper.Generator.ResolveEnvironmentVariables(Platform.win64,
+				new VariableAssignment("name1", "name1_value"));
 
-            testHelper.Generator.ResolveEnvironmentVariables(Platform.win64,
-                new VariableAssignment("name1", "name1_value"));
+			VerifyResults(testHelper);
+		}
 
-            VerifyResults(testHelper);
-        }
+		[Test]
+		public void TestRemoveTaggedLines()
+		{
+			var testHelper = new FileGeneratorTestHelper();
 
-        [Test]
-        public void TestRemoveTaggedLines()
-        {
-            var testHelper = new FileGeneratorTestHelper();
+			testHelper.WriteLine("abc");
+			testHelper.WriteLine("somestring" + FileGeneratorUtilities.RemoveLineTag + "othertext");
+			testHelper.WriteLine(FileGeneratorUtilities.RemoveLineTag);
+			testHelper.WriteLine("def");
 
-            testHelper.WriteLine("abc");
-            testHelper.WriteLine("somestring" + FileGeneratorUtilities.RemoveLineTag + "othertext");
-            testHelper.WriteLine(FileGeneratorUtilities.RemoveLineTag);
-            testHelper.WriteLine("def");
+			testHelper.Generator.RemoveTaggedLines();
+			VerifyResults(testHelper);
+		}
 
-            testHelper.Generator.RemoveTaggedLines();
-            VerifyResults(testHelper);
-        }
+		[Test]
+		public void TestIsEmpty()
+		{
+			var testHelper = new FileGeneratorTestHelper();
 
-        [Test]
-        public void TestIsEmpty()
-        {
-            var testHelper = new FileGeneratorTestHelper();
+			Assert.That(testHelper.Generator.IsEmpty(), Is.True);
+			testHelper.Write("abc");
+			Assert.That(testHelper.Generator.IsEmpty(), Is.False);
+		}
 
-            Assert.That(testHelper.Generator.IsEmpty(), Is.True);
-            testHelper.Write("abc");
-            Assert.That(testHelper.Generator.IsEmpty(), Is.False);
-        }
+		[Test]
+		public void TestClear()
+		{
+			var testHelper = new FileGeneratorTestHelper();
+			testHelper.Write("abc");
+			testHelper.Clear();
+			Assert.That(testHelper.Generator.IsEmpty(), Is.True);
+		}
 
-        [Test]
-        public void TestClear()
-        {
-            var testHelper = new FileGeneratorTestHelper();
-            testHelper.Write("abc");
-            testHelper.Clear();
-            Assert.That(testHelper.Generator.IsEmpty(), Is.True);
-        }
+		[Test]
+		public void TestWriteTo()
+		{
+			FileGenerator generator1 = new FileGenerator();
+			generator1.WriteLine("abc");
+			FileGenerator generator2 = new FileGenerator();
+			generator1.WriteTo(generator2);
 
-        [Test]
-        public void TestWriteTo()
-        {
-            FileGenerator generator1 = new FileGenerator();
-            generator1.WriteLine("abc");
-            FileGenerator generator2 = new FileGenerator();
-            generator1.WriteTo(generator2);
+			string tmpFile1 = Path.GetTempFileName();
+			try
+			{
+				// Check that generated content is different than default content of tmp file(empty)
+				var fileInfo1 = new FileInfo(tmpFile1);
 
-            string tmpFile1 = Path.GetTempFileName();
-            try
-            {
-                // Check that generated content is different than default content of tmp file(empty)
-                var fileInfo1 = new FileInfo(tmpFile1);
+				// Write the file using reference stream
+				Assert.That(generator1.FileWriteIfDifferent(fileInfo1, true), Is.True);
+				fileInfo1.Refresh();
 
-                // Write the file using reference stream
-                Assert.That(generator1.FileWriteIfDifferent(fileInfo1, true), Is.True);
-                fileInfo1.Refresh();
+				// Using second file to write a file using generator.
+				Assert.That(generator2.IsFileDifferent(fileInfo1), Is.False);
+			}
+			finally
+			{
+				File.Delete(tmpFile1);
+			}
+		}
 
-                // Using second file to write a file using generator.
-                Assert.That(generator2.IsFileDifferent(fileInfo1), Is.False);
-            }
-            finally
-            {
-                File.Delete(tmpFile1);
-            }
-        }
-
-        [Test]
-        public void TestFileGeneratorConstructorsWithResolver()
-        {
-            Resolver resolver = new Resolver();
-            var generator1 = new FileGenerator(resolver);
-            Assert.That(generator1.Resolver, Is.SameAs(resolver));
-        }
-    }
+		[Test]
+		public void TestFileGeneratorConstructorsWithResolver()
+		{
+			Resolver resolver = new Resolver();
+			var generator1 = new FileGenerator(resolver);
+			Assert.That(generator1.Resolver, Is.SameAs(resolver));
+		}
+	}
 }

@@ -3,12 +3,12 @@
 
 namespace Sharpmake.Generators.FastBuild
 {
-    /// <summary>
-    /// Augments the <see cref="IPlatformBff"/> interface to provide services for Microsoft's
-    /// proprietary platforms.
-    /// </summary>
-    public interface IMicrosoftPlatformBff : IPlatformBff
-    {
-        bool SupportsResourceFiles { get; }
-    }
+	/// <summary>
+	/// Augments the <see cref="IPlatformBff"/> interface to provide services for Microsoft's
+	/// proprietary platforms.
+	/// </summary>
+	public interface IMicrosoftPlatformBff : IPlatformBff
+	{
+		bool SupportsResourceFiles { get; }
+	}
 }

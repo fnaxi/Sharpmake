@@ -15,24 +15,26 @@ extern "C" int add(int a, int b);
 
 int main(int, char**)
 {
-    std::cout << "Hello XCode World, from " CREATION_DATE "!" << std::endl;
+	std::cout << "Hello XCode World, from "
+	CREATION_DATE
+	"!" << std::endl;
 
-    PrintBuildString("Exe");
+	PrintBuildString("Exe");
 
-    std::vector<int> someArray(5, 6);
+	std::vector<int> someArray(5, 6);
 
-    // from plain C file
-    std::ignore = add(10, 20);
+	// from plain C file
+	std::ignore = add(10, 20);
 
-    // from dll1
-    UtilDll1 utilityDll;
-    utilityDll.ComputeSum(someArray);
+	// from dll1
+	UtilDll1 utilityDll;
+	utilityDll.ComputeSum(someArray);
 
-    // from static_lib2
-    Util2 utilityStatic;
-    utilityStatic.DoSomethingUseful();
-    StaticLib2::UselessMethod();
-    SystemFct();
-    SystemIncludeDllFct();
-    return 0;
+	// from static_lib2
+	Util2 utilityStatic;
+	utilityStatic.DoSomethingUseful();
+	StaticLib2::UselessMethod();
+	SystemFct();
+	SystemIncludeDllFct();
+	return 0;
 }

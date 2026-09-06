@@ -8,208 +8,210 @@ using System.Threading;
 
 namespace Sharpmake
 {
-    // Very simple task scheduler, 
-    //  support:
-    //      - adding task from inside another task
-    //      - Wait(), wait for all tasks
-    //      - Stop(), wait for all tasks and stop
-    public class ThreadPool : IDisposable
-    {
-        public enum Priority
-        {
-            High = 0,
-            Normal = 1,
-            Low = 2,
-            Count
-        }
+	// Very simple task scheduler, 
+	//  support:
+	//      - adding task from inside another task
+	//      - Wait(), wait for all tasks
+	//      - Stop(), wait for all tasks and stop
+	public class ThreadPool : IDisposable
+	{
+		public enum Priority
+		{
+			High = 0,
+			Normal = 1,
+			Low = 2,
+			Count
+		}
 
-        public delegate void TaskCallback(object parameters);
+		public delegate void TaskCallback(object parameters);
 
-        public class TaskQueue
-        {
-            private readonly Queue<Task>[] _tasks = new Queue<Task>[(int)Priority.Count];
+		public class TaskQueue
+		{
+			private readonly Queue<Task>[] _tasks = new Queue<Task>[(int)Priority.Count];
 
-            public TaskQueue()
-            {
-                for (int i = 0; i < (int)Priority.Count; ++i)
-                    _tasks[i] = new Queue<Task>();
-            }
+			public TaskQueue()
+			{
+				for (int i = 0; i < (int)Priority.Count; ++i)
+					_tasks[i] = new Queue<Task>();
+			}
 
-            public int Count
-            {
-                get
-                {
-                    int count = 0;
-                    for (int i = 0; i < (int)Priority.Count; ++i)
-                        count += _tasks[i].Count;
-                    return count;
-                }
-            }
+			public int Count
+			{
+				get
+				{
+					int count = 0;
+					for (int i = 0; i < (int)Priority.Count; ++i)
+						count += _tasks[i].Count;
+					return count;
+				}
+			}
 
-            public void Enqueue(Task task, Priority priority = Priority.Normal)
-            {
-                _tasks[(int)priority].Enqueue(task);
-            }
+			public void Enqueue(Task task, Priority priority = Priority.Normal)
+			{
+				_tasks[(int)priority].Enqueue(task);
+			}
 
-            public Task Dequeue()
-            {
-                for (int i = 0; i < (int)Priority.Count; ++i)
-                {
-                    if (_tasks[i].Count != 0)
-                        return _tasks[i].Dequeue();
-                }
-                return null;
-            }
-        };
+			public Task Dequeue()
+			{
+				for (int i = 0; i < (int)Priority.Count; ++i)
+				{
+					if (_tasks[i].Count != 0)
+						return _tasks[i].Dequeue();
+				}
 
-        public class Task
-        {
-            private readonly TaskCallback _taskCallback;
-            private readonly object _parameter;
+				return null;
+			}
+		};
 
-            internal Task(TaskCallback taskCallback, object parameter)
-            {
-                _taskCallback = taskCallback;
-                _parameter = parameter;
-            }
+		public class Task
+		{
+			private readonly TaskCallback _taskCallback;
+			private readonly object _parameter;
 
-            internal void Run()
-            {
-                _taskCallback(_parameter);
-            }
-        }
+			internal Task(TaskCallback taskCallback, object parameter)
+			{
+				_taskCallback = taskCallback;
+				_parameter = parameter;
+			}
 
-        private Semaphore _taskAvailable;
-        private ManualResetEvent _eventStop;
-        private ManualResetEvent _eventIdle;
-        private Exception _unHandledException = null;
+			internal void Run()
+			{
+				_taskCallback(_parameter);
+			}
+		}
 
-        private bool _started = false;
-        private Thread[] _thread;
-        private readonly TaskQueue _tasks = new TaskQueue();
-        private int _workTask = 0;
+		private Semaphore _taskAvailable;
+		private ManualResetEvent _eventStop;
+		private ManualResetEvent _eventIdle;
+		private Exception _unHandledException = null;
 
-        public void AddTask(TaskCallback callback, Priority priority = Priority.Normal)
-        {
-            AddTask(callback, null);
-        }
+		private bool _started = false;
+		private Thread[] _thread;
+		private readonly TaskQueue _tasks = new TaskQueue();
+		private int _workTask = 0;
 
-        public void AddTask(TaskCallback callback, object parameter, Priority priority = Priority.Normal)
-        {
-            Task task = new Task(callback, parameter);
+		public void AddTask(TaskCallback callback, Priority priority = Priority.Normal)
+		{
+			AddTask(callback, null);
+		}
 
-            lock (_tasks)
-            {
-                Debug.Assert(_started);
-                _tasks.Enqueue(task);
-                _eventIdle.Reset();
-                _taskAvailable.Release();
-            }
-        }
+		public void AddTask(TaskCallback callback, object parameter, Priority priority = Priority.Normal)
+		{
+			Task task = new Task(callback, parameter);
 
-        public void Start()
-        {
-            Start(Environment.ProcessorCount);
-        }
+			lock (_tasks)
+			{
+				Debug.Assert(_started);
+				_tasks.Enqueue(task);
+				_eventIdle.Reset();
+				_taskAvailable.Release();
+			}
+		}
 
-        private object _locker = new object();
-        public void Start(int numThread)
-        {
-            lock (_locker)
-            {
-                Debug.Assert(_started == false);
-                Debug.Assert(numThread != 0);
+		public void Start()
+		{
+			Start(Environment.ProcessorCount);
+		}
 
-                _started = true;
-                _taskAvailable = new Semaphore(0, int.MaxValue);
-                _eventStop = new ManualResetEvent(false);
-                _eventIdle = new ManualResetEvent(true);
-                _thread = new Thread[numThread];
-                for (int i = 0; i < numThread; ++i)
-                {
-                    _thread[i] = new Thread(ThreadWork);
-                    _thread[i].Name = string.Format("Tasks Thread #{0,3}", i);
-                    _thread[i].Start(i);
-                }
-            }
-        }
+		private object _locker = new object();
 
-        public int NumTasks() { return _thread.Length; }
+		public void Start(int numThread)
+		{
+			lock (_locker)
+			{
+				Debug.Assert(_started == false);
+				Debug.Assert(numThread != 0);
 
-        public void Stop()
-        {
-            lock (_locker)
-            {
-                Wait();
-                _eventStop.Set();
-                for (int i = 0; i < _thread.Length; ++i)
-                    _thread[i].Join();
-                _started = false;
-            }
-        }
+				_started = true;
+				_taskAvailable = new Semaphore(0, int.MaxValue);
+				_eventStop = new ManualResetEvent(false);
+				_eventIdle = new ManualResetEvent(true);
+				_thread = new Thread[numThread];
+				for (int i = 0; i < numThread; ++i)
+				{
+					_thread[i] = new Thread(ThreadWork);
+					_thread[i].Name = string.Format("Tasks Thread #{0,3}", i);
+					_thread[i].Start(i);
+				}
+			}
+		}
 
-        public void Wait()
-        {
-            lock (_locker)
-            {
-                Debug.Assert(_started);
-                _eventIdle.WaitOne();
+		public int NumTasks() { return _thread.Length; }
 
-                if (_unHandledException != null)
-                {
-                    Exception e = _unHandledException;
-                    _unHandledException = null;
-                    if (e is Error)
-                        throw new Error(e, "Unhandled exception in thread pool");
-                    if (e is InternalError)
-                        throw new InternalError(e, "Unhandled exception in thread pool");
-                    throw new Exception("Unhandled exception in thread pool", e);
-                }
-            }
-        }
+		public void Stop()
+		{
+			lock (_locker)
+			{
+				Wait();
+				_eventStop.Set();
+				for (int i = 0; i < _thread.Length; ++i)
+					_thread[i].Join();
+				_started = false;
+			}
+		}
 
-        public void Dispose()
-        {
-            Stop();
-        }
+		public void Wait()
+		{
+			lock (_locker)
+			{
+				Debug.Assert(_started);
+				_eventIdle.WaitOne();
 
-        private void ThreadWork(object obj)
-        {
-            WaitHandle[] waitHandles = { _taskAvailable, _eventStop };
+				if (_unHandledException != null)
+				{
+					Exception e = _unHandledException;
+					_unHandledException = null;
+					if (e is Error)
+						throw new Error(e, "Unhandled exception in thread pool");
+					if (e is InternalError)
+						throw new InternalError(e, "Unhandled exception in thread pool");
+					throw new Exception("Unhandled exception in thread pool", e);
+				}
+			}
+		}
 
-            while (true)
-            {
-                int index = WaitHandle.WaitAny(waitHandles);
+		public void Dispose()
+		{
+			Stop();
+		}
 
-                if (waitHandles[index] == _eventStop)
-                    return;
+		private void ThreadWork(object obj)
+		{
+			WaitHandle[] waitHandles = { _taskAvailable, _eventStop };
 
-                Task task;
+			while (true)
+			{
+				int index = WaitHandle.WaitAny(waitHandles);
 
-                lock (_tasks)
-                {
-                    Debug.Assert(_tasks.Count != 0);
-                    task = _tasks.Dequeue();
-                    _workTask++;
-                }
+				if (waitHandles[index] == _eventStop)
+					return;
 
-                try
-                {
-                    task.Run();
-                }
-                catch (Exception e)
-                {
-                    // keep the first exception
-                    Interlocked.CompareExchange(ref _unHandledException, e, null);
-                }
+				Task task;
 
-                lock (_tasks)
-                {
-                    _workTask--;
-                    if (_tasks.Count == 0 && _workTask == 0)
-                        _eventIdle.Set();
-                }
-            }
-        }
-    }
+				lock (_tasks)
+				{
+					Debug.Assert(_tasks.Count != 0);
+					task = _tasks.Dequeue();
+					_workTask++;
+				}
+
+				try
+				{
+					task.Run();
+				}
+				catch (Exception e)
+				{
+					// keep the first exception
+					Interlocked.CompareExchange(ref _unHandledException, e, null);
+				}
+
+				lock (_tasks)
+				{
+					_workTask--;
+					if (_tasks.Count == 0 && _workTask == 0)
+						_eventIdle.Set();
+				}
+			}
+		}
+	}
 }

@@ -3,16 +3,16 @@
 
 namespace Sharpmake
 {
-    public static partial class Android
-    {
-        public sealed partial class AndroidPlatform
-        {
-            private const string _projectStartPlatformConditional =
-    @"  <PropertyGroup Label=""Globals"" Condition=""'$(Platform)'=='ARM64' Or '$(Platform)'=='x64' Or '$(Platform)'=='ARM' Or '$(Platform)'=='x86'"">
+	public static partial class Android
+	{
+		public sealed partial class AndroidPlatform
+		{
+			private const string _projectStartPlatformConditional =
+				@"  <PropertyGroup Label=""Globals"" Condition=""'$(Platform)'=='ARM64' Or '$(Platform)'=='x64' Or '$(Platform)'=='ARM' Or '$(Platform)'=='x86'"">
 ";
 
-            private const string _projectDescriptionPlatformSpecific =
-@"    <ApplicationType>[applicationType]</ApplicationType>
+			private const string _projectDescriptionPlatformSpecific =
+				@"    <ApplicationType>[applicationType]</ApplicationType>
     <ApplicationTypeRevision>[applicationTypeRevision]</ApplicationTypeRevision>
     <VS_AndroidHome>[androidHome]</VS_AndroidHome>
     <VS_AntHome>[antHome]</VS_AntHome>
@@ -20,27 +20,27 @@ namespace Sharpmake
     <VS_NdkRoot>[ndkRoot]</VS_NdkRoot>
 ";
 
-            private const string _projectPlatformDefaultPropsPath =
-                @"    <_PlatformFolder>$(AdditionalVCTargetsPath)Application Type\Android\[applicationTypeRevision]\Platforms\$(Platform)\</_PlatformFolder>
+			private const string _projectPlatformDefaultPropsPath =
+				@"    <_PlatformFolder>$(AdditionalVCTargetsPath)Application Type\Android\[applicationTypeRevision]\Platforms\$(Platform)\</_PlatformFolder>
     <_ApplicationTypeDefaultPropsPath>$(AdditionalVCTargetsPath)Application Type\Android\Default.props</_ApplicationTypeDefaultPropsPath>
     <_ApplicationTypeRevisionDefaultPropsPath>$(AdditionalVCTargetsPath)Application Type\Android\[applicationTypeRevision]\Default.props</_ApplicationTypeRevisionDefaultPropsPath>
 ";
 
-            private const string _projectImportAppTypeProps =
-                @"  <Import Project=""$(AdditionalVCTargetsPath)Application Type\$(ApplicationType)\Default.props"" />
+			private const string _projectImportAppTypeProps =
+				@"  <Import Project=""$(AdditionalVCTargetsPath)Application Type\$(ApplicationType)\Default.props"" />
   <Import Project=""$(AdditionalVCTargetsPath)Application Type\$(ApplicationType)\$(ApplicationTypeRevision)\Default.props"" />
 ";
 
-            // Workaround for app type props not overridable Microsoft.Cpp.Default.props
-            private const string _postImportAppTypeProps =
-                @"  <PropertyGroup>
+			// Workaround for app type props not overridable Microsoft.Cpp.Default.props
+			private const string _postImportAppTypeProps =
+				@"  <PropertyGroup>
     <_ApplicationTypeDefaultPropsFound>true</_ApplicationTypeDefaultPropsFound>
     <_ApplicationTypeRevisionDefaultPropsFound>true</_ApplicationTypeRevisionDefaultPropsFound>
   </PropertyGroup>
 ";
 
-            private const string _projectConfigurationsGeneralTemplate =
-@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"" Label=""Configuration"">
+			private const string _projectConfigurationsGeneralTemplate =
+				@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"" Label=""Configuration"">
     <ConfigurationType>[options.ConfigurationType]</ConfigurationType>
     <UseDebugLibraries>[options.UseDebugLibraries]</UseDebugLibraries>
     <PlatformToolset>[options.PlatformToolset]</PlatformToolset>
@@ -51,11 +51,11 @@ namespace Sharpmake
   </PropertyGroup>
 ";
 
-            // The output directory is converted to a rooted path by prefixing it with $(ProjectDir) to work around
-            // an issue with VS Android build scripts. When a project dependency has its project folder not at the
-            // same folder level as the AndroidPackageProject, VS can't locate its output properly using its relative path.
-            private const string _projectConfigurationsGeneral2Template =
-@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
+			// The output directory is converted to a rooted path by prefixing it with $(ProjectDir) to work around
+			// an issue with VS Android build scripts. When a project dependency has its project folder not at the
+			// same folder level as the AndroidPackageProject, VS can't locate its output properly using its relative path.
+			private const string _projectConfigurationsGeneral2Template =
+				@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
     <TargetName>[options.OutputFileName]</TargetName>
     <OutDir>$(ProjectDir)[options.OutputDirectory]\</OutDir>
     <IntDir>[options.IntermediateDirectory]\</IntDir>
@@ -74,8 +74,8 @@ namespace Sharpmake
   </PropertyGroup>
 ";
 
-            private const string _projectConfigurationsCompileTemplate =
-@"    <ClCompile>
+			private const string _projectConfigurationsCompileTemplate =
+				@"    <ClCompile>
       <PrecompiledHeader>[options.UsePrecompiledHeader]</PrecompiledHeader>
       <WarningLevel>[options.WarningLevel]</WarningLevel>
       <Optimization>[options.Optimization]</Optimization>
@@ -101,8 +101,8 @@ namespace Sharpmake
     </ClCompile>
 ";
 
-            private const string _projectConfigurationsSharedLinkTemplate =
-@"    <Link>
+			private const string _projectConfigurationsSharedLinkTemplate =
+				@"    <Link>
       <DebuggerSymbolInformation>[options.DebuggerSymbolInformation]</DebuggerSymbolInformation>
       <OutputFile>[options.OutputFile]</OutputFile>
       <AdditionalLibraryDirectories>[options.AdditionalLibraryDirectories];%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -114,12 +114,12 @@ namespace Sharpmake
     </Link>
 ";
 
-            private const string _projectConfigurationsStaticLinkTemplate =
-@"    <Lib>
+			private const string _projectConfigurationsStaticLinkTemplate =
+				@"    <Lib>
       <AdditionalOptions>[options.AdditionalLibrarianOptions]</AdditionalOptions>
       <OutputFile>[options.OutputFile]</OutputFile>
     </Lib>
 ";
-        }
-    }
+		}
+	}
 }

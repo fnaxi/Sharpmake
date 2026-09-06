@@ -4,5 +4,5 @@
 
 void Util::StaticUtilityMethod()
 {
-    printf("%s\n", __func__);
+	printf("%s\n", __func__);
 }

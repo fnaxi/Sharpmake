@@ -5,27 +5,27 @@ using Sharpmake;
 
 namespace HelloXCode
 {
-    /// <summary>
-    /// This project tests the XCode's Pre-Linked libraries feature.
-    /// </summary>
-    [Sharpmake.Generate]
-    public class ExePrelinkedProject : CommonProject
-    {
-        public ExePrelinkedProject()
-        {
-            AddTargets(CommonTarget.GetDefaultTargets());
-            Name = "exe_prelinked";
-        }
+	/// <summary>
+	/// This project tests the XCode's Pre-Linked libraries feature.
+	/// </summary>
+	[Sharpmake.Generate]
+	public class ExePrelinkedProject : CommonProject
+	{
+		public ExePrelinkedProject()
+		{
+			AddTargets(CommonTarget.GetDefaultTargets());
+			Name = "exe_prelinked";
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
 
-            conf.Output = Configuration.OutputType.Exe;
+			conf.Output = Configuration.OutputType.Exe;
 
-            conf.AddPrivateDependency<StaticPrelinkedLibConsumerProject>(target);
+			conf.AddPrivateDependency<StaticPrelinkedLibConsumerProject>(target);
 
-            conf.Defines.Add("CREATION_DATE=\"January 2022\"");
-        }
-    }
+			conf.Defines.Add("CREATION_DATE=\"January 2022\"");
+		}
+	}
 }

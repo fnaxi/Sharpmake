@@ -1,4 +1,3 @@
 inline void SystemIncludeDllFct()
 {
-    
 }

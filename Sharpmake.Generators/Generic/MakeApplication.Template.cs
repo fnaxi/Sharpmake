@@ -3,12 +3,12 @@
 
 namespace Sharpmake.Generators.Generic
 {
-    public partial class MakeApplication
-    {
-        private static class Template
-        {
-            public static string ApplicationContent =
-@"APP_PLATFORM := [item.AppPlatform]
+	public partial class MakeApplication
+	{
+		private static class Template
+		{
+			public static string ApplicationContent =
+				@"APP_PLATFORM := [item.AppPlatform]
 
 COMPIL_FINAL = 0
 
@@ -32,10 +32,10 @@ endif
 NDK_TOOLCHAIN_VERSION=[item.ToolchainVersion]
 ";
 
-            public static string MainProjectContent =
-@"LOCAL_PATH:= $(call my-dir)
+			public static string MainProjectContent =
+				@"LOCAL_PATH:= $(call my-dir)
 include $(call all-subdir-makefiles)
 ";
-        }
-    }
+		}
+	}
 }

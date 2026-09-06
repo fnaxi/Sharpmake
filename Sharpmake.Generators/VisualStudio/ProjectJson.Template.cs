@@ -3,71 +3,72 @@
 
 namespace Sharpmake.Generators.VisualStudio
 {
-    internal partial class ProjectJson
-    {
-        public static class Template
-        {
-            public static string Begin =
-@"{";
+	internal partial class ProjectJson
+	{
+		public static class Template
+		{
+			public static string Begin =
+				@"{";
 
-            public static string End =
-@"
+			public static string End =
+				@"
 }";
 
-            public static string FrameworksBegin =
-@"
+			public static string FrameworksBegin =
+				@"
   ""frameworks"": {";
 
-            public static string FrameworksEnd =
-@"
+			public static string FrameworksEnd =
+				@"
   }";
 
-            public static string FrameworksItem =
-@"
+			public static string FrameworksItem =
+				@"
     ""[framework]"": { }";
 
-            public static string RuntimesBegin =
-@"
+			public static string RuntimesBegin =
+				@"
   ""runtimes"": {";
 
-            public static string RuntimesEnd =
-@"
+			public static string RuntimesEnd =
+				@"
   }";
-            public static string RuntimesItem =
-@"
+
+			public static string RuntimesItem =
+				@"
     ""[runtime]"": { }";
 
-            public static string DependenciesBegin =
-@"
+			public static string DependenciesBegin =
+				@"
   ""dependencies"": {";
 
-            public static string DependenciesEnd =
-@"
+			public static string DependenciesEnd =
+				@"
   }";
 
-            public static string DependenciesItem =
-@"
+			public static string DependenciesItem =
+				@"
     ""[dependency.Name]"": ""[dependency.Version]""";
 
-            /// <remarks>
-            /// See : https://github.com/NuGet/Home/wiki/%5BSpec%5D-Managing-dependency-package-assets#suppress-parent
-            /// </remarks>
-            public static string BeginDependencyItem =
-@"
+			/// <remarks>
+			/// See : https://github.com/NuGet/Home/wiki/%5BSpec%5D-Managing-dependency-package-assets#suppress-parent
+			/// </remarks>
+			public static string BeginDependencyItem =
+				@"
     ""[dependency.Name]"": {
         ""version"": ""[dependency.Version]""";
 
-            public static string DependencyPrivateAssets =
-@",
+			public static string DependencyPrivateAssets =
+				@",
         ""suppressParent"": ""[privateAssets]""";
 
-            public static string DependencyReferenceType =
-@",
+			public static string DependencyReferenceType =
+				@",
         ""type"": ""[referenceType]""";
 
-            public static string EndDependencyItem =
-@"
+			public static string EndDependencyItem =
+				@"
     }";
-        }
-    }
+		}
+	}
 }

@@ -3,9 +3,8 @@
 
 namespace StaticLib2
 {
-    void UselessMethod()
-    {
-        std::cout << "- Useless in fact!" << std::endl;
-    }
+	void UselessMethod()
+	{
+		std::cout << "- Useless in fact!" << std::endl;
+	}
 }
-

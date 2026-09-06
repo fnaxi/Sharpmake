@@ -5,23 +5,23 @@ using Sharpmake;
 
 namespace HelloEvents
 {
-    [Sharpmake.Generate]
-    public class HelloEventsSolution : CommonSolution
-    {
-        public HelloEventsSolution()
-        {
-            AddTargets(CommonTarget.GetDefaultTargets());
-            Name = "HelloEvents";
-        }
+	[Sharpmake.Generate]
+	public class HelloEventsSolution : CommonSolution
+	{
+		public HelloEventsSolution()
+		{
+			AddTargets(CommonTarget.GetDefaultTargets());
+			Name = "HelloEvents";
+		}
 
-        public override void ConfigureAll(Configuration conf, CommonTarget target)
-        {
-            base.ConfigureAll(conf, target);
+		public override void ConfigureAll(Configuration conf, CommonTarget target)
+		{
+			base.ConfigureAll(conf, target);
 
-            conf.AddProject<ExeProject>(target);
-            conf.AddProject<Dll1Project>(target);
-            conf.AddProject<StaticLib1Project>(target);
-            conf.AddProject<StaticLib2Project>(target);
-        }
-    }
+			conf.AddProject<ExeProject>(target);
+			conf.AddProject<Dll1Project>(target);
+			conf.AddProject<StaticLib1Project>(target);
+			conf.AddProject<StaticLib2Project>(target);
+		}
+	}
 }

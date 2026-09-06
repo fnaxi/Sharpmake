@@ -3,13 +3,13 @@
 
 namespace Sharpmake
 {
-    public abstract partial class BaseMicrosoftPlatform
-    {
-        private const string _projectConfigurationsMasmTemplate =
-            @"    <MASM>
+	public abstract partial class BaseMicrosoftPlatform
+	{
+		private const string _projectConfigurationsMasmTemplate =
+			@"    <MASM>
       <PreprocessorDefinitions>[EscapeXML:options.PreprocessorDefinitions];%(PreprocessorDefinitions);$(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IncludePaths>[options.AdditionalAssemblyIncludeDirectories]</IncludePaths>
     </MASM>
 ";
-    }
+	}
 }

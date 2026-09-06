@@ -3,31 +3,31 @@
 
 namespace Sharpmake.Generators.VisualStudio
 {
-    public partial class Pyproj
-    {
-        private class Template
-        {
-            public static class Project
-            {
-                public static string ProjectBegin =
-                @"<Project DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"" ToolsVersion=""4.0"">
+	public partial class Pyproj
+	{
+		private class Template
+		{
+			public static class Project
+			{
+				public static string ProjectBegin =
+					@"<Project DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"" ToolsVersion=""4.0"">
 ";
 
-                public static string ProjectEnd =
-                @"</Project>
+				public static string ProjectEnd =
+					@"</Project>
 ";
 
-                public static string ProjectItemGroupBegin =
-                @"  <ItemGroup>
+				public static string ProjectItemGroupBegin =
+					@"  <ItemGroup>
 ";
 
-                public static string ProjectItemGroupEnd =
-                @"  </ItemGroup>
+				public static string ProjectItemGroupEnd =
+					@"  </ItemGroup>
 ";
 
 
-                public static string ProjectDescription =
-@"  <PropertyGroup>
+				public static string ProjectDescription =
+					@"  <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>[guid]</ProjectGuid>
     <ProjectHome>[projectHome]</ProjectHome>
@@ -46,8 +46,8 @@ namespace Sharpmake.Generators.VisualStudio
   </PropertyGroup>
 ";
 
-                public static string Interpreter =
-@"  <Interpreter Include=""[basePath]"">
+				public static string Interpreter =
+					@"  <Interpreter Include=""[basePath]"">
     <Id>{[guid]}</Id>
     <Version>[version]</Version>
     <Description>Python [version]</Description>
@@ -59,8 +59,8 @@ namespace Sharpmake.Generators.VisualStudio
   </Interpreter>
 ";
 
-                public static string VirtualEnvironmentInterpreter =
-@"    <Interpreter Include=""[basePath]"">
+				public static string VirtualEnvironmentInterpreter =
+					@"    <Interpreter Include=""[basePath]"">
       <Id>{[guid]}</Id>
       <BaseInterpreter>[baseGuid]</BaseInterpreter>
       <Version>[version]</Version>
@@ -73,34 +73,38 @@ namespace Sharpmake.Generators.VisualStudio
     </Interpreter>
 ";
 
-                public static string ImportPythonTools =
-@"  <Import Project=""$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets"" />
+				public static string ImportPythonTools =
+					@"  <Import Project=""$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets"" />
 ";
 
-                public static string InterpreterReference =
-@"  <InterpreterReference Include=""[guid]\[version]"" />
+				public static string InterpreterReference =
+					@"  <InterpreterReference Include=""[guid]\[version]"" />
 ";
 
-                public static string ProjectReferenceBegin =
-@"    <ProjectReference Include=""[include]"">
+				public static string ProjectReferenceBegin =
+					@"    <ProjectReference Include=""[include]"">
 ";
 
-                public static string ProjectReferenceEnd =
-@"    </ProjectReference>
+				public static string ProjectReferenceEnd =
+					@"    </ProjectReference>
 ";
-                public static string Private =
-@"      <Private>[private]</Private>
+
+				public static string Private =
+					@"      <Private>[private]</Private>
 ";
-                public static string ReferenceOutputAssembly =
-@"      <ReferenceOutputAssembly>[ReferenceOutputAssembly]</ReferenceOutputAssembly>
+
+				public static string ReferenceOutputAssembly =
+					@"      <ReferenceOutputAssembly>[ReferenceOutputAssembly]</ReferenceOutputAssembly>
 ";
-                public static string ProjectGUID =
-@"      <Project>[projectGUID]</Project>
+
+				public static string ProjectGUID =
+					@"      <Project>[projectGUID]</Project>
 ";
-                public static string ProjectRefName =
-@"      <Name>[projectRefName]</Name>
+
+				public static string ProjectRefName =
+					@"      <Name>[projectRefName]</Name>
 ";
-            }
-        };
-    }
+			}
+		};
+	}
 }

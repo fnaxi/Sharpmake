@@ -3,30 +3,31 @@
 
 namespace Sharpmake.Generators.VisualStudio
 {
-    public partial class CSproj
-    {
-        public static class Template
-        {
-            public static class Project
-            {
-                public static string ProjectBegin =
-@"<?xml version=""1.0"" encoding=""utf-8""?>
+	public partial class CSproj
+	{
+		public static class Template
+		{
+			public static class Project
+			{
+				public static string ProjectBegin =
+					@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project DefaultTargets=""Build"" ToolsVersion=""[toolsVersion]"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
 ";
 
-                public static string ProjectBeginVs2017 =
-@"<?xml version=""1.0"" encoding=""utf-8""?>
+				public static string ProjectBeginVs2017 =
+					@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""[toolsVersion]"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
 ";
-                public static string ProjectBeginNetCore =
-@"<Project>
+
+				public static string ProjectBeginNetCore =
+					@"<Project>
 ";
 
-                public static string ProjectEnd =
-@"</Project>";
+				public static string ProjectEnd =
+					@"</Project>";
 
-                public static string ProjectDescription =
-@"  <PropertyGroup>
+				public static string ProjectDescription =
+					@"  <PropertyGroup>
     <Configuration Condition="" '$(Configuration)' == '' "">[options.DefaultConfiguration]</Configuration>
     <Platform Condition="" '$(Platform)' == '' "">[defaultPlatform]</Platform>
     <PlatformTarget Condition="" '$(Platform)' == '' "">[defaultPlatform]</PlatformTarget>
@@ -121,17 +122,19 @@ namespace Sharpmake.Generators.VisualStudio
   </PropertyGroup>
 ";
 
-                public static string BaseIntermediateOutputPathPropertyGroup =
-@"  <PropertyGroup>
+				public static string BaseIntermediateOutputPathPropertyGroup =
+					@"  <PropertyGroup>
     <BaseIntermediateOutputPath>[baseIntermediateOutputPath]</BaseIntermediateOutputPath>
   </PropertyGroup>
 ";
 
-                public const string DefaultProjectConfigurationCondition = "'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'";
-                public const string MultiFrameworkProjectConfigurationCondition = "'$(Configuration)|$(Platform)|$(TargetFramework)'=='[conf.Name]|[platformName]|[targetFramework]'";
+				public const string DefaultProjectConfigurationCondition = "'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'";
 
-                public static string ProjectConfigurationsGeneral =
-@"    <PlatformTarget>[platformName]</PlatformTarget>
+				public const string MultiFrameworkProjectConfigurationCondition =
+					"'$(Configuration)|$(Platform)|$(TargetFramework)'=='[conf.Name]|[platformName]|[targetFramework]'";
+
+				public static string ProjectConfigurationsGeneral =
+					@"    <PlatformTarget>[platformName]</PlatformTarget>
     <DebugSymbols>[options.DebugSymbols]</DebugSymbols>
     <DebugType>[options.DebugType]</DebugType>
     <Optimize>[options.Optimize]</Optimize>
@@ -160,27 +163,27 @@ namespace Sharpmake.Generators.VisualStudio
     <ProduceReferenceAssembly>[options.ProduceReferenceAssembly]</ProduceReferenceAssembly>
 ";
 
-                public static string ImportProjectItemSimple =
-@"  <Import Project=""[importProject]"" />
-";
-                public static string ImportProjectItem =
-@"  <Import Project=""[importProject]"" Condition=""[importCondition]"" />
+				public static string ImportProjectItemSimple =
+					@"  <Import Project=""[importProject]"" />
 ";
 
-                public static string ImportProjectSdkItem =
-@"  <Import Project=""[importProject]"" Sdk=""[sdkVersion]"" />
+				public static string ImportProjectItem =
+					@"  <Import Project=""[importProject]"" Condition=""[importCondition]"" />
 ";
 
-                public static string VsixConfiguration =
-@"  <PropertyGroup>
+				public static string ImportProjectSdkItem =
+					@"  <Import Project=""[importProject]"" Sdk=""[sdkVersion]"" />
+";
+
+				public static string VsixConfiguration =
+					@"  <PropertyGroup>
     <VSToolsPath Condition=""'$(VSToolsPath)' == ''"">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>
 ";
 
-                public static string ProjectConfigurationsPreBuildEvent =
-
-@"  <PropertyGroup>
+				public static string ProjectConfigurationsPreBuildEvent =
+					@"  <PropertyGroup>
     <PreBuildEvent>[options.PreBuildEvent]
       <Message>[options.PreBuildEventDescription]</Message>
     </PreBuildEvent>
@@ -188,17 +191,16 @@ namespace Sharpmake.Generators.VisualStudio
 ";
 
 
-                public static string ProjectConfigurationsPostBuildEvent =
-@"  <PropertyGroup>
+				public static string ProjectConfigurationsPostBuildEvent =
+					@"  <PropertyGroup>
     <PostBuildEvent>[options.PostBuildEvent]
       <Message>[options.PostBuildEventDescription]</Message>
     </PostBuildEvent>
   </PropertyGroup>
 ";
 
-                public static string ProjectConfigurationsPreBuildEventConditional =
-
-@" <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
+				public static string ProjectConfigurationsPreBuildEventConditional =
+					@" <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
     <PreBuildEvent>
       [options.PreBuildEvent]
       <Message>[options.PreBuildEventDescription]</Message>
@@ -207,8 +209,8 @@ namespace Sharpmake.Generators.VisualStudio
 ";
 
 
-                public static string ProjectConfigurationsPostBuildEventConditional =
-@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
+				public static string ProjectConfigurationsPostBuildEventConditional =
+					@"  <PropertyGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
     <PostBuildEvent>
       [options.PostBuildEvent]
       <Message>[options.PostBuildEventDescription]</Message>
@@ -216,14 +218,14 @@ namespace Sharpmake.Generators.VisualStudio
   </PropertyGroup>
 ";
 
-                public static string ProjectConfigurationsRunPostBuildEvent =
-@"  <PropertyGroup>
+				public static string ProjectConfigurationsRunPostBuildEvent =
+					@"  <PropertyGroup>
     <RunPostBuildEvent>[RunPostBuildEvent]</RunPostBuildEvent>
   </PropertyGroup>
 ";
 
-                public static string ProjectAspNetMvcDescription =
-@"  <PropertyGroup>
+				public static string ProjectAspNetMvcDescription =
+					@"  <PropertyGroup>
     <MvcBuildViews>[MvcBuildViews]</MvcBuildViews>
     <UseIISExpress>[UseIISExpress]</UseIISExpress>
     <IISExpressSSLPort>[IISExpressSSLPort]</IISExpressSSLPort>
@@ -233,34 +235,34 @@ namespace Sharpmake.Generators.VisualStudio
     <UseGlobalApplicationHostFile>[UseGlobalApplicationHostFile]</UseGlobalApplicationHostFile>
   </PropertyGroup>
 ";
-            } // END of public static class Project
+			} // END of public static class Project
 
-            public static string ApplicationIcon =
-@"  <PropertyGroup>
+			public static string ApplicationIcon =
+				@"  <PropertyGroup>
     <ApplicationIcon>[iconpath]</ApplicationIcon>
   </PropertyGroup>
 ";
 
-            public static string ApplicationManifest =
-@"  <PropertyGroup>
+			public static string ApplicationManifest =
+				@"  <PropertyGroup>
     <ApplicationManifest>[applicationmanifest]</ApplicationManifest>
   </PropertyGroup>
 ";
 
-            public static string StartupObject =
-@"  <PropertyGroup>
+			public static string StartupObject =
+				@"  <PropertyGroup>
     <StartupObject>[startupobject]</StartupObject>
   </PropertyGroup>
 ";
 
-            public static string NoWin32Manifest =
-@"  <PropertyGroup>
+			public static string NoWin32Manifest =
+				@"  <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
 ";
 
-            public static string MSBuild14PropertyGroup =
-@"  <PropertyGroup>
+			public static string MSBuild14PropertyGroup =
+				@"  <PropertyGroup>
     <!-- Find program files path in a 32-bit environment -->
     <ProgramFiles32>$(MSBuildProgramFiles32)</ProgramFiles32>
     <ProgramFiles32 Condition=""'$(ProgramFiles32)'==''"">$(ProgramFiles%28x86%29)</ProgramFiles32>
@@ -271,16 +273,16 @@ namespace Sharpmake.Generators.VisualStudio
   </PropertyGroup>
 ";
 
-            public static string WebReferenceUrlBegin =
-@"    <WebReferenceUrl Include=""[include]"">
+			public static string WebReferenceUrlBegin =
+				@"    <WebReferenceUrl Include=""[include]"">
 ";
 
-            public static string WebReferenceUrlEnd =
-@"    </WebReferenceUrl>
+			public static string WebReferenceUrlEnd =
+				@"    </WebReferenceUrl>
 ";
 
-            public static string COMReference =
-@"    <COMReference Include=""[include]"">
+			public static string COMReference =
+				@"    <COMReference Include=""[include]"">
       <Guid>{[guid]}</Guid>
       <VersionMajor>[versionMajor]</VersionMajor>
       <VersionMinor>[versionMinor]</VersionMinor>
@@ -292,233 +294,245 @@ namespace Sharpmake.Generators.VisualStudio
     </COMReference>
 ";
 
-            public static string UrlBehavior =
-                @"      <UrlBehavior>[urlBehavior]</UrlBehavior>
+			public static string UrlBehavior =
+				@"      <UrlBehavior>[urlBehavior]</UrlBehavior>
 ";
 
-            public static string RelPath =
-@"      <RelPath>[relPath]</RelPath>
+			public static string RelPath =
+				@"      <RelPath>[relPath]</RelPath>
 ";
 
-            public static string UpdateFromURL =
-@"      <UpdateFromURL>[updateFromURL]</UpdateFromURL>
+			public static string UpdateFromURL =
+				@"      <UpdateFromURL>[updateFromURL]</UpdateFromURL>
 ";
 
-            public static string CachedDynamicPropName =
-@"      <CachedDynamicPropName>[cachedDynamicPropName]</CachedDynamicPropName>";
+			public static string CachedDynamicPropName =
+				@"      <CachedDynamicPropName>[cachedDynamicPropName]</CachedDynamicPropName>";
 
-            public static string CachedAppSettingsObjectName =
-@"      <CachedAppSettingsObjectName>[cachedAppSettingsObjectName]</CachedAppSettingsObjectName>
-";
-
-            public static string CachedSettingsPropName =
-@"      <CachedSettingsPropName>[cachedSettingsPropName]</CachedSettingsPropName>
+			public static string CachedAppSettingsObjectName =
+				@"      <CachedAppSettingsObjectName>[cachedAppSettingsObjectName]</CachedAppSettingsObjectName>
 ";
 
-            public static string PropertyGroupWithConditionStart =
-@"  <PropertyGroup Condition=""[projectConfigurationCondition]"">
+			public static string CachedSettingsPropName =
+				@"      <CachedSettingsPropName>[cachedSettingsPropName]</CachedSettingsPropName>
 ";
 
-            public static class ItemGroups
-            {
-                public static string NoneItemGroupBegin =
-@"    <None Include=""[include]"">
-";
-                public static string NoneItemGroupEnd =
-@"    </None>
-";
-                public static string SimpleNone =
-@"    <None Include=""[include]"" />
-";
-                public static string SimpleNoneWithExclude =
-@"    <None Include=""[include]"" Exclude=""[exclude]"" />
-";
-                public static string Link =
-@"      <Link>[link]</Link>
+			public static string PropertyGroupWithConditionStart =
+				@"  <PropertyGroup Condition=""[projectConfigurationCondition]"">
 ";
 
-                public static string LastGenOutput =
-@"      <LastGenOutput>[lastGenOutput]</LastGenOutput>
-";
-                public static string Generator =
-@"      <Generator>[generator]</Generator>
-";
-
-                public static string MergeWithCto =
-@"      <MergeWithCTO>[mergeWithCto]</MergeWithCTO>
+			public static class ItemGroups
+			{
+				public static string NoneItemGroupBegin =
+					@"    <None Include=""[include]"">
 ";
 
-                public static string DependentUpon =
-@"      <DependentUpon>[dependentUpon]</DependentUpon>
+				public static string NoneItemGroupEnd =
+					@"    </None>
 ";
 
-                public static string SpecificVersion =
-@"      <SpecificVersion>[specificVersion]</SpecificVersion>
+				public static string SimpleNone =
+					@"    <None Include=""[include]"" />
 ";
 
-                public static string HintPath =
-@"      <HintPath>[hintPath]</HintPath>
+				public static string SimpleNoneWithExclude =
+					@"    <None Include=""[include]"" Exclude=""[exclude]"" />
 ";
 
-                public static string SimpleReference =
-@"    <Reference Include=""[include]"" />
+				public static string Link =
+					@"      <Link>[link]</Link>
 ";
 
-                public static string ReferenceBegin =
-@"    <Reference Include=""[include]"">
+				public static string LastGenOutput =
+					@"      <LastGenOutput>[lastGenOutput]</LastGenOutput>
 ";
 
-                public static string ReferenceEnd =
-@"    </Reference>
+				public static string Generator =
+					@"      <Generator>[generator]</Generator>
 ";
 
-                public static string ChooseBegin =
-@"  <Choose>
+				public static string MergeWithCto =
+					@"      <MergeWithCTO>[mergeWithCto]</MergeWithCTO>
 ";
 
-                public static string ChooseEnd =
-@"  </Choose>
+				public static string DependentUpon =
+					@"      <DependentUpon>[dependentUpon]</DependentUpon>
 ";
 
-                public static string ChooseConditionBegin =
-@"    <When Condition="" [condition] "">
+				public static string SpecificVersion =
+					@"      <SpecificVersion>[specificVersion]</SpecificVersion>
 ";
 
-                public static string ChooseConditionEnd =
-@"    </When>
+				public static string HintPath =
+					@"      <HintPath>[hintPath]</HintPath>
 ";
 
-                public static string ItemGroupBegin =
-@"  <ItemGroup>
+				public static string SimpleReference =
+					@"    <Reference Include=""[include]"" />
 ";
 
-                public static string ItemGroupConditionalBegin =
-@"  <ItemGroup Condition=""[itemGroupCondition]"">
+				public static string ReferenceBegin =
+					@"    <Reference Include=""[include]"">
 ";
 
-                public static string ItemGroupTargetFrameworkCondition = "'$(TargetFramework)'=='[targetFramework]'";
-
-                public static string ItemGroupEnd =
-@"  </ItemGroup>
+				public static string ReferenceEnd =
+					@"    </Reference>
 ";
 
-                public static string SplashScreen =
-@"      <SplashScreen Include=""[include]"" />
+				public static string ChooseBegin =
+					@"  <Choose>
 ";
 
-                public static string SimpleWebReference =
-@"    <WebReferences Include=""[include]"" />
+				public static string ChooseEnd =
+					@"  </Choose>
 ";
 
-                public static string Folder =
-@"    <Folder Include=""[folder]"" />
+				public static string ChooseConditionBegin =
+					@"    <When Condition="" [condition] "">
 ";
 
-                public static string SimpleResource =
-@"    <Resource Include=""[resource]"" />
+				public static string ChooseConditionEnd =
+					@"    </When>
+";
+
+				public static string ItemGroupBegin =
+					@"  <ItemGroup>
+";
+
+				public static string ItemGroupConditionalBegin =
+					@"  <ItemGroup Condition=""[itemGroupCondition]"">
+";
+
+				public static string ItemGroupTargetFrameworkCondition = "'$(TargetFramework)'=='[targetFramework]'";
+
+				public static string ItemGroupEnd =
+					@"  </ItemGroup>
+";
+
+				public static string SplashScreen =
+					@"      <SplashScreen Include=""[include]"" />
+";
+
+				public static string SimpleWebReference =
+					@"    <WebReferences Include=""[include]"" />
+";
+
+				public static string Folder =
+					@"    <Folder Include=""[folder]"" />
+";
+
+				public static string SimpleResource =
+					@"    <Resource Include=""[resource]"" />
 ";
 
 
-                public static string ResourceBegin =
-@"    <Resource Include=""[include]"">
+				public static string ResourceBegin =
+					@"    <Resource Include=""[include]"">
 ";
 
-                public static string ResourceEnd =
-@"    </Resource>
+				public static string ResourceEnd =
+					@"    </Resource>
 ";
 
-                public static string WCFMetadata =
-@"    <WCFMetadata Include=""[baseStorage]"" />
+				public static string WCFMetadata =
+					@"    <WCFMetadata Include=""[baseStorage]"" />
 ";
 
-                public static string WCFMetadataStorage =
-@"    <WCFMetadataStorage Include=""[storage]"" />
+				public static string WCFMetadataStorage =
+					@"    <WCFMetadataStorage Include=""[storage]"" />
 ";
 
-                public static string VSIXSourceItem =
-@"    <VSIXSourceItem Include=""[vsixSourceItem]"" />
+				public static string VSIXSourceItem =
+					@"    <VSIXSourceItem Include=""[vsixSourceItem]"" />
 ";
 
-                public static string CompileRemove =
-@"    <Compile Remove=""[remove]"" />
+				public static string CompileRemove =
+					@"    <Compile Remove=""[remove]"" />
 ";
 
-                public static string NoneUpdate =
-@"    <None Update=""[update]"">
+				public static string NoneUpdate =
+					@"    <None Update=""[update]"">
       <CopyToOutputDirectory>[copyToOutputDirectory]</CopyToOutputDirectory>
     </None>
 ";
 
-                public static string ContentUpdate =
-@"    <Content Update=""[update]"">
+				public static string ContentUpdate =
+					@"    <Content Update=""[update]"">
       <CopyToOutputDirectory>[copyToOutputDirectory]</CopyToOutputDirectory>
     </Content>
 ";
 
-                public static string NoneRemove =
-@"    <None Remove=""[remove]"" />
+				public static string NoneRemove =
+					@"    <None Remove=""[remove]"" />
 ";
 
-                public static string ContentRemove =
-@"    <Content Remove=""[remove]"" />
+				public static string ContentRemove =
+					@"    <Content Remove=""[remove]"" />
 ";
 
-                public static string EmbeddedResourceRemove =
-@"    <EmbeddedResource Remove=""[remove]"" />
+				public static string EmbeddedResourceRemove =
+					@"    <EmbeddedResource Remove=""[remove]"" />
 ";
 
-                public static string PageRemove =
-@"    <Page Remove=""[remove]"" />
+				public static string PageRemove =
+					@"    <Page Remove=""[remove]"" />
 ";
 
-                public static string ResourceRemove =
-@"    <Resource Remove=""[remove]"" />
+				public static string ResourceRemove =
+					@"    <Resource Remove=""[remove]"" />
 ";
 
-                public static string PageBegin =
-@"    <Page Include=""[include]"">
-";
-                public static string PageEnd =
-@"    </Page>
-";
-                public static string ApplicationDefinitionBegin =
-@"    <ApplicationDefinition Include=""[include]"">
-";
-                public static string ApplicationDefinitionEnd =
-@"    </ApplicationDefinition>
-";
-                public static string SubType =
-@"      <SubType>[subType]</SubType>
+				public static string PageBegin =
+					@"    <Page Include=""[include]"">
 ";
 
-                public static string SimpleEmbeddedResource =
-@"    <EmbeddedResource Include=""[include]"" />
+				public static string PageEnd =
+					@"    </Page>
 ";
 
-                public static string EmbeddedResourceBegin =
-@"    <EmbeddedResource Include=""[include]"">
+				public static string ApplicationDefinitionBegin =
+					@"    <ApplicationDefinition Include=""[include]"">
 ";
 
-                public static string EmbeddedResourceEnd =
-@"    </EmbeddedResource>
+				public static string ApplicationDefinitionEnd =
+					@"    </ApplicationDefinition>
 ";
-                public static string BootstrapperPackage =
-@"    <BootstrapperPackage Include=""[include]"">
+
+				public static string SubType =
+					@"      <SubType>[subType]</SubType>
+";
+
+				public static string SimpleEmbeddedResource =
+					@"    <EmbeddedResource Include=""[include]"" />
+";
+
+				public static string EmbeddedResourceBegin =
+					@"    <EmbeddedResource Include=""[include]"">
+";
+
+				public static string EmbeddedResourceEnd =
+					@"    </EmbeddedResource>
+";
+
+				public static string BootstrapperPackage =
+					@"    <BootstrapperPackage Include=""[include]"">
       <Visible>[visible]</Visible>
       <ProductName>[productName]</ProductName>
       <Install>[install]</Install>
     </BootstrapperPackage>
 ";
-                public static string FileAssociationItem =
-                    @"    <FileAssociation Include=""[include]"">
+
+				public static string FileAssociationItem =
+					@"    <FileAssociation Include=""[include]"">
       <Visible>[visible]</Visible>
       <Description>[description]</Description>
       <Progid>[progid]</Progid>
       <DefaultIcon>[defaultIcon]</DefaultIcon>
     </FileAssociation>
 ";
-                public static string PublishFile =
-                    @"    <PublishFile Include=""[include]"">
+
+				public static string PublishFile =
+					@"    <PublishFile Include=""[include]"">
       <Visible>[visible]</Visible>
       <Group>[group]</Group>
       <PublishState>[publishState]</PublishState>
@@ -527,153 +541,159 @@ namespace Sharpmake.Generators.VisualStudio
     </PublishFile>
 ";
 
-                public static string ProjectReferenceBegin =
-@"    <ProjectReference Include=""[include]"">
+				public static string ProjectReferenceBegin =
+					@"    <ProjectReference Include=""[include]"">
 ";
 
-                public static string ProjectReferenceSelfClosing =
-@"    <ProjectReference Include=""[include]"" />
+				public static string ProjectReferenceSelfClosing =
+					@"    <ProjectReference Include=""[include]"" />
 ";
 
-                public static string ProjectGUID =
-@"      <Project>[projectGUID]</Project>
+				public static string ProjectGUID =
+					@"      <Project>[projectGUID]</Project>
 ";
 
-                public static string ProjectRefName =
-@"      <Name>[projectRefName]</Name>
-";
-                public static string Private =
-@"      <Private>[private]</Private>
-";
-                public static string EmbedInteropTypes =
-@"      <EmbedInteropTypes>[embedInteropTypes]</EmbedInteropTypes>
-";
-                public static string ReferenceOutputAssembly =
-@"      <ReferenceOutputAssembly>[ReferenceOutputAssembly]</ReferenceOutputAssembly>
-";
-                public static string IncludeOutputGroupsInVSIX =
-@"      <IncludeOutputGroupsInVSIX>[IncludeOutputGroupsInVSIX]</IncludeOutputGroupsInVSIX>
-";
-                public static string ProjectReferenceEnd =
-@"    </ProjectReference>
+				public static string ProjectRefName =
+					@"      <Name>[projectRefName]</Name>
 ";
 
-                public static string SimpleCompile =
-@"    <Compile Include=""[include]"" />
+				public static string Private =
+					@"      <Private>[private]</Private>
 ";
 
-                public static string CompileBegin =
-@"    <Compile Include=""[include]"">
+				public static string EmbedInteropTypes =
+					@"      <EmbedInteropTypes>[embedInteropTypes]</EmbedInteropTypes>
 ";
 
-                public static string SimpleCompileWithExclude =
-@"    <Compile Include=""[include]"" Exclude=""[exclude]""/>
+				public static string ReferenceOutputAssembly =
+					@"      <ReferenceOutputAssembly>[ReferenceOutputAssembly]</ReferenceOutputAssembly>
 ";
 
-                public static string CompileBeginWithExclude =
-@"    <Compile Include=""[include]"" Exclude=""[exclude]"">
+				public static string IncludeOutputGroupsInVSIX =
+					@"      <IncludeOutputGroupsInVSIX>[IncludeOutputGroupsInVSIX]</IncludeOutputGroupsInVSIX>
 ";
 
-                public static string CompileEnd =
-@"    </Compile>
+				public static string ProjectReferenceEnd =
+					@"    </ProjectReference>
 ";
 
-                public static string AutoGen =
-@"      <AutoGen>[autoGen]</AutoGen>
+				public static string SimpleCompile =
+					@"    <Compile Include=""[include]"" />
 ";
 
-                public static string DesignTime =
-@"      <DesignTime>[designTime]</DesignTime>
+				public static string CompileBegin =
+					@"    <Compile Include=""[include]"">
 ";
 
-                public static string DesignTimeSharedInput =
-@"      <DesignTimeSharedInput>[designTimeSharedInput]</DesignTimeSharedInput>
+				public static string SimpleCompileWithExclude =
+					@"    <Compile Include=""[include]"" Exclude=""[exclude]""/>
 ";
 
-                public static string Service =
-@"    <Service Include=""[include]"" />
+				public static string CompileBeginWithExclude =
+					@"    <Compile Include=""[include]"" Exclude=""[exclude]"">
 ";
 
-                public static string VsctCompileBegin =
-@"    <VSCTCompile Include=""[include]"">
+				public static string CompileEnd =
+					@"    </Compile>
 ";
 
-                public static string VsdConfigXmlSimple =
-@"    <VsdConfigXmlFiles Include=""[include]"" />
+				public static string AutoGen =
+					@"      <AutoGen>[autoGen]</AutoGen>
 ";
 
-                public static string ResourceName =
-@"      <ResourceName>[resourceName]</ResourceName>
+				public static string DesignTime =
+					@"      <DesignTime>[designTime]</DesignTime>
 ";
 
-                public static string VsctCompileEnd =
-@"    </VSCTCompile>
+				public static string DesignTimeSharedInput =
+					@"      <DesignTimeSharedInput>[designTimeSharedInput]</DesignTimeSharedInput>
 ";
 
-                public static string ContentSimple =
-@"    <Content Include=""[include]"" />
+				public static string Service =
+					@"    <Service Include=""[include]"" />
 ";
 
-                public static string ContentBegin =
-@"    <Content Include=""[include]"">
+				public static string VsctCompileBegin =
+					@"    <VSCTCompile Include=""[include]"">
 ";
 
-                public static string CopyToOutputDirectory =
-@"      <CopyToOutputDirectory>[copyToOutputDirectory]</CopyToOutputDirectory>
+				public static string VsdConfigXmlSimple =
+					@"    <VsdConfigXmlFiles Include=""[include]"" />
 ";
 
-                public static string Analyzer =
-@"    <Analyzer Include=""[include]"" />
+				public static string ResourceName =
+					@"      <ResourceName>[resourceName]</ResourceName>
 ";
 
-                public static string IncludeInVsix =
-@"      <IncludeInVSIX>[includeInVsix]</IncludeInVSIX>
+				public static string VsctCompileEnd =
+					@"    </VSCTCompile>
 ";
 
-                public static string ContentEnd =
-@"    </Content>
-";
-                public static string EntityDeployBegin =
-@"    <EntityDeploy Include=""[include]"">
+				public static string ContentSimple =
+					@"    <Content Include=""[include]"" />
 ";
 
-                public static string EntityDeployEnd =
-@"    </EntityDeploy>
+				public static string ContentBegin =
+					@"    <Content Include=""[include]"">
 ";
 
-                public static string FrameworkReference =
-@"    <FrameworkReference Include=""[include]"" />
+				public static string CopyToOutputDirectory =
+					@"      <CopyToOutputDirectory>[copyToOutputDirectory]</CopyToOutputDirectory>
 ";
 
-                public static string Protobuf =
-@"    <Protobuf Include=""[include]"" GrpcServices=""Both"" />
+				public static string Analyzer =
+					@"    <Analyzer Include=""[include]"" />
 ";
-            }
 
-            public static class UsingTaskElement
-            {
-                public static string UsingTask =
-@"  <UsingTask AssemblyFile=""[usingTaskElement.AssemblyFile]"" TaskName=""[usingTaskElement.TaskName]"" />
+				public static string IncludeInVsix =
+					@"      <IncludeInVSIX>[includeInVsix]</IncludeInVSIX>
 ";
-            }
 
-            public static class TargetElement
-            {
-                public static string CustomTargetNoParameters =
-@"  <Target Name=""[targetElement.Name]"">
+				public static string ContentEnd =
+					@"    </Content>
+";
+
+				public static string EntityDeployBegin =
+					@"    <EntityDeploy Include=""[include]"">
+";
+
+				public static string EntityDeployEnd =
+					@"    </EntityDeploy>
+";
+
+				public static string FrameworkReference =
+					@"    <FrameworkReference Include=""[include]"" />
+";
+
+				public static string Protobuf =
+					@"    <Protobuf Include=""[include]"" GrpcServices=""Both"" />
+";
+			}
+
+			public static class UsingTaskElement
+			{
+				public static string UsingTask =
+					@"  <UsingTask AssemblyFile=""[usingTaskElement.AssemblyFile]"" TaskName=""[usingTaskElement.TaskName]"" />
+";
+			}
+
+			public static class TargetElement
+			{
+				public static string CustomTargetNoParameters =
+					@"  <Target Name=""[targetElement.Name]"">
     [targetElement.CustomTasks]
   </Target>
 ";
 
-                public static string CustomTarget =
-@"  <Target Name=""[targetElement.Name]"" [targetElement.TargetParameters]>
+				public static string CustomTarget =
+					@"  <Target Name=""[targetElement.Name]"" [targetElement.TargetParameters]>
     [targetElement.CustomTasks]
   </Target>
 ";
-            }
+			}
 
-            public static string ProjectExtensionsWcf =
-@"  <ProjectExtensions>
+			public static string ProjectExtensionsWcf =
+				@"  <ProjectExtensions>
       <VisualStudio>
         <FlavorProperties GUID = ""[WCFExtensionGUID]"">
           <WcfProjectProperties>
@@ -684,8 +704,8 @@ namespace Sharpmake.Generators.VisualStudio
   </ProjectExtensions>
 ";
 
-            public static string ProjectExtensionsVsto =
-@"  <ProjectExtensions>
+			public static string ProjectExtensionsVsto =
+				@"  <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID=""{BAA0C2D2-18E2-41B9-852F-F413020CAA33}"">
         <ProjectProperties HostName=""[OfficeApplication]"" HostPackage=""{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}"" OfficeVersion=""[OfficeSDKVersion].0"" VstxVersion=""4.0"" ApplicationType=""[OfficeApplication]"" Language=""cs"" TemplatesPath="""" DebugInfoExeName=""#Software\Microsoft\Office\[OfficeSDKVersion].0\[OfficeApplication]\InstallRoot\Path#[OfficeApplication].exe"" AddItemTemplatesGuid=""{A58A78EB-1C92-4DDD-80CF-E8BD872ABFC4}"" />
@@ -724,8 +744,8 @@ namespace Sharpmake.Generators.VisualStudio
   </ItemGroup>
 ";
 
-            public static string ProjectExtensionsAspNetMvc5 =
-@"  <ProjectExtensions>
+			public static string ProjectExtensionsAspNetMvc5 =
+				@"  <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID=""[AspNetMvc5ExtensionGUID]"">
         <WebProjectProperties>
@@ -744,28 +764,28 @@ namespace Sharpmake.Generators.VisualStudio
   </ProjectExtensions>
 ";
 
-            public static class UserFile
-            {
-                public static readonly string StartWithProject =
-@"    <StartAction>Project</StartAction>
+			public static class UserFile
+			{
+				public static readonly string StartWithProject =
+					@"    <StartAction>Project</StartAction>
     <StartArguments>[conf.CsprojUserFile.StartArguments]</StartArguments>
     <StartWorkingDirectory>[conf.CsprojUserFile.WorkingDirectory]</StartWorkingDirectory>";
 
-                public static readonly string StartWithProgram =
-@"    <StartAction>Program</StartAction>
+				public static readonly string StartWithProgram =
+					@"    <StartAction>Program</StartAction>
     <StartProgram>[conf.CsprojUserFile.StartProgram]</StartProgram>
     <StartArguments>[conf.CsprojUserFile.StartArguments]</StartArguments>
     <StartWorkingDirectory>[conf.CsprojUserFile.WorkingDirectory]</StartWorkingDirectory>";
 
-                public static readonly string StartWithUrl =
-@"    <StartAction>URL</StartAction>
+				public static readonly string StartWithUrl =
+					@"    <StartAction>URL</StartAction>
     <StartURL>[conf.CsprojUserFile.StartURL]</StartURL>
     <StartArguments>[conf.CsprojUserFile.StartArguments]</StartArguments>
     <StartWorkingDirectory>[conf.CsprojUserFile.WorkingDirectory]</StartWorkingDirectory>";
 
-                public static readonly string DebugUnmanaged =
-@"    <EnableUnmanagedDebugging>[unmanagedDebugEnabled]</EnableUnmanagedDebugging>";
-            }
-        }
-    }
+				public static readonly string DebugUnmanaged =
+					@"    <EnableUnmanagedDebugging>[unmanagedDebugEnabled]</EnableUnmanagedDebugging>";
+			}
+		}
+	}
 }
